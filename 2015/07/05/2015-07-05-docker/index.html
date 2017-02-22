@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    <link rel='stylesheet' href='/assets/css/andy-style.css'>
+    
+    <title>Docker 初探 | FTAndy</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="Docker 与 VagrantDocker 和 Vagrant 是近期两个应用场景最像的计算机虚拟化技术了吧。Stackoverflow 上有一个问题是问在什么场景下应该用 Vagrant，什么场景下应该使用 Docker，而 Vagrant 和 Docker 的作者也都出来争论了，有兴趣的可以去看看大牛是怎么撕逼的。  
+Docker 将 Git 版本管理的概念与 Linux 上 Contai">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker 初探">
+<meta property="og:url" content="https://ftandy.com/2015/07/05/2015-07-05-docker/index.html">
+<meta property="og:site_name" content="FTAndy">
+<meta property="og:description" content="Docker 与 VagrantDocker 和 Vagrant 是近期两个应用场景最像的计算机虚拟化技术了吧。Stackoverflow 上有一个问题是问在什么场景下应该用 Vagrant，什么场景下应该使用 Docker，而 Vagrant 和 Docker 的作者也都出来争论了，有兴趣的可以去看看大牛是怎么撕逼的。  
+Docker 将 Git 版本管理的概念与 Linux 上 Contai">
+<meta property="og:image" content="https://ftandy.com/assets/images/docker.jpg">
+<meta property="og:updated_time" content="2015-10-04T10:52:25.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Docker 初探">
+<meta name="twitter:description" content="Docker 与 VagrantDocker 和 Vagrant 是近期两个应用场景最像的计算机虚拟化技术了吧。Stackoverflow 上有一个问题是问在什么场景下应该用 Vagrant，什么场景下应该使用 Docker，而 Vagrant 和 Docker 的作者也都出来争论了，有兴趣的可以去看看大牛是怎么撕逼的。  
+Docker 将 Git 版本管理的概念与 Linux 上 Contai">
+<meta name="twitter:image" content="https://ftandy.com/assets/images/docker.jpg">
+    
+
+    
+
+    
+        <link rel="icon" href="/assets/css/avatar.png" />
+    
+
+    <link rel="stylesheet" href="/vendor/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/vendor/open-sans/styles.css">
+    <link rel="stylesheet" href="/vendor/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/vendor/jquery/2.1.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/vendor/lightgallery/css/lightgallery.min.css">
+    
+    
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <!-- <span class="site-title">FTAndy</span> -->
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/.">Home</a>
+                
+                    <a class="main-nav-link" href="/archives">Archives</a>
+                
+                    <a class="main-nav-link" href="/categories">Categories</a>
+                
+                    <a class="main-nav-link" href="/project">Projects</a>
+                
+                    <a class="main-nav-link" href="/about">About</a>
+                
+            </nav>
+            
+                
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/assets/css/avatar.png" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/.">Home</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">Archives</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">Categories</a></td>
+                
+                    <td><a class="main-nav-link" href="/project">Projects</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">About</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+                
+
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/assets/css/avatar.png" />
+            <h2 id="name">FTAndy</h2>
+            <h3 id="title">A Web Developer</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>ShangHai, China</span>
+            <a id="follow" target="_blank" href="https://github.com/ftandy/">关注我</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                28
+                <span>文章</span>
+            </div>
+            <div class="article-info-block">
+                0
+                <span>标签</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    
+                    <td>
+                        <a href="http://github.com/ftandy" target="_blank" title="github" class=tooltip>
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://twitter.com/fortheandy" target="_blank" title="twitter" class=tooltip>
+                            <i class="fa fa-twitter"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="http://www.weibo.com/2150908851" target="_blank" title="weibo" class=tooltip>
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
+            <section id="main"><article id="post-2015-07-05-docker" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            
+	
+		<img src="/assets/images/docker.jpg" class="article-banner" />
+	
+
+
+
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            Docker 初探
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2015/07/05/2015-07-05-docker/">
+            <time datetime="2015-07-05T06:57:07.000Z" itemprop="datePublished">2015-07-05</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/vagrant-docker/">vagrant_docker</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h3 id="Docker-与-Vagrant"><a href="#Docker-与-Vagrant" class="headerlink" title="Docker 与 Vagrant"></a>Docker 与 Vagrant</h3><p>Docker 和 Vagrant 是近期两个应用场景最像的计算机虚拟化技术了吧。Stackoverflow 上有一个<a href="http://stackoverflow.com/questions/16647069/should-i-use-vagrant-or-docker-io-for-creating-an-isolated-environment" target="_blank" rel="external">问题</a>是问在什么场景下应该用 Vagrant，什么场景<br>下应该使用 Docker，而 Vagrant 和 Docker 的作者也都出来争论了，有兴趣的可以去看看大牛是怎么撕逼的。  </p>
+<p>Docker 将 Git 版本管理的概念与 Linux 上 Container 的概念融合在一起，而 Vagrant 则是将 Git 版本管理的概念与虚拟机的概念融合在一起。  </p>
+<a id="more"></a>
+<p><img src="/images/vagrant_docker/what-is-docker-diagram.png" alt="Docker 架构"></p>
+<p><img src="/images/vagrant_docker/what-is-vm-diagram.png" alt="Vagrant 架构"></p>
+<p>下面是我自己画的 Vagrant 架构，其实也是在虚拟机上抽象出一层类似于 Git 的管理工具。  </p>
+<p><img src="/images/vagrant_docker/vagrant.png" alt="Vagrant"></p>
+<h3 id="OS-X-下的-Docker"><a href="#OS-X-下的-Docker" class="headerlink" title="OS X 下的 Docker"></a>OS X 下的 Docker</h3><p>由于 Container 是 Linux 特有的概念，所以想要在 OS X 下玩 Docker，还是需要依赖虚拟机。官网上推荐的配套 Docker 虚拟机叫 boot2docker。可以到<a href="https://docs.docker.com/installation/mac/" target="_blank" rel="external">官网</a>上按照教程安装。你也可以使用 Vagrant，然后在 Vagrant 中的 Linux 虚拟机中配置安装 Docker，在虚拟机中玩 Docker。  </p>
+<p>用户在命令行或者 GUI 下与 Docker 交互主要通过与 Docker daemon 对话，Docker daemon 再管理每个 Container。所以在 OS X 上会出现这样的架构：<br><img src="/images/vagrant_docker/mac_docker_host.svg" alt="Image">  </p>
+<h3 id="OS-X-下的-Docker-的使用"><a href="#OS-X-下的-Docker-的使用" class="headerlink" title="OS X 下的 Docker 的使用"></a>OS X 下的 Docker 的使用</h3><p>下面是一些在 Docker 在 OS X 中使用的命令行。  </p>
+<ul>
+<li><p>由于依赖于 boot2docker，所以一开始必须要先初始化 boot2docker。  </p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ boot2docker init</div><div class="line"></div><div class="line">$ boot2docker start</div><div class="line"></div><div class="line">$ boot2docker shellinit</div></pre></td></tr></table></figure>
+</li>
+<li><p>现在 virtual box 中的 docker 也是安装和初始化好了，直接用即可。  </p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ docker <span class="keyword">run</span><span class="bash"> hello-world  //开启一个Container，输出hello-world，然后结束Container</span></div><div class="line">-</div><div class="line">$ docker <span class="keyword">run</span><span class="bash"> <span class="_">-d</span> -P —name web nginx   //<span class="_">-d</span>参数一直运行，-P参数将Container的端口映射到虚拟机的端口上</span></div></pre></td></tr></table></figure>
+</li>
+<li><p>boot2docker和Docker常用状态管理命令。  </p>
+<figure class="highlight gams"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">$</span> boot2docker status  <span class="comment">//查看虚拟机状态</span></div><div class="line"></div><div class="line"><span class="symbol">$</span> docker ps  <span class="comment">//查看虚拟机中所有的Container</span></div><div class="line"></div><div class="line"><span class="symbol">$</span> docker port web/xxx  <span class="comment">//查看正在运行的Container的端口号</span></div><div class="line"></div><div class="line"><span class="symbol">$</span> boot2docker ip  <span class="comment">//查看虚拟机在本机网络中的IP地址</span></div></pre></td></tr></table></figure>
+</li>
+<li><p>Docker 可以开启一个 Container，里面再运行一个虚拟机。  </p>
+<figure class="highlight gams"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">$</span> docker pull ubuntu  <span class="comment">//从官方仓库中拉ubantu的镜像</span></div><div class="line"></div><div class="line"><span class="symbol">$</span> docker run -t -i ubuntu /bin/bash  <span class="comment">//运行ubuntu虚拟机并使用bash，-t表示开启终端，-i表示交互显示</span></div><div class="line"></div><div class="line"><span class="symbol">$</span> docker images  <span class="comment">//查看本地所有镜像</span></div></pre></td></tr></table></figure>
+</li>
+<li><p>官方提供了一个类似于 Github 的平台叫 <a href="https://hub.docker.com" target="_blank" rel="external">Docker Hub</a>，可以存储自己的镜像，或者与别人分享镜像。  </p>
+<figure class="highlight gams"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">$</span> docker run -t -i training/sinatra /bin/bash  <span class="comment">//进入从镜像库中拉下来的镜像</span></div><div class="line"></div><div class="line"># gem install json  <span class="comment">//修改镜像</span></div><div class="line"></div><div class="line"><span class="symbol">$</span> docer commit -m “install json gem” container_id new_contailer_name   <span class="comment">//确认修改镜像</span></div><div class="line"></div><div class="line"><span class="symbol">$</span> docker images  <span class="comment">//查看新的修改过的镜像</span></div><div class="line"></div><div class="line"><span class="symbol">$</span> docker tag <span class="number">91</span>c95931e552 ftandy/hello_sss  <span class="comment">//为自己的镜像修改别名</span></div><div class="line"></div><div class="line"><span class="symbol">$</span> docker push ftandy/hello_sss <span class="comment">//push到自己的账号仓库上</span></div></pre></td></tr></table></figure>
+</li>
+<li><p>分享的话也可以通过本地导出导出镜像文件分享。  </p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ docker save -o hello-world.tar hello-world</div><div class="line"></div><div class="line">$ docker load &lt; hello-world.tar</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>另外想要进阶的话，推荐<a href="http://dockerpool.com/static/books/docker_practice/introduction/README.html" target="_blank" rel="external">这本电子书</a>，和陈皓的<a href="http://coolshell.cn/articles/17010.html" target="_blank" rel="external">博客</a>。里面包含了Docker的方方面面。</p>
+<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><ol>
+<li><a href="http://dockerpool.com/static/books/docker_practice/introduction/README.html" target="_blank" rel="external">http://dockerpool.com/static/books/docker_practice/introduction/README.html</a>  </li>
+<li><a href="https://www.docker.com/" target="_blank" rel="external">https://www.docker.com/</a></li>
+</ol>
+
+        
+        </div>
+        <!-- <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://ftandy.com/2015/07/05/2015-07-05-docker/" data-id="cizfbwk6h000y1dsne8zytn09" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://ftandy.com/2015/07/05/2015-07-05-docker/#comments" class="article-comment-link ds-thread-count" data-thread-key="https://ftandy.com/2015/07/05/2015-07-05-docker/">评论</a>
+    
+
+        </footer> -->
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2015/08/23/2015-08-23-tasks-microtasks-queues-and-schedules/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    Tasks, microtasks, queues and schedules(译)
+                
+            </div>
+        </a>
+    
+    
+        <a href="/2015/06/17/2015-06-17-complier/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">Compiler 暂时不开课，但是不要紧</div>
+        </a>
+    
+</nav>
+
+
+    
+</article>
+
+
+    
+    <section id="comments">
+    
+        
+    <div class="ds-thread" data-thread-key="2015/07/05/2015-07-05-docker/" data-title="Docker 初探" data-url="https://ftandy.com/2015/07/05/2015-07-05-docker/"></div>
+    <style>
+        #ds-thread #ds-reset .ds-textarea-wrapper {
+            background: none;
+        }
+        #ds-reset .ds-avatar img {
+            box-shadow: none;
+        }
+        #ds-reset .ds-gradient-bg {
+            background: #f7f7f7;
+        }
+        #ds-thread #ds-reset li.ds-tab a {
+            border-radius: 3px;
+        }
+        #ds-thread #ds-reset .ds-post-button {
+            color: white;
+            border: none;
+            box-shadow: none;
+            background: #d32;
+            text-shadow: none;
+            font-weight: normal;
+            font-family: 'Microsoft Yahei';
+        }
+        #ds-thread #ds-reset .ds-post-button:hover {
+            color: white;
+            background: #DE594C;
+        }
+        #ds-thread #ds-reset .ds-post-button:active {
+            background: #d32;
+        }
+        #ds-smilies-tooltip ul.ds-smilies-tabs li a.ds-current {
+            color: white;
+            background: #d32;
+            box-shadow: none;
+            text-shadow: none;
+            font-weight: normal;
+        }
+    </style>
+
+    
+    </section>
+
+
+</section>
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2017/01/17/Node-根本就不是什么新东西/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/javascript/">javascript</a></p>
+                            <p class="item-title"><a href="/2017/01/17/Node-根本就不是什么新东西/" class="title">Node 根本就不是什么新东西</a></p>
+                            <p class="item-date"><time datetime="2017-01-17T14:44:15.000Z" itemprop="datePublished">2017-01-17</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/10/30/mimi-promise/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/assets/images/promisesa-was-born.jpg)" alt="写一个符合 Promises/A+ 规范并可配合 ES7 async/await 使用的 Promise" class="thumbnail-image"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/javascript/">javascript</a></p>
+                            <p class="item-title"><a href="/2016/10/30/mimi-promise/" class="title">写一个符合 Promises/A+ 规范并可配合 ES7 async/await 使用的 Promise</a></p>
+                            <p class="item-date"><time datetime="2016-10-30T14:11:46.000Z" itemprop="datePublished">2016-10-30</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/09/11/2016-09-11-理解比特币原理/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/bitcoin/">bitcoin</a></p>
+                            <p class="item-title"><a href="/2016/09/11/2016-09-11-理解比特币原理/" class="title">理解比特币原理</a></p>
+                            <p class="item-date"><time datetime="2016-09-11T10:50:07.000Z" itemprop="datePublished">2016-09-11</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/09/10/2016-09-10-论打电竞职业与互联网职业的相同/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/assets/images/2009.jpg)" alt="论2009电竞职业发展，和成功互联网开发者职业发展的相同" class="thumbnail-image"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/dota/">dota</a></p>
+                            <p class="item-title"><a href="/2016/09/10/2016-09-10-论打电竞职业与互联网职业的相同/" class="title">论2009电竞职业发展，和成功互联网开发者职业发展的相同</a></p>
+                            <p class="item-date"><time datetime="2016-09-10T14:26:03.000Z" itemprop="datePublished">2016-09-10</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/05/15/2016-05-15-Sharedb-源码分析/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/javascript/">javascript</a></p>
+                            <p class="item-title"><a href="/2016/05/15/2016-05-15-Sharedb-源码分析/" class="title">Sharedb 源码分析(待续)</a></p>
+                            <p class="item-date"><time datetime="2016-05-14T16:34:19.000Z" itemprop="datePublished">2016-05-15</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/bitcoin/">bitcoin</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/dota/">dota</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/game/">game</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/https/">https</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/leetcode/">leetcode</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/life/">life</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/poem/">poem</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/programming-language/">programming_language</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/rick-and-morty/">rick and morty</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/ruby/">ruby</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/vagrant-docker/">vagrant_docker</a><span class="category-list-count">2</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">二月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">六月 2015</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2017 FTAndy<br>
+            Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
+        </div>
+    </div>
+</footer>
+
+<script type="text/javascript" src='/assets/js/jquery.backstretch.js'></script>
+
+        
+    
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:'ftandy'};
+    (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+    </script>
+
+
+
+    
+        <script src="/vendor/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-share.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-video.min.js"></script>
+    
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+    <div class="backstretch" style="left: 0px; top: 0px; overflow: hidden; margin: 0px; padding: 0px; z-index: -999999; position: fixed; width: 1440px;">
+    </div>
+    <script type="text/javascript">
+      var ranNum = (Math.random() * 10 + 1).toFixed()
+      $.backstretch("http://7xn1og.com1.z0.glb.clouddn.com/" + ranNum +".jpg");
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    <link rel='stylesheet' href='/assets/css/andy-style.css'>
+    
+    <title>为什么我在看 coursera 的 complier 课程？ | FTAndy</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="什么是程序员三大浪漫知乎上的一个提问为什么程序员的三大浪漫是编译原理，图形学，操作系统？还有提问如何去学习程序员的三大浪漫，编译原理，图形学，操作系统？">
+<meta property="og:type" content="article">
+<meta property="og:title" content="为什么我在看 coursera 的 complier 课程？">
+<meta property="og:url" content="https://ftandy.com/2015/06/09/2015-06-09-/index.html">
+<meta property="og:site_name" content="FTAndy">
+<meta property="og:description" content="什么是程序员三大浪漫知乎上的一个提问为什么程序员的三大浪漫是编译原理，图形学，操作系统？还有提问如何去学习程序员的三大浪漫，编译原理，图形学，操作系统？">
+<meta property="og:image" content="https://ftandy.com/assets/images/compiler.png">
+<meta property="og:updated_time" content="2015-10-04T11:03:56.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="为什么我在看 coursera 的 complier 课程？">
+<meta name="twitter:description" content="什么是程序员三大浪漫知乎上的一个提问为什么程序员的三大浪漫是编译原理，图形学，操作系统？还有提问如何去学习程序员的三大浪漫，编译原理，图形学，操作系统？">
+<meta name="twitter:image" content="https://ftandy.com/assets/images/compiler.png">
+    
+
+    
+
+    
+        <link rel="icon" href="/assets/css/avatar.png" />
+    
+
+    <link rel="stylesheet" href="/vendor/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/vendor/open-sans/styles.css">
+    <link rel="stylesheet" href="/vendor/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/vendor/jquery/2.1.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/vendor/lightgallery/css/lightgallery.min.css">
+    
+    
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <!-- <span class="site-title">FTAndy</span> -->
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/.">Home</a>
+                
+                    <a class="main-nav-link" href="/archives">Archives</a>
+                
+                    <a class="main-nav-link" href="/categories">Categories</a>
+                
+                    <a class="main-nav-link" href="/project">Projects</a>
+                
+                    <a class="main-nav-link" href="/about">About</a>
+                
+            </nav>
+            
+                
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/assets/css/avatar.png" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/.">Home</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">Archives</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">Categories</a></td>
+                
+                    <td><a class="main-nav-link" href="/project">Projects</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">About</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+                
+
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/assets/css/avatar.png" />
+            <h2 id="name">FTAndy</h2>
+            <h3 id="title">A Web Developer</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>ShangHai, China</span>
+            <a id="follow" target="_blank" href="https://github.com/ftandy/">关注我</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                28
+                <span>文章</span>
+            </div>
+            <div class="article-info-block">
+                0
+                <span>标签</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    
+                    <td>
+                        <a href="http://github.com/ftandy" target="_blank" title="github" class=tooltip>
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://twitter.com/fortheandy" target="_blank" title="twitter" class=tooltip>
+                            <i class="fa fa-twitter"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="http://www.weibo.com/2150908851" target="_blank" title="weibo" class=tooltip>
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
+            <section id="main"><article id="post-2015-06-09-" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            
+	
+		<img src="/assets/images/compiler.png" class="article-banner" />
+	
+
+
+
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            为什么我在看 coursera 的 complier 课程？
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2015/06/09/2015-06-09-/">
+            <time datetime="2015-06-08T20:14:04.000Z" itemprop="datePublished">2015-06-09</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/programming-language/">programming_language</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h3 id="什么是程序员三大浪漫"><a href="#什么是程序员三大浪漫" class="headerlink" title="什么是程序员三大浪漫"></a>什么是程序员三大浪漫</h3><p>知乎上的一个提问<a href="http://www.zhihu.com/question/24078259" target="_blank" rel="external">为什么程序员的三大浪漫是编译原理，图形学，操作系统？</a><br>还有提问<a href="http://www.zhihu.com/question/22482295" target="_blank" rel="external">如何去学习程序员的三大浪漫，编译原理，图形学，操作系统？</a></p>
+<a id="more"></a>
+<p>vczh 的回答<a href="http://www.zhihu.com/question/19747470/answer/24453205" target="_blank" rel="external">为什么要学习这三大浪漫</a></p>
+<p>其实这个概念主要是 vczh 提出来的，其他在计算机混得比较开的人也很多人赞同。  </p>
+<p>讨论总结出的理由无非几个：  </p>
+<ol>
+<li><p>这三个东西都是计算机领域的基础，应用非常广泛，了解和深入都对以后走程序员职业的道路有很大帮助。  </p>
+</li>
+<li><p>新的框架和语言变化太快，基础的东西都是最决定性的，了解最根本的原理可以令你看得更远。  </p>
+</li>
+<li><p>在学习过程中需要长期集中精力，是一个长期收益性的学习，但在学习完之后不像其他技术，可以马上得以应用。像学 Rails，前端，iOS，安卓等<br>即学即用的技术，是短期收益性的东西，学完之后可以去参加工作。  </p>
+</li>
+<li><p>要成为大牛，必须要学！</p>
+</li>
+</ol>
+<h3 id="为什么我还要再学一次complier"><a href="#为什么我还要再学一次complier" class="headerlink" title="为什么我还要再学一次complier"></a>为什么我还要再学一次complier</h3><p>学校课程太水，连编译器都没有完整写过，记得不多了。也看过《龙书》，但是龙书实在太理论，各种概念，看得比较蛋疼，未果。  </p>
+<p>但是最近比较闲，想继续学习计算机比较底层东西，希望以后可以走得更远，就找了 coursera 的 complier 课程。  </p>
+<p>这门课难吗？难。学这个东西苦逼？苦逼。但值得学吗？值。  </p>
+<p>假如我继续去 dig 有关 Rails，前端，iOS 的东西，我可以过得更舒服，可以学到更多炫酷的东西。但是我在担忧，当我学完这些东西，我以后可以走得更远吗？<br>这个答案是否定的，因为学这些东西，都是别人创造出来的工具，而自己只是去学习如何使用这个工具，不理解原理，这是一件多么蛋疼的事。因为你用工具只是搬砖工，别人设计的是科学家，你这个搬砖的不学这些永远达不到科学家的水平。  </p>
+<p>所以看得远一点，去学这三大浪漫，是一个上策。学如何使用工具，是一个下策。</p>
+
+        
+        </div>
+        <!-- <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://ftandy.com/2015/06/09/2015-06-09-/" data-id="cizfbwk6d000s1dsn5pzozjht" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://ftandy.com/2015/06/09/2015-06-09-/#comments" class="article-comment-link ds-thread-count" data-thread-key="https://ftandy.com/2015/06/09/2015-06-09-/">评论</a>
+    
+
+        </footer> -->
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2015/06/11/2015-06-11-cool-language/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    Cool Language
+                
+            </div>
+        </a>
+    
+    
+        <a href="/2015/06/07/2015-06-07-ruby-core-class-reloadtionship/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">Ruby core class reloadtionship</div>
+        </a>
+    
+</nav>
+
+
+    
+</article>
+
+
+    
+    <section id="comments">
+    
+        
+    <div class="ds-thread" data-thread-key="2015/06/09/2015-06-09-/" data-title="为什么我在看 coursera 的 complier 课程？" data-url="https://ftandy.com/2015/06/09/2015-06-09-/"></div>
+    <style>
+        #ds-thread #ds-reset .ds-textarea-wrapper {
+            background: none;
+        }
+        #ds-reset .ds-avatar img {
+            box-shadow: none;
+        }
+        #ds-reset .ds-gradient-bg {
+            background: #f7f7f7;
+        }
+        #ds-thread #ds-reset li.ds-tab a {
+            border-radius: 3px;
+        }
+        #ds-thread #ds-reset .ds-post-button {
+            color: white;
+            border: none;
+            box-shadow: none;
+            background: #d32;
+            text-shadow: none;
+            font-weight: normal;
+            font-family: 'Microsoft Yahei';
+        }
+        #ds-thread #ds-reset .ds-post-button:hover {
+            color: white;
+            background: #DE594C;
+        }
+        #ds-thread #ds-reset .ds-post-button:active {
+            background: #d32;
+        }
+        #ds-smilies-tooltip ul.ds-smilies-tabs li a.ds-current {
+            color: white;
+            background: #d32;
+            box-shadow: none;
+            text-shadow: none;
+            font-weight: normal;
+        }
+    </style>
+
+    
+    </section>
+
+
+</section>
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2017/01/17/Node-根本就不是什么新东西/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/javascript/">javascript</a></p>
+                            <p class="item-title"><a href="/2017/01/17/Node-根本就不是什么新东西/" class="title">Node 根本就不是什么新东西</a></p>
+                            <p class="item-date"><time datetime="2017-01-17T14:44:15.000Z" itemprop="datePublished">2017-01-17</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/10/30/mimi-promise/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/assets/images/promisesa-was-born.jpg)" alt="写一个符合 Promises/A+ 规范并可配合 ES7 async/await 使用的 Promise" class="thumbnail-image"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/javascript/">javascript</a></p>
+                            <p class="item-title"><a href="/2016/10/30/mimi-promise/" class="title">写一个符合 Promises/A+ 规范并可配合 ES7 async/await 使用的 Promise</a></p>
+                            <p class="item-date"><time datetime="2016-10-30T14:11:46.000Z" itemprop="datePublished">2016-10-30</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/09/11/2016-09-11-理解比特币原理/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/bitcoin/">bitcoin</a></p>
+                            <p class="item-title"><a href="/2016/09/11/2016-09-11-理解比特币原理/" class="title">理解比特币原理</a></p>
+                            <p class="item-date"><time datetime="2016-09-11T10:50:07.000Z" itemprop="datePublished">2016-09-11</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/09/10/2016-09-10-论打电竞职业与互联网职业的相同/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/assets/images/2009.jpg)" alt="论2009电竞职业发展，和成功互联网开发者职业发展的相同" class="thumbnail-image"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/dota/">dota</a></p>
+                            <p class="item-title"><a href="/2016/09/10/2016-09-10-论打电竞职业与互联网职业的相同/" class="title">论2009电竞职业发展，和成功互联网开发者职业发展的相同</a></p>
+                            <p class="item-date"><time datetime="2016-09-10T14:26:03.000Z" itemprop="datePublished">2016-09-10</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/05/15/2016-05-15-Sharedb-源码分析/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/javascript/">javascript</a></p>
+                            <p class="item-title"><a href="/2016/05/15/2016-05-15-Sharedb-源码分析/" class="title">Sharedb 源码分析(待续)</a></p>
+                            <p class="item-date"><time datetime="2016-05-14T16:34:19.000Z" itemprop="datePublished">2016-05-15</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/bitcoin/">bitcoin</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/dota/">dota</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/game/">game</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/https/">https</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/leetcode/">leetcode</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/life/">life</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/poem/">poem</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/programming-language/">programming_language</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/rick-and-morty/">rick and morty</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/ruby/">ruby</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/vagrant-docker/">vagrant_docker</a><span class="category-list-count">2</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">二月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">六月 2015</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2017 FTAndy<br>
+            Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
+        </div>
+    </div>
+</footer>
+
+<script type="text/javascript" src='/assets/js/jquery.backstretch.js'></script>
+
+        
+    
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:'ftandy'};
+    (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+    </script>
+
+
+
+    
+        <script src="/vendor/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-share.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-video.min.js"></script>
+    
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+    <div class="backstretch" style="left: 0px; top: 0px; overflow: hidden; margin: 0px; padding: 0px; z-index: -999999; position: fixed; width: 1440px;">
+    </div>
+    <script type="text/javascript">
+      var ranNum = (Math.random() * 10 + 1).toFixed()
+      $.backstretch("http://7xn1og.com1.z0.glb.clouddn.com/" + ranNum +".jpg");
+
+    </script>
+</body>
+</html>

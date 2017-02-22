@@ -1,0 +1,41 @@
+#avatar {
+    height: auto !important;
+}
+.process {
+    background: inherit !important;
+    padding: 0px !important;
+    border-style: none !important;
+    border-color: inherit !important;
+    border-width: 0px !important;
+}
+
+body {
+  font-size: 18px !important;
+}
+
+#container {
+}
+
+.highlight {
+  font-size: 18px !important;
+}
+
+.page-number {
+  color: #856f6f;
+}
+.widget-wrap {
+  background: #f5f8f9;
+}
+
+.widget-title {
+  padding: 20px 0 0 20px
+}
+.logo {
+  background-size: 89px 40px !important;
+  width: 89px !important;
+  height: 40px !important;
+}
+
+.layout-wrap {
+  background: #f5f8f9 !important;
+}

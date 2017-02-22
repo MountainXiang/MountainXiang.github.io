@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
     <meta property="og:type" content="website">
 <meta property="og:title" content="FTAndy">
-<meta property="og:url" content="https://ftandy.com/index.html">
+<meta property="og:url" content="https://ftandy.com/page/3/index.html">
 <meta property="og:site_name" content="FTAndy">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="FTAndy">
@@ -193,153 +193,13 @@
 
             
             <section id="main">
-    <article id="post-Node-根本就不是什么新东西" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/01/17/Node-根本就不是什么新东西/">Node 根本就不是什么新东西</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/01/17/Node-根本就不是什么新东西/">
-            <time datetime="2017-01-17T14:44:15.000Z" itemprop="datePublished">2017-01-17</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/javascript/">javascript</a>
-    </div>
-
-                        
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <p>逛 github 看到 uWebSockets 作者 <a href="https://github.com/alexhultman" target="_blank" rel="external">Alex Hultman</a> 写的有关 Node 的话，很有感触。</p>
-<p>第一篇 <a href="https://github.com/alexhultman/The-real-history-of-async-networking" target="_blank" rel="external">The-real-history-of-async-networking</a>，讲的是异步编程的历史，然后总结出 Node 并不是新概念，只是一群没有经验程序员的玩具。</p>
-<blockquote>
-<p>From the perspective of a PHP programmer it might be something new, but from the perspective of an experienced C programmer this piece of software is nothing more than a simplification of common (now ancient) async techniques wrapped up in JavaScript for non-experienced programmers to toy with</p>
-</blockquote>
-<p>确实也无可厚非。</p>
-<p>第二篇 <a href="https://github.com/alexhultman/Don-t-bother-counting-those-stars" target="_blank" rel="external">Don-t-bother-counting-those-stars</a>，讲的是低质量的库，假如做了宣传，star 飙升，但是并没有否定这是一个低质量库的现实。而很多高质量的库因为没有宣传，star 少，但是实用。总结为不要看 star 数量而用一个库。</p>
-<blockquote>
-<p>You won’t get many stars with marketing like “We are not the fastest but we are pretty efficient, no wait, we are actually not that fast”. It has to be something like “FEATURING THE FASTEST AND MOST RELIABLE REAL-TIME ENGINE”. Yeah, that one will sell. In fact, this is the marketing of Socket.IO, a project with 28k stars.</p>
-</blockquote>
-<p>确实，最近用到 Socket.io，质量确实不好，而且很久没人维护。</p>
-<p>Node 09 年刚出现的时候被大吹特吹，被贴上异步事件驱动，高并发等标签，入门门槛极低，大量前端都可以跳到 Node写一下。一些无高质量的基础库涌现，库作者会吹 B，而且前端的人很多，这些库 star 数飙升，例如 Socket.io。但是到现在出现了性能低，无人维护等现象。</p>
-<p>估计 Node 要称为下一个 Ruby 了。</p>
-
-        
-        </div>
-        <!-- <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="https://ftandy.com/2017/01/17/Node-根本就不是什么新东西/" data-id="cizfbwk6x001s1dsn85s0uu79" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="https://ftandy.com/2017/01/17/Node-根本就不是什么新东西/#comments" class="article-comment-link ds-thread-count" data-thread-key="https://ftandy.com/2017/01/17/Node-根本就不是什么新东西/">评论</a>
-    
-
-        </footer> -->
-    </div>
-    
-</article>
-
-
-
-
-    <article id="post-mimi-promise" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-2015-06-07-leetcode" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
             
 	
-		<a href="/2016/10/30/mimi-promise/" itemprop="url">
-            <img src="/assets/images/promisesa-was-born.jpg" class="article-banner" />
+		<a href="/2015/06/07/2015-06-07-leetcode/" itemprop="url">
+            <img src="/assets/images/leetcode.jpg" class="article-banner" />
         </a>
 	
 
@@ -351,7 +211,7 @@
                 
     
         <h1 itemprop="name">
-            <a class="article-title" href="/2016/10/30/mimi-promise/">写一个符合 Promises/A+ 规范并可配合 ES7 async/await 使用的 Promise</a>
+            <a class="article-title" href="/2015/06/07/2015-06-07-leetcode/">leetcode 第三题</a>
         </h1>
     
 
@@ -360,8 +220,8 @@
                         
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/2016/10/30/mimi-promise/">
-            <time datetime="2016-10-30T14:11:46.000Z" itemprop="datePublished">2016-10-30</time>
+        <a href="/2015/06/07/2015-06-07-leetcode/">
+            <time datetime="2015-06-06T19:00:32.000Z" itemprop="datePublished">2015-06-07</time>
         </a>
     </div>
 
@@ -369,7 +229,7 @@
                         
     <div class="article-category">
     	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/javascript/">javascript</a>
+        <a class="article-category-link" href="/categories/leetcode/">leetcode</a>
     </div>
 
                         
@@ -380,14 +240,9 @@
         
         <div class="article-entry" itemprop="articleBody">
         
-            <p><p><a href="https://www.ftandy.com/2016/10/30/mimi-promise/">原文地址</a></p>
-<hr>
-<p>从历史的进程来看，Javascript 异步操作的基本单位已经从 callback 转换到 Promise。除了在特殊场景使用 <a href="https://github.com/request/request#streaming">stream</a>，<a href="https://github.com/Reactive-Extensions/RxJS">RxJs</a> 等更加抽象和高级的异步数据获取和操作流程方式外，现在几乎任何成熟的异步操作库，都会实现或者引用 Promise 作为 API 的返回单位。主流的 Javascript 引擎也基本原生实现了 Promise。</p>
-<p>在 Promise 远未流行以前，Javascript 的异步操作基本都在使用以 callback 为主的异步接口。鼠标键盘事件，页面渲染，网络请求，文件请求等等异步操作的回调函数都是用 callback 来处理。随着异步使用场景范围的扩大，出现了大量工程化和富应用的的交互和操作，使得应用不足以用 callback 来面对愈加复杂的需求，慢慢出现了许多优雅和先进的异步解决方案：<code>EventEmitter</code>，<code>Promise</code>，<code>Web Worker</code>，<code>Generator</code>，<code>Async/Await</code>。</p>
-<p>目前 Javascript 在客户端和服务器端的应用当中，只有 Promise 被广泛接受并使用。追根溯源，Promise 概念的提出是在 1976 年，Javascript 最早的 Promise 实现是在 2007 年，到现在 2016 年，Promise/A+ 规范和 ECMAscript 规范提出的 API 也足够稳定。<code>then</code>, <code>reject</code>, <code>all</code>, <code>spread</code>, <code>race</code>, <code>finally</code> 都是工程师开发中经常用到的 Promise API。很多人刚接触 Promise 概念的时候看下 API，看几篇博客或者看几篇最佳实践就以为理解程度够了，但是对 Promise 内部的异步机制不明了，使得在开发过程中遇到不少坑或者懵逼。</p>
-<p>本文旨在让读者能深入了解 Promise 内部执行机制，熟悉和掌握 Promise 的操作流。如有兴趣，可以继续往下读。</p></p>
+            <p><h3 id="Same-Tree"><a href="#Same-Tree" class="headerlink" title="Same Tree"></a>Same Tree</h3><p>题目地址：<a href="https://leetcode.com/problems/same-tree/">https://leetcode.com/problems/same-tree/</a>  </p></p>
             <p class="article-more-link">
-                <a href="/2016/10/30/mimi-promise/#more">查看更多</a>
+                <a href="/2015/06/07/2015-06-07-leetcode/#more">查看更多</a>
             </p>
         
         </div>
@@ -398,7 +253,7 @@
 
 </div>
 
-    <a data-url="https://ftandy.com/2016/10/30/mimi-promise/" data-id="cizfbwk71001v1dsn9v5d9kc5" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="https://ftandy.com/2015/06/07/2015-06-07-leetcode/" data-id="cizfbwk6c000p1dsnsnfsnqdn" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -466,7 +321,7 @@
 
             
     
-        <a href="https://ftandy.com/2016/10/30/mimi-promise/#comments" class="article-comment-link ds-thread-count" data-thread-key="https://ftandy.com/2016/10/30/mimi-promise/">评论</a>
+        <a href="https://ftandy.com/2015/06/07/2015-06-07-leetcode/#comments" class="article-comment-link ds-thread-count" data-thread-key="https://ftandy.com/2015/06/07/2015-06-07-leetcode/">评论</a>
     
 
         </footer> -->
@@ -477,15 +332,25 @@
 
 
 
-    <article id="post-2016-09-11-理解比特币原理" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-2015-05-30-maximum_depth_of_binary_tree" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
+        
+            
+	
+		<a href="/2015/05/30/2015-05-30-maximum_depth_of_binary_tree/" itemprop="url">
+            <img src="/assets/images/leetcode.jpg" class="article-banner" />
+        </a>
+	
+
+
+
         
         
             <header class="article-header">
                 
     
         <h1 itemprop="name">
-            <a class="article-title" href="/2016/09/11/2016-09-11-理解比特币原理/">理解比特币原理</a>
+            <a class="article-title" href="/2015/05/30/2015-05-30-maximum_depth_of_binary_tree/">leetcode 第二题</a>
         </h1>
     
 
@@ -494,8 +359,8 @@
                         
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/2016/09/11/2016-09-11-理解比特币原理/">
-            <time datetime="2016-09-11T10:50:07.000Z" itemprop="datePublished">2016-09-11</time>
+        <a href="/2015/05/30/2015-05-30-maximum_depth_of_binary_tree/">
+            <time datetime="2015-05-30T07:19:10.000Z" itemprop="datePublished">2015-05-30</time>
         </a>
     </div>
 
@@ -503,7 +368,7 @@
                         
     <div class="article-category">
     	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/bitcoin/">bitcoin</a>
+        <a class="article-category-link" href="/categories/leetcode/">leetcode</a>
     </div>
 
                         
@@ -514,9 +379,9 @@
         
         <div class="article-entry" itemprop="articleBody">
         
-            <p><p>对于比特币原理的分析，无论是 wiki，论文，知乎，博客上，有非常多的文章写得非常好。这篇文章只是我看了很多相关文章之后的个人总结，对于需要理解比特币的同学可能可以提供一些帮助。</p></p>
+            <p><h3 id="Maximum-Depth-of-Binary-Tree"><a href="#Maximum-Depth-of-Binary-Tree" class="headerlink" title="Maximum Depth of Binary Tree"></a>Maximum Depth of Binary Tree</h3><p>题目地址：<a href="https://leetcode.com/problems/maximum-depth-of-binary-tree/">https://leetcode.com/problems/maximum-depth-of-binary-tree/</a>  </p></p>
             <p class="article-more-link">
-                <a href="/2016/09/11/2016-09-11-理解比特币原理/#more">查看更多</a>
+                <a href="/2015/05/30/2015-05-30-maximum_depth_of_binary_tree/#more">查看更多</a>
             </p>
         
         </div>
@@ -527,7 +392,7 @@
 
 </div>
 
-    <a data-url="https://ftandy.com/2016/09/11/2016-09-11-理解比特币原理/" data-id="cizfbwk6z001u1dsnd6unizoo" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="https://ftandy.com/2015/05/30/2015-05-30-maximum_depth_of_binary_tree/" data-id="cizfbwk68000l1dsnhkrjynxj" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -595,7 +460,7 @@
 
             
     
-        <a href="https://ftandy.com/2016/09/11/2016-09-11-理解比特币原理/#comments" class="article-comment-link ds-thread-count" data-thread-key="https://ftandy.com/2016/09/11/2016-09-11-理解比特币原理/">评论</a>
+        <a href="https://ftandy.com/2015/05/30/2015-05-30-maximum_depth_of_binary_tree/#comments" class="article-comment-link ds-thread-count" data-thread-key="https://ftandy.com/2015/05/30/2015-05-30-maximum_depth_of_binary_tree/">评论</a>
     
 
         </footer> -->
@@ -606,13 +471,13 @@
 
 
 
-    <article id="post-2016-09-10-论打电竞职业与互联网职业的相同" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-2015-05-27-single-number" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
             
 	
-		<a href="/2016/09/10/2016-09-10-论打电竞职业与互联网职业的相同/" itemprop="url">
-            <img src="/assets/images/2009.jpg" class="article-banner" />
+		<a href="/2015/05/27/2015-05-27-single-number/" itemprop="url">
+            <img src="/assets/images/leetcode.jpg" class="article-banner" />
         </a>
 	
 
@@ -624,7 +489,7 @@
                 
     
         <h1 itemprop="name">
-            <a class="article-title" href="/2016/09/10/2016-09-10-论打电竞职业与互联网职业的相同/">论2009电竞职业发展，和成功互联网开发者职业发展的相同</a>
+            <a class="article-title" href="/2015/05/27/2015-05-27-single-number/">leetcode 第一题</a>
         </h1>
     
 
@@ -633,8 +498,8 @@
                         
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/2016/09/10/2016-09-10-论打电竞职业与互联网职业的相同/">
-            <time datetime="2016-09-10T14:26:03.000Z" itemprop="datePublished">2016-09-10</time>
+        <a href="/2015/05/27/2015-05-27-single-number/">
+            <time datetime="2015-05-27T07:55:38.000Z" itemprop="datePublished">2015-05-27</time>
         </a>
     </div>
 
@@ -642,7 +507,7 @@
                         
     <div class="article-category">
     	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/dota/">dota</a>
+        <a class="article-category-link" href="/categories/leetcode/">leetcode</a>
     </div>
 
                         
@@ -653,11 +518,9 @@
         
         <div class="article-entry" itemprop="articleBody">
         
-            <p><p>最近我在看 panda tv 的 pandakill 直播，这是一个 panda tv 主持，安排自己平台上的各电竞明星主播一起玩狼人杀的节目。节目本身非常精彩，效果也非常爆炸。</p>
-<p>我是由于2009在微博上发声，我才发现发现的这个节目。</p>
-<p>这里先抛开这个题目：《论2009电竞职业发展，和成功互联网开发者职业发展的相同》中的后一段，先介绍下我以前的偶像，如今的人生赢家和成功商人2009。</p></p>
+            <p><h2 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h2><p>算法很弱啊，怎么办啊，边看<a href="http://book.douban.com/subject/19952400/">《算法》</a>边做题吧。听说 leetcode 的题很适合初入职场的菜鸟，就来吧。<br>我把 Ruby 版的 leetcode 解题过程放在了<a href="https://github.com/FTAndy/leetcode">github</a>上。</p></p>
             <p class="article-more-link">
-                <a href="/2016/09/10/2016-09-10-论打电竞职业与互联网职业的相同/#more">查看更多</a>
+                <a href="/2015/05/27/2015-05-27-single-number/#more">查看更多</a>
             </p>
         
         </div>
@@ -668,7 +531,7 @@
 
 </div>
 
-    <a data-url="https://ftandy.com/2016/09/10/2016-09-10-论打电竞职业与互联网职业的相同/" data-id="cizfbwk6w001q1dsnlgeiurkq" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="https://ftandy.com/2015/05/27/2015-05-27-single-number/" data-id="cizfbwk63000j1dsnp9s251ua" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -736,7 +599,7 @@
 
             
     
-        <a href="https://ftandy.com/2016/09/10/2016-09-10-论打电竞职业与互联网职业的相同/#comments" class="article-comment-link ds-thread-count" data-thread-key="https://ftandy.com/2016/09/10/2016-09-10-论打电竞职业与互联网职业的相同/">评论</a>
+        <a href="https://ftandy.com/2015/05/27/2015-05-27-single-number/#comments" class="article-comment-link ds-thread-count" data-thread-key="https://ftandy.com/2015/05/27/2015-05-27-single-number/">评论</a>
     
 
         </footer> -->
@@ -747,285 +610,13 @@
 
 
 
-    <article id="post-2016-05-15-Sharedb-源码分析" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2016/05/15/2016-05-15-Sharedb-源码分析/">Sharedb 源码分析(待续)</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2016/05/15/2016-05-15-Sharedb-源码分析/">
-            <time datetime="2016-05-14T16:34:19.000Z" itemprop="datePublished">2016-05-15</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/javascript/">javascript</a>
-    </div>
-
-                        
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            <p><h2 id="入坑原因和暂时弃坑原因"><a href="#入坑原因和暂时弃坑原因" class="headerlink" title="入坑原因和暂时弃坑原因"></a>入坑原因和暂时弃坑原因</h2><p>之前帮一个公司做一个关于文档实时共享和编辑的项目，项目性质类似于 quip 和 google doc，核心功能使用到一个叫 sharejs 的库。</p>
-<p>由于这个项目实时功能很强大，但是文档少而且很旧，所以想要深入了解一下内部原理，需要分析一下源码。此为背景，也为入坑原因。</p>
-<p>但是！在读源码的时候，了解了一下这个项目的背景，发现坑有点深。</p>
-<p>这个项目原本是被集成到一个叫 DerbyJS 的框架中（类似于 meteorjs 的实时通讯框架）和作为一个叫 Lever 硅谷公司的核心库，但是作者之前一段时间离开了这家公司，和由于一些私人原因放弃管理了这个项目很久，issue 一大堆，邮件列表不回复，所以项目一团糟。现在 sharejs 已经不维护，但是分出一个 sharedb 的项目，让 Lever 的 CTO 来管理，作者也在干自己的事没有管，那个 CTO 也是忙着管理公司，所以结果就是开发进度极慢，文档几乎没有，极少人关注这个库。</p>
-<p>因为自己要忙找工作和毕业的事，所以把写到一半的笔记放下来，等以后有这个时间再继续研读源码，把这个坑填起来。</p></p>
-            <p class="article-more-link">
-                <a href="/2016/05/15/2016-05-15-Sharedb-源码分析/#more">查看更多</a>
-            </p>
-        
-        </div>
-        <!-- <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="https://ftandy.com/2016/05/15/2016-05-15-Sharedb-源码分析/" data-id="cizfbwk6u001n1dsn87fpztcd" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="https://ftandy.com/2016/05/15/2016-05-15-Sharedb-源码分析/#comments" class="article-comment-link ds-thread-count" data-thread-key="https://ftandy.com/2016/05/15/2016-05-15-Sharedb-源码分析/">评论</a>
-    
-
-        </footer> -->
-    </div>
-    
-</article>
-
-
-
-
-    <article id="post-2016-05-14-Ode-on-Solitude" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2016/05/14/2016-05-14-Ode-on-Solitude/">Ode on Solitude</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2016/05/14/2016-05-14-Ode-on-Solitude/">
-            <time datetime="2016-05-14T06:36:06.000Z" itemprop="datePublished">2016-05-14</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/poem/">poem</a>
-    </div>
-
-                        
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <blockquote><p>Happy the man, whose wish and care<br>A few paternal acres bound,<br>Content to breathe his native air,<br>In his own ground.</p>
-<p>Whose herds with milk, whose fields with bread,<br>Whose flocks supply him with attire,<br>Whose trees in summer yield him shade,<br>In winter fire.</p>
-<p>Blest! who can unconcern’dly find<br>Hours, days, and years slide soft away,<br>In health of body, peace of mind,<br>Quiet by day,</p>
-<p>Sound sleep by night; study and ease<br>Together mix’d; sweet recreation,<br>And innocence, which most does please,<br>With meditation.</p>
-<p>Thus let me live, unseen, unknown;<br>Thus unlamented let me die;<br>Steal from the world, and not a stone<br>Tell where I lye.</p>
-<footer><strong>Alexander Pope </strong><cite>Ode on Solitude</cite></footer></blockquote>
-<blockquote><p>耕作着祖辈留下的几亩土地，呼吸着土地上自然的空气<br>这样的人才能称为快乐的人</p>
-<p>牛产牛奶，地长面包<br>羊毛身上穿<br>树阴为他留，冬天有柴烧</p>
-<p>真是太幸福了<br>无忧无虑地过着轻松，快活的日子<br>身体健康，头脑清晰，悄悄过着小日子</p>
-<p>睡觉打着鼾，闲时读些书<br>张弛有度，酣畅淋漓<br>天真时感到快乐，快乐时又带着沉思</p>
-<p>无名，无声地活着<br>没有遗憾地死去<br>不留下任何痕迹，悄悄离开这个世界</p>
-<footer><strong>Alexander Pope </strong><cite>Ode on Solitude</cite></footer></blockquote>
-
-        
-        </div>
-        <!-- <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="https://ftandy.com/2016/05/14/2016-05-14-Ode-on-Solitude/" data-id="cizfbwk6r001l1dsnxnuclg68" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="https://ftandy.com/2016/05/14/2016-05-14-Ode-on-Solitude/#comments" class="article-comment-link ds-thread-count" data-thread-key="https://ftandy.com/2016/05/14/2016-05-14-Ode-on-Solitude/">评论</a>
-    
-
-        </footer> -->
-    </div>
-    
-</article>
-
-
-
-
-    <article id="post-2016-03-29-HTTPS" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-2015-05-17-" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
             
 	
-		<a href="/2016/03/29/2016-03-29-HTTPS/" itemprop="url">
-            <img src="/assets/images/https.jpg" class="article-banner" />
+		<a href="/2015/05/17/2015-05-17-/" itemprop="url">
+            <img src="/assets/images/critical-thinking.jpg" class="article-banner" />
         </a>
 	
 
@@ -1037,7 +628,7 @@
                 
     
         <h1 itemprop="name">
-            <a class="article-title" href="/2016/03/29/2016-03-29-HTTPS/">理解 HTTPS 的安全性</a>
+            <a class="article-title" href="/2015/05/17/2015-05-17-/">批判和探索自我</a>
         </h1>
     
 
@@ -1046,147 +637,8 @@
                         
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/2016/03/29/2016-03-29-HTTPS/">
-            <time datetime="2016-03-29T13:36:44.000Z" itemprop="datePublished">2016-03-29</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/https/">https</a>
-    </div>
-
-                        
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            <p><p>受到<a href="http://www.jianshu.com/p/b894a7e1c779">这篇</a>对 HTTPS 的加密过程讲得非常通俗浅显的文章的启发，想自己找些资料<strong>宏观</strong>上再总结一下 HTTPS 的加密过程，加强对 HTTPS 的理解。</p></p>
-            <p class="article-more-link">
-                <a href="/2016/03/29/2016-03-29-HTTPS/#more">查看更多</a>
-            </p>
-        
-        </div>
-        <!-- <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="https://ftandy.com/2016/03/29/2016-03-29-HTTPS/" data-id="cizfbwk6n001e1dsn06be6dhs" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="https://ftandy.com/2016/03/29/2016-03-29-HTTPS/#comments" class="article-comment-link ds-thread-count" data-thread-key="https://ftandy.com/2016/03/29/2016-03-29-HTTPS/">评论</a>
-    
-
-        </footer> -->
-    </div>
-    
-</article>
-
-
-
-
-    <article id="post-2016-03-28-decadent" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-            
-	
-		<a href="/2016/03/28/2016-03-28-decadent/" itemprop="url">
-            <img src="/assets/images/depress.jpg" class="article-banner" />
-        </a>
-	
-
-
-
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2016/03/28/2016-03-28-decadent/">认识黑化的自己</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2016/03/28/2016-03-28-decadent/">
-            <time datetime="2016-03-28T12:46:16.000Z" itemprop="datePublished">2016-03-28</time>
+        <a href="/2015/05/17/2015-05-17-/">
+            <time datetime="2015-05-17T07:39:46.000Z" itemprop="datePublished">2015-05-17</time>
         </a>
     </div>
 
@@ -1205,9 +657,10 @@
         
         <div class="article-entry" itemprop="articleBody">
         
-            <p><p>2015下半年，大四上学期，我患了抑郁症，荒废了大四的半年时间。</p></p>
+            <p><p>我一直觉得，在生活中看到了什么，就要跟自己探讨，要把事实摆出来，然后跟自己辩论，判断这件事究竟正确不正确。  </p>
+<p>所以我把我最近的生活摆出来，跟自己探讨一下，自己现在的生活到底正确不正确。  </p></p>
             <p class="article-more-link">
-                <a href="/2016/03/28/2016-03-28-decadent/#more">查看更多</a>
+                <a href="/2015/05/17/2015-05-17-/#more">查看更多</a>
             </p>
         
         </div>
@@ -1218,7 +671,7 @@
 
 </div>
 
-    <a data-url="https://ftandy.com/2016/03/28/2016-03-28-decadent/" data-id="cizfbwk6p001j1dsnrijccbha" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="https://ftandy.com/2015/05/17/2015-05-17-/" data-id="cizfbwk62000h1dsn9qlsm8e5" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1286,7 +739,7 @@
 
             
     
-        <a href="https://ftandy.com/2016/03/28/2016-03-28-decadent/#comments" class="article-comment-link ds-thread-count" data-thread-key="https://ftandy.com/2016/03/28/2016-03-28-decadent/">评论</a>
+        <a href="https://ftandy.com/2015/05/17/2015-05-17-/#comments" class="article-comment-link ds-thread-count" data-thread-key="https://ftandy.com/2015/05/17/2015-05-17-/">评论</a>
     
 
         </footer> -->
@@ -1297,13 +750,13 @@
 
 
 
-    <article id="post-2016-02-20-2015" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-2015-05-11-vagrant" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
             
 	
-		<a href="/2016/02/20/2016-02-20-2015/" itemprop="url">
-            <img src="/assets/images/shameless.png" class="article-banner" />
+		<a href="/2015/05/11/2015-05-11-vagrant/" itemprop="url">
+            <img src="/assets/images/vagrant.png" class="article-banner" />
         </a>
 	
 
@@ -1315,7 +768,7 @@
                 
     
         <h1 itemprop="name">
-            <a class="article-title" href="/2016/02/20/2016-02-20-2015/">2015</a>
+            <a class="article-title" href="/2015/05/11/2015-05-11-vagrant/">Vagrant 初探</a>
         </h1>
     
 
@@ -1324,8 +777,425 @@
                         
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/2016/02/20/2016-02-20-2015/">
-            <time datetime="2016-02-20T09:57:34.000Z" itemprop="datePublished">2016-02-20</time>
+        <a href="/2015/05/11/2015-05-11-vagrant/">
+            <time datetime="2015-05-11T05:38:04.000Z" itemprop="datePublished">2015-05-11</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/vagrant-docker/">vagrant_docker</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            <p><h3 id="什么是-Vagrant？"><a href="#什么是-Vagrant？" class="headerlink" title="什么是 Vagrant？"></a>什么是 Vagrant？</h3><p>简单来说，Vagrant 就是一个虚拟机的管理工具，运行在全平台上，主要用 Ruby 语言开发，只有命令行，没有 GUI。下面是 Vagrant 的在操作系统中的原理图：  </p></p>
+            <p class="article-more-link">
+                <a href="/2015/05/11/2015-05-11-vagrant/#more">查看更多</a>
+            </p>
+        
+        </div>
+        <!-- <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://ftandy.com/2015/05/11/2015-05-11-vagrant/" data-id="cizfbwk61000g1dsnl7ro4ya2" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://ftandy.com/2015/05/11/2015-05-11-vagrant/#comments" class="article-comment-link ds-thread-count" data-thread-key="https://ftandy.com/2015/05/11/2015-05-11-vagrant/">评论</a>
+    
+
+        </footer> -->
+    </div>
+    
+</article>
+
+
+
+
+    <article id="post-2015-04-21-ruby" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            
+	
+		<a href="/2015/04/21/2015-04-21-ruby/" itemprop="url">
+            <img src="/assets/images/ruby.png" class="article-banner" />
+        </a>
+	
+
+
+
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2015/04/21/2015-04-21-ruby/">Ruby 对象和类模型</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2015/04/21/2015-04-21-ruby/">
+            <time datetime="2015-04-21T05:43:32.000Z" itemprop="datePublished">2015-04-21</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/ruby/">ruby</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            <p><p>用 Ruby 也快有一年了，总结一下 Ruby 中对象和类模型，表达不是很熟练，请轻喷。</p></p>
+            <p class="article-more-link">
+                <a href="/2015/04/21/2015-04-21-ruby/#more">查看更多</a>
+            </p>
+        
+        </div>
+        <!-- <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://ftandy.com/2015/04/21/2015-04-21-ruby/" data-id="cizfbwk60000d1dsnp0hvdpux" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://ftandy.com/2015/04/21/2015-04-21-ruby/#comments" class="article-comment-link ds-thread-count" data-thread-key="https://ftandy.com/2015/04/21/2015-04-21-ruby/">评论</a>
+    
+
+        </footer> -->
+    </div>
+    
+</article>
+
+
+
+
+    <article id="post-2015-04-05-ruby" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            
+	
+		<a href="/2015/04/05/2015-04-05-ruby/" itemprop="url">
+            <img src="/assets/images/ruby.png" class="article-banner" />
+        </a>
+	
+
+
+
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2015/04/05/2015-04-05-ruby/">Ruby 元法术</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2015/04/05/2015-04-05-ruby/">
+            <time datetime="2015-04-05T05:38:04.000Z" itemprop="datePublished">2015-04-05</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/ruby/">ruby</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            <p><h3 id="《Ruby元编程》-之后"><a href="#《Ruby元编程》-之后" class="headerlink" title="《Ruby元编程》 之后"></a>《Ruby元编程》 之后</h3><p><a href="http://book.douban.com/subject/7056800/">《Ruby元编程》</a><br>这本书用两个字总结：法术。用一个句话总结：根本没有什么元编程，只有编程而已。  </p></p>
+            <p class="article-more-link">
+                <a href="/2015/04/05/2015-04-05-ruby/#more">查看更多</a>
+            </p>
+        
+        </div>
+        <!-- <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://ftandy.com/2015/04/05/2015-04-05-ruby/" data-id="cizfbwk5y000a1dsn37xarhmw" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://ftandy.com/2015/04/05/2015-04-05-ruby/#comments" class="article-comment-link ds-thread-count" data-thread-key="https://ftandy.com/2015/04/05/2015-04-05-ruby/">评论</a>
+    
+
+        </footer> -->
+    </div>
+    
+</article>
+
+
+
+
+    <article id="post-2015-03-20-life" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            
+	
+		<a href="/2015/03/21/2015-03-20-life/" itemprop="url">
+            <img src="/assets/images/life.jpg" class="article-banner" />
+        </a>
+	
+
+
+
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2015/03/21/2015-03-20-life/">第一篇</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2015/03/21/2015-03-20-life/">
+            <time datetime="2015-03-20T18:53:33.000Z" itemprop="datePublished">2015-03-21</time>
         </a>
     </div>
 
@@ -1344,9 +1214,9 @@
         
         <div class="article-entry" itemprop="articleBody">
         
-            <p><h3 id="2015有些话要说"><a href="#2015有些话要说" class="headerlink" title="2015有些话要说"></a>2015有些话要说</h3><p>2015年，一半努力，一半颓废。</p></p>
+            <p><h3 id="开篇"><a href="#开篇" class="headerlink" title="开篇"></a>开篇</h3><p>大三下了。正式开始记录自己的一些东西。<br>但不知道该写些什么。<br>那就瞎扯一些东西吧。</p></p>
             <p class="article-more-link">
-                <a href="/2016/02/20/2016-02-20-2015/#more">查看更多</a>
+                <a href="/2015/03/21/2015-03-20-life/#more">查看更多</a>
             </p>
         
         </div>
@@ -1357,7 +1227,7 @@
 
 </div>
 
-    <a data-url="https://ftandy.com/2016/02/20/2016-02-20-2015/" data-id="cizfbwk6l00181dsnt6oir57h" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="https://ftandy.com/2015/03/21/2015-03-20-life/" data-id="cizfbwk5v00081dsnxj25eyh0" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1425,148 +1295,7 @@
 
             
     
-        <a href="https://ftandy.com/2016/02/20/2016-02-20-2015/#comments" class="article-comment-link ds-thread-count" data-thread-key="https://ftandy.com/2016/02/20/2016-02-20-2015/">评论</a>
-    
-
-        </footer> -->
-    </div>
-    
-</article>
-
-
-
-
-    <article id="post-2015-09-27-morty" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-            
-	
-		<a href="/2015/09/27/2015-09-27-morty/" itemprop="url">
-            <img src="/assets/images/focus-on-science.png" class="article-banner" />
-        </a>
-	
-
-
-
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2015/09/27/2015-09-27-morty/">为什么又玩新博客</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2015/09/27/2015-09-27-morty/">
-            <time datetime="2015-09-27T03:49:25.000Z" itemprop="datePublished">2015-09-27</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/rick-and-morty/">rick and morty</a>
-    </div>
-
-                        
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            <p><p>新博客，从 wordpress 到 octopress 最终到 hexo。</p>
-<p>这也见证了自己的学习过程，从最开始最简易地在 godaddy 上搞个博客应用，到后面学 Ruby 接触到 Octopress，到现在接触前端的 Javascript，然后最后换个 hexo。</p>
-<p>说一下最近看的神剧 Rick and Morty 吧。</p></p>
-            <p class="article-more-link">
-                <a href="/2015/09/27/2015-09-27-morty/#more">查看更多</a>
-            </p>
-        
-        </div>
-        <!-- <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="https://ftandy.com/2015/09/27/2015-09-27-morty/" data-id="cizfbwk6l001b1dsn12aqc60j" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="https://ftandy.com/2015/09/27/2015-09-27-morty/#comments" class="article-comment-link ds-thread-count" data-thread-key="https://ftandy.com/2015/09/27/2015-09-27-morty/">评论</a>
+        <a href="https://ftandy.com/2015/03/21/2015-03-20-life/#comments" class="article-comment-link ds-thread-count" data-thread-key="https://ftandy.com/2015/03/21/2015-03-20-life/">评论</a>
     
 
         </footer> -->
@@ -1578,7 +1307,7 @@
 
 
     <nav id="page-nav">
-        <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">下一页 &raquo;</a>
+        <a class="extend prev" rel="prev" href="/page/2/">&laquo; 上一页</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span>
     </nav>
 </section>
             

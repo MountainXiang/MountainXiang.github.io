@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    <link rel='stylesheet' href='/assets/css/andy-style.css'>
+    
+    <title>Vue 组件化开发实践 | FTAndy</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="前言：这是一篇，在开发掘金的过程中，思考和总结出来，如何使用 Vue.js 和周边工具集合成一套完整舒适的组件化开发流程的文章。
+之前有关如何使用 Webpack 和 vue-loader 开发 Vue 应用的文章有：
+
+勾股大叔的 Vue + webpack 项目实践
+尤大大在 CSDN 上发表的 Vue.js：轻量高效的前端组件化方案
+djyde 的 Vue.js 和 Webpack
+百度前端">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue 组件化开发实践">
+<meta property="og:url" content="https://ftandy.com/2015/09/05/2015-09-05-vue/index.html">
+<meta property="og:site_name" content="FTAndy">
+<meta property="og:description" content="前言：这是一篇，在开发掘金的过程中，思考和总结出来，如何使用 Vue.js 和周边工具集合成一套完整舒适的组件化开发流程的文章。
+之前有关如何使用 Webpack 和 vue-loader 开发 Vue 应用的文章有：
+
+勾股大叔的 Vue + webpack 项目实践
+尤大大在 CSDN 上发表的 Vue.js：轻量高效的前端组件化方案
+djyde 的 Vue.js 和 Webpack
+百度前端">
+<meta property="og:image" content="https://ftandy.com/assets/images/vuejs.jpg">
+<meta property="og:updated_time" content="2017-02-13T15:13:49.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Vue 组件化开发实践">
+<meta name="twitter:description" content="前言：这是一篇，在开发掘金的过程中，思考和总结出来，如何使用 Vue.js 和周边工具集合成一套完整舒适的组件化开发流程的文章。
+之前有关如何使用 Webpack 和 vue-loader 开发 Vue 应用的文章有：
+
+勾股大叔的 Vue + webpack 项目实践
+尤大大在 CSDN 上发表的 Vue.js：轻量高效的前端组件化方案
+djyde 的 Vue.js 和 Webpack
+百度前端">
+<meta name="twitter:image" content="https://ftandy.com/assets/images/vuejs.jpg">
+    
+
+    
+
+    
+        <link rel="icon" href="/assets/css/avatar.png" />
+    
+
+    <link rel="stylesheet" href="/vendor/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/vendor/open-sans/styles.css">
+    <link rel="stylesheet" href="/vendor/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/vendor/jquery/2.1.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/vendor/lightgallery/css/lightgallery.min.css">
+    
+    
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <!-- <span class="site-title">FTAndy</span> -->
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/.">Home</a>
+                
+                    <a class="main-nav-link" href="/archives">Archives</a>
+                
+                    <a class="main-nav-link" href="/categories">Categories</a>
+                
+                    <a class="main-nav-link" href="/project">Projects</a>
+                
+                    <a class="main-nav-link" href="/about">About</a>
+                
+            </nav>
+            
+                
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/assets/css/avatar.png" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/.">Home</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">Archives</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">Categories</a></td>
+                
+                    <td><a class="main-nav-link" href="/project">Projects</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">About</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+                
+
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/assets/css/avatar.png" />
+            <h2 id="name">FTAndy</h2>
+            <h3 id="title">A Web Developer</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>ShangHai, China</span>
+            <a id="follow" target="_blank" href="https://github.com/ftandy/">关注我</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                28
+                <span>文章</span>
+            </div>
+            <div class="article-info-block">
+                0
+                <span>标签</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    
+                    <td>
+                        <a href="http://github.com/ftandy" target="_blank" title="github" class=tooltip>
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://twitter.com/fortheandy" target="_blank" title="twitter" class=tooltip>
+                            <i class="fa fa-twitter"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="http://www.weibo.com/2150908851" target="_blank" title="weibo" class=tooltip>
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
+            <section id="main"><article id="post-2015-09-05-vue" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            
+	
+		<img src="/assets/images/vuejs.jpg" class="article-banner" />
+	
+
+
+
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            Vue 组件化开发实践
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2015/09/05/2015-09-05-vue/">
+            <time datetime="2015-09-05T02:12:29.000Z" itemprop="datePublished">2015-09-05</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/javascript/">javascript</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h4 id="前言："><a href="#前言：" class="headerlink" title="前言："></a>前言：</h4><p>这是一篇，在开发<a href="http://gold.xitu.io" target="_blank" rel="external">掘金</a>的过程中，思考和总结出来，如何使用 <a href="http://vuejs.org/" target="_blank" rel="external">Vue.js</a> 和周边工具集合成一套完整舒适的组件化开发流程的文章。</p>
+<p>之前有关如何使用 Webpack 和 vue-loader 开发 Vue 应用的文章有：</p>
+<ul>
+<li>勾股大叔的 <a href="http://jiongks.name/blog/just-vue/" target="_blank" rel="external">Vue + webpack 项目实践</a></li>
+<li>尤大大在 CSDN 上发表的 <a href="http://www.csdn.net/article/1970-01-01/2825439" target="_blank" rel="external">Vue.js：轻量高效的前端组件化方案</a></li>
+<li>djyde 的 <a href="http://djyde.github.io/2015/08/29/vuejs-and-webpack-1.html" target="_blank" rel="external">Vue.js 和 Webpack</a></li>
+<li>百度前端小组的 <a href="http://www.alloyteam.com/2015/06/mvvm-xue-xi-vue-shi-jian-xiao-jie/" target="_blank" rel="external">mvvm学习&amp;vue实践小结</a></li>
+</ul>
+<a id="more"></a>
+<h5 id="PS：以下的任何内容都是基于-0-12-以上版本，由于-Vue-作者尤大大正在不断地加入新特性和推出新版本，1-0正式版本即将推出，不保证下文的任何内容会因新版本的内容而覆盖掉。假如本文有任何令你不爽的地方，请拍砖。"><a href="#PS：以下的任何内容都是基于-0-12-以上版本，由于-Vue-作者尤大大正在不断地加入新特性和推出新版本，1-0正式版本即将推出，不保证下文的任何内容会因新版本的内容而覆盖掉。假如本文有任何令你不爽的地方，请拍砖。" class="headerlink" title="PS：以下的任何内容都是基于 0.12 以上版本，由于 Vue 作者尤大大正在不断地加入新特性和推出新版本，1.0正式版本即将推出，不保证下文的任何内容会因新版本的内容而覆盖掉。假如本文有任何令你不爽的地方，请拍砖。"></a>PS：以下的任何内容都是基于 0.12 以上版本，由于 Vue 作者<a href="https://github.com/yyx990803" target="_blank" rel="external">尤大大</a>正在不断地加入新特性和推出新版本，1.0正式版本即将推出，不保证下文的任何内容会因新版本的内容而覆盖掉。假如本文有任何令你不爽的地方，请拍砖。</h5><!--more-->
+<h3 id="组件化模块化开发"><a href="#组件化模块化开发" class="headerlink" title="组件化模块化开发"></a>组件化模块化开发</h3><p>在 Vue 当中，组件被当作是一等公民，所以设计和完成一个 Web App 之前，最好先构思好如何构建各个组件，哪些组建需要被复用到，哪些页面是要切换的。在组件化和模块化的原则上，Vue 提供了一些现有流行的预编译工具的扩展， 管理 vue 可预编译文件。分别是 <a href="https://webpack.github.io/" target="_blank" rel="external">Webpack</a> 派的 <a href="https://github.com/vuejs/vue-loader" target="_blank" rel="external">vue-loader</a> 和 <a href="http://gulpjs.com/" target="_blank" rel="external">Gulp</a> 派的 <a href="https://github.com/vuejs/vueify" target="_blank" rel="external">vueify</a>。</p>
+<p>Vue 希望每个单页应用都可以通过组建系统简化为各个 component。</p>
+<p><img src="http://cn.vuejs.org/images/components.png" alt=""></p>
+<h3 id="使用-Webpack-和-vue-loader-开发的例子"><a href="#使用-Webpack-和-vue-loader-开发的例子" class="headerlink" title="使用 Webpack 和 vue-loader 开发的例子"></a>使用 Webpack 和 vue-loader 开发的例子</h3><p>在 vue 后缀文件当中，定义了三个 tag，<code>template</code>，<code>script</code>，<code>style</code>。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">template</span> <span class="attr">lang</span>=<span class="string">"jade"</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">lang</span>=<span class="string">"babel"</span>&gt;</span><span class="javascript"></span></div><div class="line"></div><div class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">style</span> <span class="attr">lang</span>=<span class="string">"sass"</span>&gt;</span><span class="undefined"></span></div><div class="line"><span class="tag">&lt;/<span class="name">style</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>从开发的角度看，维护和开发这样的一个 vue 文件，既可以作为一个主页面引用其他的 vue 组建或者切换页，又可以作为一个 component 被其他 vue 文件引用，所有需要的 html，css，javascript 代码都在里面，结合 MVVM 的概念，使用起来非常清爽和简单。</p>
+<p>三个 tag 中，各自可以声明自己的预编译语言，安装 Webpack 和自己所需要的 loader 之后，在 webpack.config.js 文件下配置好 loader 和文件出入口就可以了。Webpack 会将所有内容和资源预编译并打包成一个 js 文件。Webpack 的详细使用请看<a href="https://webpack.github.io/" target="_blank" rel="external">官网</a>。</p>
+<p>Webpack 的前端哲学和观点就是将一切资源（HTML，CSS，Javascirpt，图片）用 <code>import</code> 和 <code>require</code> 模块化引入，并对资源进行所需要的预处理，最终打包一个 js 文件被单页应用引入。Webpack 中有大量的特性和插件可以用来构建大型单页应用，坑略深。下面使用几个简单的 loader 来展示如何使用 Webpack 和 vue-loader 来管理一个初期的单页应用。</p>
+<p><img src="http://webpack.github.io/assets/what-is-webpack.png" alt=""></p>
+<p><code>npm install --save-dev</code> 安装 <code>babel-loader</code>，<code>jade-loader</code>，<code>sass-loader</code>，<code>vue-loader</code> 即可：</p>
+<p>安装好依赖就可以构思如何设置目录了。由于一切资源都被编译成一个 js 文件，所以 public 目录下只需要保存 build 目录即可。</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">nodemodule <span class="comment">// 各种 npm 库</span></div><div class="line">  xxx</div><div class="line">  xxx</div><div class="line">public</div><div class="line">  build</div><div class="line">    index<span class="selector-class">.js</span> <span class="comment">// Webpack 预编译之后的文件，最终被 HTML 引入</span></div><div class="line">  index<span class="selector-class">.html</span> <span class="comment">// 引入 build 目录中的 index.js</span></div><div class="line">vue</div><div class="line">  assets <span class="comment">// scss 和图片资源</span></div><div class="line">    scss</div><div class="line">      uuu<span class="selector-class">.scss</span></div><div class="line">    images</div><div class="line">      ooo<span class="selector-class">.png</span></div><div class="line">  helper</div><div class="line">    xxx<span class="selector-class">.js</span> <span class="comment">// 一些 helper</span></div><div class="line">  index</div><div class="line">    components</div><div class="line">      zzz<span class="selector-class">.vue</span> <span class="comment">// 各种组件</span></div><div class="line">    views</div><div class="line">      xxx<span class="selector-class">.vue</span> <span class="comment">// xxx页</span></div><div class="line">      yyy<span class="selector-class">.vue</span> <span class="comment">// yyy页</span></div><div class="line">    main<span class="selector-class">.js</span> <span class="comment">// Webpack 预编译入口</span></div><div class="line">    app<span class="selector-class">.vue</span> <span class="comment">// 被 main.js 引用的主页文件</span></div><div class="line">webpack<span class="selector-class">.config</span><span class="selector-class">.js</span> <span class="comment">// Webpack 配置文件</span></div></pre></td></tr></table></figure>
+<p>在 webpack.config.js 中的配置：<br><figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">module</span>.exports = &#123;</div><div class="line">    entry: &#123;</div><div class="line">        <span class="string">'index'</span>: <span class="string">'./vue/index/main.js'</span>,</div><div class="line">    &#125;,</div><div class="line">    output: &#123;</div><div class="line">        path: <span class="string">'./public/bulid'</span>,</div><div class="line">        filename: <span class="string">'[filename].js'</span> <span class="regexp">//</span> 可以多点切入</div><div class="line">    &#125;,</div><div class="line">    module: &#123;</div><div class="line">        loaders: [</div><div class="line">            &#123;</div><div class="line">              test: <span class="regexp">/\.vue$/</span>,</div><div class="line">              exclude: <span class="regexp">/node_modules/</span>,</div><div class="line">              loader: vue.withLoaders(&#123;</div><div class="line">                  js: <span class="string">'babel?optional[]=runtime'</span></div><div class="line">              &#125;)</div><div class="line">            &#125;,</div><div class="line">            &#123; test: <span class="regexp">/\.scss$/</span>, loader: <span class="string">'style!css!sass &#125;,</span></div><div class="line">            &#123; test: /\.css$/, loader: "style!css" &#125;,</div><div class="line">            &#123; test: /\.js$/, loader: 'babel-loader<span class="string">' &#125;</span></div><div class="line">        ]</div><div class="line">    &#125;,</div><div class="line">    resolve: &#123; // 解决 npm 的依赖问题</div><div class="line">        modulesDirectories: ['node_modules<span class="string">'],</span></div><div class="line">        extensions: ['<span class="string">', '</span>.js<span class="string">', '</span>.json<span class="string">']</span></div><div class="line">    &#125;,</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>有关 Webpack 的详细使用，可移步<a href="http://webpack.github.io/" target="_blank" rel="external">官网</a>。</p>
+<p>PS：调试的时候在 Chrome 中安装 <a href="https://github.com/vuejs/vue-devtools" target="_blank" rel="external">vue-devtools</a> 实时查看 Vue 实例中的绑定数据。</p>
+<h3 id="父子模版之间通讯"><a href="#父子模版之间通讯" class="headerlink" title="父子模版之间通讯"></a>父子模版之间通讯</h3><p>组件化开发第二个问题是，如何最佳地在父子模版和各个页面之间通讯？</p>
+<p>考虑到子模版的可复用性，子模版最好将需要从父模版中继承的数据和自己独立的数据都区分定义好。</p>
+<p>在 Vue 中，父子模版之间绑定了数据和方法。而在父子模版之间进行通讯，或者相互触发事件，有三种情况对应发生：</p>
+<ul>
+<li>子模版数据变化，触发父模版事件。</li>
+<li>父模版数据变化，触发子模版事件。</li>
+<li>父模版其他子模版数据变化，触发其他子模版事件。</li>
+</ul>
+<p>而在 Vue 中，提供了两种方式来使父子模版相互触发事件：</p>
+<ul>
+<li>通过 watch 某个绑定双向变量触发事件。</li>
+<li>使用事件模型事件，<code>$dispatch</code>，<code>$broadcast</code>，<code>$on</code>，上下 trigger 和监听事件。</li>
+</ul>
+<p>对于这三种情况，Vue 提供了两个方法在父子，子父，子父子之间通讯和事件触发，已经可以应对相对复杂的情况。</p>
+<p><img src="/images/javascript/vue.png" alt=""></p>
+<p>PS:通过 watch 来观察双向绑定的变量然后触发某个父子方法，使父子模版之间的耦合度加强，在不得已的情况下最好不要用。只用在自身组件的变量触发事件的情况下是非常不错的。</p>
+<h3 id="SPA的路由切换"><a href="#SPA的路由切换" class="headerlink" title="SPA的路由切换"></a>SPA的路由切换</h3><p>在构建一个 SPA 页面的时候，通常需要用到一个 Router 库 。官方的 vue-router 刚刚推出，使用起来更加复杂。而使用 <a href="https://github.com/flatiron/director" target="_blank" rel="external">director</a>，跟 components 属性进行结合，就可以做到简单并且完美的切换页面功能。</p>
+<p>配合 Vue 提供的 component keep alive 特性，可以在切换的过程中提供缓存，真是太爽不过。需要注意的是，0.12 版本中，将 component 的 replace 属性默认设为 true，假如你没有根节点提供给子模版，子模版会自动消失。</p>
+<h3 id="周边工具"><a href="#周边工具" class="headerlink" title="周边工具"></a>周边工具</h3><p>Vue 是个非常年轻的 View 层框架，仍然有很多地方需要开发和改进，周边的工具和扩展也很少。在这里附上 vue 周边工具的地址：</p>
+<p><a href="https://github.com/vuejs/vue-loader" target="_blank" rel="external">vue-loader</a>：与 Webpack 结合进行组件化开发</p>
+<p><a href="https://github.com/vuejs/vueify" target="_blank" rel="external">vueify</a>：与 Gulp 结合进行组件化开发</p>
+<p><a href="https://github.com/vuejs/vue-router" target="_blank" rel="external">vue-router</a>：路由</p>
+<p><a href="https://github.com/vuejs/vue-validator" target="_blank" rel="external">vue-validator</a>：表单验证库</p>
+<p><a href="https://github.com/vuejs/vue-resource" target="_blank" rel="external">vue-resource</a>：网络请求库</p>
+<p><a href="https://github.com/vuejs/vue-component-compiler" target="_blank" rel="external">vue-component-complier</a>：与其他预编译器结合</p>
+<p><a href="https://github.com/vuejs/vue-touch" target="_blank" rel="external">vue-touch</a>：事件模拟</p>
+<p><a href="https://github.com/zhouzhuojie/meteor-vue" target="_blank" rel="external">meteor-vue</a>：meteor 与 vue 结合开发</p>
+<p><a href="https://github.com/vuejs/vue-syntax-highlight" target="_blank" rel="external">vue-syntax-hightlight</a>：sublime text 的 vue 文件的高亮插件</p>
+<p><a href="https://github.com/pespantelis/vue-typeahead" target="_blank" rel="external">vue-typeahead</a>：搜索输入提前查询补全</p>
+<p><a href="https://github.com/kazupon/vue-i18n" target="_blank" rel="external">vue-i18n</a>：i18n</p>
+<p><a href="https://github.com/vuejs/vue-devtools" target="_blank" rel="external">vue-devtools</a>：配合 chrome 的开发插件，调试时可用</p>
+
+        
+        </div>
+        <!-- <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://ftandy.com/2015/09/05/2015-09-05-vue/" data-id="cizfbwk6m001c1dsnrdd4pcvc" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://ftandy.com/2015/09/05/2015-09-05-vue/#comments" class="article-comment-link ds-thread-count" data-thread-key="https://ftandy.com/2015/09/05/2015-09-05-vue/">评论</a>
+    
+
+        </footer> -->
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2015/09/12/2015-09-12-/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    解谜类游戏
+                
+            </div>
+        </a>
+    
+    
+        <a href="/2015/08/23/2015-08-23-tasks-microtasks-queues-and-schedules/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">Tasks, microtasks, queues and schedules(译)</div>
+        </a>
+    
+</nav>
+
+
+    
+</article>
+
+
+    
+    <section id="comments">
+    
+        
+    <div class="ds-thread" data-thread-key="2015/09/05/2015-09-05-vue/" data-title="Vue 组件化开发实践" data-url="https://ftandy.com/2015/09/05/2015-09-05-vue/"></div>
+    <style>
+        #ds-thread #ds-reset .ds-textarea-wrapper {
+            background: none;
+        }
+        #ds-reset .ds-avatar img {
+            box-shadow: none;
+        }
+        #ds-reset .ds-gradient-bg {
+            background: #f7f7f7;
+        }
+        #ds-thread #ds-reset li.ds-tab a {
+            border-radius: 3px;
+        }
+        #ds-thread #ds-reset .ds-post-button {
+            color: white;
+            border: none;
+            box-shadow: none;
+            background: #d32;
+            text-shadow: none;
+            font-weight: normal;
+            font-family: 'Microsoft Yahei';
+        }
+        #ds-thread #ds-reset .ds-post-button:hover {
+            color: white;
+            background: #DE594C;
+        }
+        #ds-thread #ds-reset .ds-post-button:active {
+            background: #d32;
+        }
+        #ds-smilies-tooltip ul.ds-smilies-tabs li a.ds-current {
+            color: white;
+            background: #d32;
+            box-shadow: none;
+            text-shadow: none;
+            font-weight: normal;
+        }
+    </style>
+
+    
+    </section>
+
+
+</section>
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2017/01/17/Node-根本就不是什么新东西/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/javascript/">javascript</a></p>
+                            <p class="item-title"><a href="/2017/01/17/Node-根本就不是什么新东西/" class="title">Node 根本就不是什么新东西</a></p>
+                            <p class="item-date"><time datetime="2017-01-17T14:44:15.000Z" itemprop="datePublished">2017-01-17</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/10/30/mimi-promise/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/assets/images/promisesa-was-born.jpg)" alt="写一个符合 Promises/A+ 规范并可配合 ES7 async/await 使用的 Promise" class="thumbnail-image"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/javascript/">javascript</a></p>
+                            <p class="item-title"><a href="/2016/10/30/mimi-promise/" class="title">写一个符合 Promises/A+ 规范并可配合 ES7 async/await 使用的 Promise</a></p>
+                            <p class="item-date"><time datetime="2016-10-30T14:11:46.000Z" itemprop="datePublished">2016-10-30</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/09/11/2016-09-11-理解比特币原理/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/bitcoin/">bitcoin</a></p>
+                            <p class="item-title"><a href="/2016/09/11/2016-09-11-理解比特币原理/" class="title">理解比特币原理</a></p>
+                            <p class="item-date"><time datetime="2016-09-11T10:50:07.000Z" itemprop="datePublished">2016-09-11</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/09/10/2016-09-10-论打电竞职业与互联网职业的相同/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/assets/images/2009.jpg)" alt="论2009电竞职业发展，和成功互联网开发者职业发展的相同" class="thumbnail-image"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/dota/">dota</a></p>
+                            <p class="item-title"><a href="/2016/09/10/2016-09-10-论打电竞职业与互联网职业的相同/" class="title">论2009电竞职业发展，和成功互联网开发者职业发展的相同</a></p>
+                            <p class="item-date"><time datetime="2016-09-10T14:26:03.000Z" itemprop="datePublished">2016-09-10</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/05/15/2016-05-15-Sharedb-源码分析/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/javascript/">javascript</a></p>
+                            <p class="item-title"><a href="/2016/05/15/2016-05-15-Sharedb-源码分析/" class="title">Sharedb 源码分析(待续)</a></p>
+                            <p class="item-date"><time datetime="2016-05-14T16:34:19.000Z" itemprop="datePublished">2016-05-15</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/bitcoin/">bitcoin</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/dota/">dota</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/game/">game</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/https/">https</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/leetcode/">leetcode</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/life/">life</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/poem/">poem</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/programming-language/">programming_language</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/rick-and-morty/">rick and morty</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/ruby/">ruby</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/vagrant-docker/">vagrant_docker</a><span class="category-list-count">2</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">二月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">六月 2015</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2017 FTAndy<br>
+            Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
+        </div>
+    </div>
+</footer>
+
+<script type="text/javascript" src='/assets/js/jquery.backstretch.js'></script>
+
+        
+    
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:'ftandy'};
+    (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+    </script>
+
+
+
+    
+        <script src="/vendor/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-share.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-video.min.js"></script>
+    
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+    <div class="backstretch" style="left: 0px; top: 0px; overflow: hidden; margin: 0px; padding: 0px; z-index: -999999; position: fixed; width: 1440px;">
+    </div>
+    <script type="text/javascript">
+      var ranNum = (Math.random() * 10 + 1).toFixed()
+      $.backstretch("http://7xn1og.com1.z0.glb.clouddn.com/" + ranNum +".jpg");
+
+    </script>
+</body>
+</html>

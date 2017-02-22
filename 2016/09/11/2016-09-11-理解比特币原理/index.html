@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    <link rel='stylesheet' href='/assets/css/andy-style.css'>
+    
+    <title>理解比特币原理 | FTAndy</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="对于比特币原理的分析，无论是 wiki，论文，知乎，博客上，有非常多的文章写得非常好。这篇文章只是我看了很多相关文章之后的个人总结，对于需要理解比特币的同学可能可以提供一些帮助。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="理解比特币原理">
+<meta property="og:url" content="https://ftandy.com/2016/09/11/2016-09-11-理解比特币原理/index.html">
+<meta property="og:site_name" content="FTAndy">
+<meta property="og:description" content="对于比特币原理的分析，无论是 wiki，论文，知乎，博客上，有非常多的文章写得非常好。这篇文章只是我看了很多相关文章之后的个人总结，对于需要理解比特币的同学可能可以提供一些帮助。">
+<meta property="og:updated_time" content="2016-10-15T01:15:51.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="理解比特币原理">
+<meta name="twitter:description" content="对于比特币原理的分析，无论是 wiki，论文，知乎，博客上，有非常多的文章写得非常好。这篇文章只是我看了很多相关文章之后的个人总结，对于需要理解比特币的同学可能可以提供一些帮助。">
+    
+
+    
+
+    
+        <link rel="icon" href="/assets/css/avatar.png" />
+    
+
+    <link rel="stylesheet" href="/vendor/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/vendor/open-sans/styles.css">
+    <link rel="stylesheet" href="/vendor/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/vendor/jquery/2.1.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/vendor/lightgallery/css/lightgallery.min.css">
+    
+    
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <!-- <span class="site-title">FTAndy</span> -->
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/.">Home</a>
+                
+                    <a class="main-nav-link" href="/archives">Archives</a>
+                
+                    <a class="main-nav-link" href="/categories">Categories</a>
+                
+                    <a class="main-nav-link" href="/project">Projects</a>
+                
+                    <a class="main-nav-link" href="/about">About</a>
+                
+            </nav>
+            
+                
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/assets/css/avatar.png" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/.">Home</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">Archives</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">Categories</a></td>
+                
+                    <td><a class="main-nav-link" href="/project">Projects</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">About</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+                
+
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/assets/css/avatar.png" />
+            <h2 id="name">FTAndy</h2>
+            <h3 id="title">A Web Developer</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>ShangHai, China</span>
+            <a id="follow" target="_blank" href="https://github.com/ftandy/">关注我</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                28
+                <span>文章</span>
+            </div>
+            <div class="article-info-block">
+                0
+                <span>标签</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    
+                    <td>
+                        <a href="http://github.com/ftandy" target="_blank" title="github" class=tooltip>
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://twitter.com/fortheandy" target="_blank" title="twitter" class=tooltip>
+                            <i class="fa fa-twitter"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="http://www.weibo.com/2150908851" target="_blank" title="weibo" class=tooltip>
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
+            <section id="main"><article id="post-2016-09-11-理解比特币原理" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            理解比特币原理
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2016/09/11/2016-09-11-理解比特币原理/">
+            <time datetime="2016-09-11T10:50:07.000Z" itemprop="datePublished">2016-09-11</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/bitcoin/">bitcoin</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>对于比特币原理的分析，无论是 wiki，论文，知乎，博客上，有非常多的文章写得非常好。这篇文章只是我看了很多相关文章之后的个人总结，对于需要理解比特币的同学可能可以提供一些帮助。</p>
+<a id="more"></a>
+<p>本文只是解释<strong>比特币的原理</strong>，关于比特币的其他方面：成因，应用，现状，安全等等话题都不深入解释。</p>
+<p>先从几个核心特性去了解比特币</p>
+<h3 id="最基本的公钥私钥体系"><a href="#最基本的公钥私钥体系" class="headerlink" title="最基本的公钥私钥体系"></a>最基本的公钥私钥体系</h3><p>每个人都可以利用现有的签名算法来生成属于自己公钥私钥，不同的签名算法有不同的特性。私钥自己保管，公钥可以广播到网络。信息可以通过私钥进行加密，然后通过公钥解密，也可以通过公钥加密，私钥解密。比特币中生成秘钥使用的是 ECDSA 签名算法。</p>
+<p>由于公钥私钥的特性，在比特币体系中，用公钥私钥作为记录交易信息的工具。当 A 向 B 支付一笔钱的时候，A 将 B 的公钥和这一笔钱的信息用私钥加密，并传给 B。B 得到这个信息后，用 A 的公钥解密，得到“A 向 B 支付一笔钱”的信息。这时候 A 和 B 的帐目上都有了“A 向 B 支付一笔钱”的信息。</p>
+<p>这个利用公钥私钥加密解密过程，是比特币交易过程的最基础的一个环节。</p>
+<h3 id="比特币-p2p-网络去中心化系统"><a href="#比特币-p2p-网络去中心化系统" class="headerlink" title="比特币 p2p 网络去中心化系统"></a>比特币 p2p 网络去中心化系统</h3><p>当多个人想要参与到交易当中的时候，交易过程的记录就没那么简单了。</p>
+<p>每个人都有自己的交易，而且每个人都需要对每个人的交易的进行记录。这个时候需要一个广播系统把新的交易记录广播到其他人的帐目中。</p>
+<p>当 A 向 B 发送交易信息的时候，会向周围的 p2p 节点也广播交易信息，各节点会用 A 的公钥验证 A 发送的这条信息是否为真，然后检查当前帐目当中 A 是否有这么多钱。最终当足够多节点都确定这条信息为真时，整个比特币系统就确认这条交易信息为真，并记录在各个节点的帐目当中，并广播到其他未收到该交易记录的节点。最后，在整个 p2p 节点系统中，B 用可以用“A 向 B 支付一笔钱”这条交易信息，使用 A 发送过来的钱在比特币系统中使用了。</p>
+<p>其实，在整个比特币系统（或者说 p2p 网络）当中，并没有记录任何一笔钱属于谁，有的只是一笔笔交易记录，然后推算出 A 当前有多少钱，B 当前有多少钱。这只是一个广播和管理帐目的的系统，任何人安装了标准客户端，都可以下载历史上每一笔交易记录。没有任何一个中心节点或者服务器，所以说整个比特币系统是去中心化的 p2p 系统。</p>
+<h3 id="区块链（chain-of-block）和挖矿（mining）"><a href="#区块链（chain-of-block）和挖矿（mining）" class="headerlink" title="区块链（chain of block）和挖矿（mining）"></a>区块链（chain of block）和挖矿（mining）</h3><p>在整个 p2p 系统中，如何管理这么多交易记录是一个问题。</p>
+<p>区块链（chain of block）就是解决管理交易记录的。历史上每一条交易都存在一个 block 中，后建的 block 基于前一个 block 建立。新 block 包括了新增的大量交易记录信息和前一个 block 的 id（每个 block 的 id 为前一个 block 的 hash 码的 hash 码）。所以称为 chain of block。</p>
+<p>当有新的交易记录产生时（可能同时间非常多），本地节点会向周围的节点发送这条交易信息。由于这些交易信息在整个系统中没有认证过，所以需要有节点对这些新的交易记录进行认证，并负责向其他节点广播。</p>
+<p>但是得到认证资格是一件很麻烦的过程。首先需要用公钥验证是否为真，然后遍历所有的历史帐目，计算出交易者的帐面余额。假如余额足够，交易信息有效，则取出上一个 block 的 id，然后将刚刚本节点所有认证过的新的交易记录整合在一起，作一次 hash 运算，假如 hash 出来的值符合系统规定的格式，才算得到了认证资格，这才有资格将制造出的新 block 广播出去。假如计算出的 hash 没有符合，对不起，请重新计算，把最新的交易信息再整合一次，按照算法再算一遍，如此循环。</p>
+<p>因为想要计算出符合系统规定格式的 hash 非常困难，所以这个制造新的 block 的过程叫做挖矿（mining）。假如挖矿成功，将新的 block 连到整个区块链上并广播出去的同时，都有机会制造出一条系统给自己 50 比特币的交易记录（最初是50，现在2016年是25）。但是每制造出 210000 个 block，挖矿奖励就会减少一半，最终所有比特币的总量是2100万个比特币。</p>
+<p>比特币就是这么一个，以公钥私钥，区块链，挖矿为基础，组成的 p2p 广播系统。但是有更多有趣的问题可以深入探讨，本文就不多探讨了。想要探讨更多请点击下面的链接。</p>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>xxxxx</p>
+<h3 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h3><ul>
+<li><a href="https://www.byvoid.com/zhs/blog/bitcoin-value" target="_blank" rel="external">比特币的价值探讨——byvoid</a></li>
+<li><a href="http://blog.codingnow.com/2011/05/bitcoin.html" target="_blank" rel="external">Bitcoin 的基本原理——云风</a></li>
+<li><a href="http://zhiqiang.org/blog/it/technical-document-of-bitcoin.html" target="_blank" rel="external">bitcoin的技术原理——zhiqiang</a></li>
+</ul>
+
+        
+        </div>
+        <!-- <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://ftandy.com/2016/09/11/2016-09-11-理解比特币原理/" data-id="cizfbwk6z001u1dsnd6unizoo" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://ftandy.com/2016/09/11/2016-09-11-理解比特币原理/#comments" class="article-comment-link ds-thread-count" data-thread-key="https://ftandy.com/2016/09/11/2016-09-11-理解比特币原理/">评论</a>
+    
+
+        </footer> -->
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2016/10/30/mimi-promise/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    写一个符合 Promises/A+ 规范并可配合 ES7 async/await 使用的 Promise
+                
+            </div>
+        </a>
+    
+    
+        <a href="/2016/09/10/2016-09-10-论打电竞职业与互联网职业的相同/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">论2009电竞职业发展，和成功互联网开发者职业发展的相同</div>
+        </a>
+    
+</nav>
+
+
+    
+</article>
+
+
+    
+    <section id="comments">
+    
+        
+    <div class="ds-thread" data-thread-key="2016/09/11/2016-09-11-理解比特币原理/" data-title="理解比特币原理" data-url="https://ftandy.com/2016/09/11/2016-09-11-理解比特币原理/"></div>
+    <style>
+        #ds-thread #ds-reset .ds-textarea-wrapper {
+            background: none;
+        }
+        #ds-reset .ds-avatar img {
+            box-shadow: none;
+        }
+        #ds-reset .ds-gradient-bg {
+            background: #f7f7f7;
+        }
+        #ds-thread #ds-reset li.ds-tab a {
+            border-radius: 3px;
+        }
+        #ds-thread #ds-reset .ds-post-button {
+            color: white;
+            border: none;
+            box-shadow: none;
+            background: #d32;
+            text-shadow: none;
+            font-weight: normal;
+            font-family: 'Microsoft Yahei';
+        }
+        #ds-thread #ds-reset .ds-post-button:hover {
+            color: white;
+            background: #DE594C;
+        }
+        #ds-thread #ds-reset .ds-post-button:active {
+            background: #d32;
+        }
+        #ds-smilies-tooltip ul.ds-smilies-tabs li a.ds-current {
+            color: white;
+            background: #d32;
+            box-shadow: none;
+            text-shadow: none;
+            font-weight: normal;
+        }
+    </style>
+
+    
+    </section>
+
+
+</section>
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2017/01/17/Node-根本就不是什么新东西/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/javascript/">javascript</a></p>
+                            <p class="item-title"><a href="/2017/01/17/Node-根本就不是什么新东西/" class="title">Node 根本就不是什么新东西</a></p>
+                            <p class="item-date"><time datetime="2017-01-17T14:44:15.000Z" itemprop="datePublished">2017-01-17</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/10/30/mimi-promise/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/assets/images/promisesa-was-born.jpg)" alt="写一个符合 Promises/A+ 规范并可配合 ES7 async/await 使用的 Promise" class="thumbnail-image"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/javascript/">javascript</a></p>
+                            <p class="item-title"><a href="/2016/10/30/mimi-promise/" class="title">写一个符合 Promises/A+ 规范并可配合 ES7 async/await 使用的 Promise</a></p>
+                            <p class="item-date"><time datetime="2016-10-30T14:11:46.000Z" itemprop="datePublished">2016-10-30</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/09/11/2016-09-11-理解比特币原理/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/bitcoin/">bitcoin</a></p>
+                            <p class="item-title"><a href="/2016/09/11/2016-09-11-理解比特币原理/" class="title">理解比特币原理</a></p>
+                            <p class="item-date"><time datetime="2016-09-11T10:50:07.000Z" itemprop="datePublished">2016-09-11</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/09/10/2016-09-10-论打电竞职业与互联网职业的相同/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/assets/images/2009.jpg)" alt="论2009电竞职业发展，和成功互联网开发者职业发展的相同" class="thumbnail-image"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/dota/">dota</a></p>
+                            <p class="item-title"><a href="/2016/09/10/2016-09-10-论打电竞职业与互联网职业的相同/" class="title">论2009电竞职业发展，和成功互联网开发者职业发展的相同</a></p>
+                            <p class="item-date"><time datetime="2016-09-10T14:26:03.000Z" itemprop="datePublished">2016-09-10</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/05/15/2016-05-15-Sharedb-源码分析/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/javascript/">javascript</a></p>
+                            <p class="item-title"><a href="/2016/05/15/2016-05-15-Sharedb-源码分析/" class="title">Sharedb 源码分析(待续)</a></p>
+                            <p class="item-date"><time datetime="2016-05-14T16:34:19.000Z" itemprop="datePublished">2016-05-15</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/bitcoin/">bitcoin</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/dota/">dota</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/game/">game</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/https/">https</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/leetcode/">leetcode</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/life/">life</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/poem/">poem</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/programming-language/">programming_language</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/rick-and-morty/">rick and morty</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/ruby/">ruby</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/vagrant-docker/">vagrant_docker</a><span class="category-list-count">2</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">二月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">六月 2015</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2017 FTAndy<br>
+            Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
+        </div>
+    </div>
+</footer>
+
+<script type="text/javascript" src='/assets/js/jquery.backstretch.js'></script>
+
+        
+    
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:'ftandy'};
+    (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+    </script>
+
+
+
+    
+        <script src="/vendor/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-share.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-video.min.js"></script>
+    
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+    <div class="backstretch" style="left: 0px; top: 0px; overflow: hidden; margin: 0px; padding: 0px; z-index: -999999; position: fixed; width: 1440px;">
+    </div>
+    <script type="text/javascript">
+      var ranNum = (Math.random() * 10 + 1).toFixed()
+      $.backstretch("http://7xn1og.com1.z0.glb.clouddn.com/" + ranNum +".jpg");
+
+    </script>
+</body>
+</html>

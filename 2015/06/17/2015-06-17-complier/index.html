@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    <link rel='stylesheet' href='/assets/css/andy-style.css'>
+    
+    <title>Compiler 暂时不开课，但是不要紧 | FTAndy</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="stanford 的 compiler 暂时还没有开课，但是我已经在看作业说明了，发现第一个作业的说明怎么这么难懂，这要尼玛说什么啊。所以就把作业说明先翻译出来，自己做个笔记，以后开课的时候可以看。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Compiler 暂时不开课，但是不要紧">
+<meta property="og:url" content="https://ftandy.com/2015/06/17/2015-06-17-complier/index.html">
+<meta property="og:site_name" content="FTAndy">
+<meta property="og:description" content="stanford 的 compiler 暂时还没有开课，但是我已经在看作业说明了，发现第一个作业的说明怎么这么难懂，这要尼玛说什么啊。所以就把作业说明先翻译出来，自己做个笔记，以后开课的时候可以看。">
+<meta property="og:image" content="https://ftandy.com/assets/images/compiler.png">
+<meta property="og:updated_time" content="2015-10-04T10:57:12.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Compiler 暂时不开课，但是不要紧">
+<meta name="twitter:description" content="stanford 的 compiler 暂时还没有开课，但是我已经在看作业说明了，发现第一个作业的说明怎么这么难懂，这要尼玛说什么啊。所以就把作业说明先翻译出来，自己做个笔记，以后开课的时候可以看。">
+<meta name="twitter:image" content="https://ftandy.com/assets/images/compiler.png">
+    
+
+    
+
+    
+        <link rel="icon" href="/assets/css/avatar.png" />
+    
+
+    <link rel="stylesheet" href="/vendor/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/vendor/open-sans/styles.css">
+    <link rel="stylesheet" href="/vendor/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/vendor/jquery/2.1.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/vendor/lightgallery/css/lightgallery.min.css">
+    
+    
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <!-- <span class="site-title">FTAndy</span> -->
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/.">Home</a>
+                
+                    <a class="main-nav-link" href="/archives">Archives</a>
+                
+                    <a class="main-nav-link" href="/categories">Categories</a>
+                
+                    <a class="main-nav-link" href="/project">Projects</a>
+                
+                    <a class="main-nav-link" href="/about">About</a>
+                
+            </nav>
+            
+                
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/assets/css/avatar.png" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/.">Home</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">Archives</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">Categories</a></td>
+                
+                    <td><a class="main-nav-link" href="/project">Projects</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">About</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+                
+
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/assets/css/avatar.png" />
+            <h2 id="name">FTAndy</h2>
+            <h3 id="title">A Web Developer</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>ShangHai, China</span>
+            <a id="follow" target="_blank" href="https://github.com/ftandy/">关注我</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                28
+                <span>文章</span>
+            </div>
+            <div class="article-info-block">
+                0
+                <span>标签</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    
+                    <td>
+                        <a href="http://github.com/ftandy" target="_blank" title="github" class=tooltip>
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://twitter.com/fortheandy" target="_blank" title="twitter" class=tooltip>
+                            <i class="fa fa-twitter"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="http://www.weibo.com/2150908851" target="_blank" title="weibo" class=tooltip>
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
+            <section id="main"><article id="post-2015-06-17-complier" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            
+	
+		<img src="/assets/images/compiler.png" class="article-banner" />
+	
+
+
+
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            Compiler 暂时不开课，但是不要紧
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2015/06/17/2015-06-17-complier/">
+            <time datetime="2015-06-17T04:12:41.000Z" itemprop="datePublished">2015-06-17</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/programming-language/">programming_language</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>stanford 的 compiler 暂时还没有开课，但是我已经在看作业说明了，发现第一个作业的说明怎么这么难懂，这要尼玛说什么啊。<br>所以就把作业说明先翻译出来，自己做个笔记，以后开课的时候可以看。</p>
+<a id="more"></a>
+<h3 id="作业说明"><a href="#作业说明" class="headerlink" title="作业说明"></a>作业说明</h3><p><a href="https://spark-public.s3.amazonaws.com/compilers/assignments-public/PA1.pdf" target="_blank" rel="external">pdf地址</a>。  </p>
+<p>下面是用flex做词法分析器要求的翻译，其他的资源如cool手册和flex的手册课程上都有给链接。  </p>
+<hr>
+<h4 id="3-文件和目录"><a href="#3-文件和目录" class="headerlink" title="3.文件和目录"></a>3.文件和目录</h4><p>要开始的话，在你想要做作业的地方创建一个新的目录，执行下面的指令在那个新目录。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">make <span class="_">-f</span> /usr/class/cs143/assignments/PA2/Makefile</div></pre></td></tr></table></figure></p>
+<p>这个命令将产生一堆文件，下面对三个文件进行说明：  </p>
+<ul>
+<li><p><strong>cool.flex</strong> </p>
+<p>  这个文件包含了一个Cool的词法分析器骨架。里面有注释会指导你该怎么写代码，但是这些注释不是一个完整的说明。这个作业的一部分目的是为了让你清楚你有一个正确的词法分析器。除了这个章节的指引，你也可以自己加一些特别的东西进去。你可以在这个骨架上构造一个词法扫描器，但不是必要的。你应该去阅读好flex的手册去弄明白这段描述究竟让你做什么。其他任何的你想要在这个骨架上加的常规的东西都应该直接加到这个骨架上的合适的位置。（去研究那些注释吧，少年。）  </p>
+</li>
+<li><p><strong>test.cl</strong><br>  这个文件包含了一些正常的输入可以被词法分析器扫描。它不会包含了Cool语言的所有语法特性，但是不影响它是一个有趣的测试文件。你也可以自由地去修改这个文件被你的词法分析器扫描。  </p>
+</li>
+</ul>
+<h4 id="4-词法扫描结果"><a href="#4-词法扫描结果" class="headerlink" title="4 词法扫描结果"></a>4 词法扫描结果</h4><p>在这个课程中，你需要写Flex的规则去匹配正确的正则表达式，认证Cool正确的taken，产生正确的动作，纪录词法的值，或者抛出错误当错误条件触发时。有关正确token资料在Cool手册的第十章第一节上。在你做这个作业之前，确保你认真阅读了Cool手册的第十章第一节，然后学习不同的token是怎么在cool-parse.h文件上定义的（这个文件在cool编译器中有）。你应该实现Flex的规则为每个在cool-parse.h上定义的正确的token，去匹配对应的正则表达式，为每个token执行正确的动作。例如：假如你匹配了一个BOOL_CONST的token，你的词法分析器必须记录这个bool的值是真还是假；相似的，假如你匹配了一个TYPEID的token，你应该记录这个type的的名字。注意，不是每个token都需要记录额外的信息；例如，只有返回的token类型符合某些token类型才需要记录额外信息，例如：keywords。<br>    你的词法扫描器健壮性一定要强，应该可以在任何可以想象到的输入都正常工作。例如，你必须要处理错误，当关键词EOF出现在字符串或者注释中间的时候，还有就是字符串过长的情况也要考虑。这都是一些你应该处理的常见错误，其余的部分自己看手册啦。<br>    假如一个错误出现，你必须优雅地引起错误并显示。核心异常或者不可捕捉的异常是不可以接受的。  </p>
+<h5 id="4-1-错误处理"><a href="#4-1-错误处理" class="headerlink" title="4.1 错误处理"></a>4.1 错误处理</h5><p>所有错误信息都应该传递语法分析器。词法分析器不应该输出任何东西。错误应该通过返回特殊的错误信息ERROR与语法分析器进行交流（注意，你应该忽视名为error的token，这个是在作业3中的语法分析器中用的）。还有几个需要注意的地方需要词法分析器错误抛出：  </p>
+<ul>
+<li>当一个不合法的字符（一个不匹配任何token的字符）出现的时候，那个包含这个字符的字符串应该返回为一个错误的字符串。继续为下一个token进行解释。   </li>
+<li>假如一个字符串含有一个unescaped的新行，报告这个错误为‘‘Unterminated string constant’’，然后继续解析下一行，我们假设程序员忘记了写引号的下一半。</li>
+<li><p>假如一个字符串太长，报告这个错误为‘‘String constant too long’’为这个字符串类型为ERROR。假如这个字符串含有不合法的字符（例如：null字符），报告这个错误为 ‘‘String contains null character’’。在任何错误情况下，词法解析器都应该在这个字符串的结尾为下一个字符解析。这个结尾应该是下面这几种情况：  </p>
+<ol>
+<li>这个错误出现之后，假如一个unescaped的新行出现在这个下一行的开始。</li>
+<li>在”之后。</li>
+</ol>
+</li>
+<li><p>假如一个注释里面有EOF关键词，报告这个错误‘‘EOF in comment’’。不要尝试去解析注释里面的内容。类似的，假如一个字符串里面有EOF关键词，报告这个错误‘‘EOF in string constant’’。</p>
+</li>
+<li>假如有”<em>)” 在一个注释之外，报告这个错误‘‘Unmatched </em>)’’，而不要分析它为 * 和 )。</li>
+<li>回想起这次课，这阶段的编译器只是捕捉非常有限的错误。不要尝试去检查不是在词法解析器的错误。例如，不应该检查一个在用变量之前，变量是否声明了。确认你充分了解什么错误处理词法分析器应该做，在你没有了解之前不要开始。</li>
+</ul>
+<h5 id="4-2-字符串表"><a href="#4-2-字符串表" class="headerlink" title="4.2 字符串表"></a>4.2 字符串表</h5><p>程序会对一个token分析多次。例如，一个定义标示一般都会在程序中用到很多次。为了节省空间和时间，一个正常编译器的实现方法是保存词法在一个字符串表上。我们提供一个字符串表的C++接口。<br>    有一个问题，就是怎么为基础的类（Object, Int, Bool, String）,SELF_TYPE和self，去处理特殊的定义标示。在语法分析器部分之前，这个问题不会真正出现。词法分析器应该处理这些特殊标示符像其他定义标示一样。  </p>
+<h5 id="4-3-字符串"><a href="#4-3-字符串" class="headerlink" title="4.3 字符串"></a>4.3 字符串</h5><p>词法分析器应该对一个字符串的中逃离的字符进行转义，变成一个正确的字符串。例如，假如这个字符串为”ab\ncd”，词法分析器应该返回 STR_CONST，值为ab\ncd，其中\n为单独的字符。根据Cool手册第15页的描述，你应该为包含了null字符的字符串返回一个错误信息。像\0这样的转义字符应该转化为0。</p>
+<h5 id="4-4-其他需要注意的地方"><a href="#4-4-其他需要注意的地方" class="headerlink" title="4.4 其他需要注意的地方"></a>4.4 其他需要注意的地方</h5><p>词法分析器因该保留变量curr_lineno，指出现在分析的词是在源文件中的第几行。这个功能会帮助语法分析器打印出有用的错误信息。<br>    你应该忽视token LET_STMT。这个会在作业3中的使用。最后，注意假如词法分析器不完整的话，flex生成的C语言文件将不能正常运行，保证每一部分都正确。 </p>
+<h4 id="5-特别注意"><a href="#5-特别注意" class="headerlink" title="5 特别注意"></a>5 特别注意</h4><ul>
+<li>每次token解析完，都需要从输入中对下一个token进行处理。这个值的返回的函数为cool_yylex，是一个完整的代码，代表了语法的类型（例如：整型语法，分号，关键字等等）。所有token的定义代码在cool-parse.h上。第二部分，token的值或词法单位，放在了一个全局变量cool_yylval中，它的类型是YYSTYPE。 YYSTYPE类型同样被定义在cool-parse.h中。单个字符符号的token（例如：;和,）代表着对应的ASCII值。所有单个字符token都被列在了Cool手册的语法部分上。</li>
+<li>对于类，对象，整型，字符串的标示符，语意值应该为一个符号保存在cool_yyval.symbol文件中。对于布尔型变量，语意值应该保存在cool_yylval.boolean文件中。除了错误之外，其他词法解析的token都不需要携带其他游泳的信息。</li>
+<li>我们提供了一个字符串表的实现，细节讨论在A Tour of the Cool Support Code这个页面上。在这个时间，你只需要去了解字符串表的输入类型是Symbol。</li>
+<li>当一个词法错误发生的时候，cool_yylex应该返回ERROR的token。语意值为该字符串代码的错误信息，应该存储cool_yylval.error_msg文件（这应该是一个原始的字符串，而不是symbol）。</li>
+</ul>
+
+        
+        </div>
+        <!-- <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://ftandy.com/2015/06/17/2015-06-17-complier/" data-id="cizfbwk6k00161dsng3rywads" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://ftandy.com/2015/06/17/2015-06-17-complier/#comments" class="article-comment-link ds-thread-count" data-thread-key="https://ftandy.com/2015/06/17/2015-06-17-complier/">评论</a>
+    
+
+        </footer> -->
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2015/07/05/2015-07-05-docker/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    Docker 初探
+                
+            </div>
+        </a>
+    
+    
+        <a href="/2015/06/16/2015-06-16-the-truth-is/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">The Truth Is</div>
+        </a>
+    
+</nav>
+
+
+    
+</article>
+
+
+    
+    <section id="comments">
+    
+        
+    <div class="ds-thread" data-thread-key="2015/06/17/2015-06-17-complier/" data-title="Compiler 暂时不开课，但是不要紧" data-url="https://ftandy.com/2015/06/17/2015-06-17-complier/"></div>
+    <style>
+        #ds-thread #ds-reset .ds-textarea-wrapper {
+            background: none;
+        }
+        #ds-reset .ds-avatar img {
+            box-shadow: none;
+        }
+        #ds-reset .ds-gradient-bg {
+            background: #f7f7f7;
+        }
+        #ds-thread #ds-reset li.ds-tab a {
+            border-radius: 3px;
+        }
+        #ds-thread #ds-reset .ds-post-button {
+            color: white;
+            border: none;
+            box-shadow: none;
+            background: #d32;
+            text-shadow: none;
+            font-weight: normal;
+            font-family: 'Microsoft Yahei';
+        }
+        #ds-thread #ds-reset .ds-post-button:hover {
+            color: white;
+            background: #DE594C;
+        }
+        #ds-thread #ds-reset .ds-post-button:active {
+            background: #d32;
+        }
+        #ds-smilies-tooltip ul.ds-smilies-tabs li a.ds-current {
+            color: white;
+            background: #d32;
+            box-shadow: none;
+            text-shadow: none;
+            font-weight: normal;
+        }
+    </style>
+
+    
+    </section>
+
+
+</section>
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2017/01/17/Node-根本就不是什么新东西/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/javascript/">javascript</a></p>
+                            <p class="item-title"><a href="/2017/01/17/Node-根本就不是什么新东西/" class="title">Node 根本就不是什么新东西</a></p>
+                            <p class="item-date"><time datetime="2017-01-17T14:44:15.000Z" itemprop="datePublished">2017-01-17</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/10/30/mimi-promise/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/assets/images/promisesa-was-born.jpg)" alt="写一个符合 Promises/A+ 规范并可配合 ES7 async/await 使用的 Promise" class="thumbnail-image"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/javascript/">javascript</a></p>
+                            <p class="item-title"><a href="/2016/10/30/mimi-promise/" class="title">写一个符合 Promises/A+ 规范并可配合 ES7 async/await 使用的 Promise</a></p>
+                            <p class="item-date"><time datetime="2016-10-30T14:11:46.000Z" itemprop="datePublished">2016-10-30</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/09/11/2016-09-11-理解比特币原理/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/bitcoin/">bitcoin</a></p>
+                            <p class="item-title"><a href="/2016/09/11/2016-09-11-理解比特币原理/" class="title">理解比特币原理</a></p>
+                            <p class="item-date"><time datetime="2016-09-11T10:50:07.000Z" itemprop="datePublished">2016-09-11</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/09/10/2016-09-10-论打电竞职业与互联网职业的相同/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/assets/images/2009.jpg)" alt="论2009电竞职业发展，和成功互联网开发者职业发展的相同" class="thumbnail-image"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/dota/">dota</a></p>
+                            <p class="item-title"><a href="/2016/09/10/2016-09-10-论打电竞职业与互联网职业的相同/" class="title">论2009电竞职业发展，和成功互联网开发者职业发展的相同</a></p>
+                            <p class="item-date"><time datetime="2016-09-10T14:26:03.000Z" itemprop="datePublished">2016-09-10</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/05/15/2016-05-15-Sharedb-源码分析/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/javascript/">javascript</a></p>
+                            <p class="item-title"><a href="/2016/05/15/2016-05-15-Sharedb-源码分析/" class="title">Sharedb 源码分析(待续)</a></p>
+                            <p class="item-date"><time datetime="2016-05-14T16:34:19.000Z" itemprop="datePublished">2016-05-15</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/bitcoin/">bitcoin</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/dota/">dota</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/game/">game</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/https/">https</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/leetcode/">leetcode</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/life/">life</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/poem/">poem</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/programming-language/">programming_language</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/rick-and-morty/">rick and morty</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/ruby/">ruby</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/vagrant-docker/">vagrant_docker</a><span class="category-list-count">2</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">二月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">六月 2015</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2017 FTAndy<br>
+            Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
+        </div>
+    </div>
+</footer>
+
+<script type="text/javascript" src='/assets/js/jquery.backstretch.js'></script>
+
+        
+    
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:'ftandy'};
+    (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+    </script>
+
+
+
+    
+        <script src="/vendor/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-share.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-video.min.js"></script>
+    
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+    <div class="backstretch" style="left: 0px; top: 0px; overflow: hidden; margin: 0px; padding: 0px; z-index: -999999; position: fixed; width: 1440px;">
+    </div>
+    <script type="text/javascript">
+      var ranNum = (Math.random() * 10 + 1).toFixed()
+      $.backstretch("http://7xn1og.com1.z0.glb.clouddn.com/" + ranNum +".jpg");
+
+    </script>
+</body>
+</html>

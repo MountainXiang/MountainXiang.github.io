@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    <link rel='stylesheet' href='/assets/css/andy-style.css'>
+    
+    <title>Ruby 对象和类模型 | FTAndy</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="用 Ruby 也快有一年了，总结一下 Ruby 中对象和类模型，表达不是很熟练，请轻喷。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ruby 对象和类模型">
+<meta property="og:url" content="https://ftandy.com/2015/04/21/2015-04-21-ruby/index.html">
+<meta property="og:site_name" content="FTAndy">
+<meta property="og:description" content="用 Ruby 也快有一年了，总结一下 Ruby 中对象和类模型，表达不是很熟练，请轻喷。">
+<meta property="og:image" content="https://ftandy.com/assets/images/ruby.png">
+<meta property="og:updated_time" content="2015-10-04T11:09:53.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Ruby 对象和类模型">
+<meta name="twitter:description" content="用 Ruby 也快有一年了，总结一下 Ruby 中对象和类模型，表达不是很熟练，请轻喷。">
+<meta name="twitter:image" content="https://ftandy.com/assets/images/ruby.png">
+    
+
+    
+
+    
+        <link rel="icon" href="/assets/css/avatar.png" />
+    
+
+    <link rel="stylesheet" href="/vendor/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/vendor/open-sans/styles.css">
+    <link rel="stylesheet" href="/vendor/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/vendor/jquery/2.1.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/vendor/lightgallery/css/lightgallery.min.css">
+    
+    
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <!-- <span class="site-title">FTAndy</span> -->
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/.">Home</a>
+                
+                    <a class="main-nav-link" href="/archives">Archives</a>
+                
+                    <a class="main-nav-link" href="/categories">Categories</a>
+                
+                    <a class="main-nav-link" href="/project">Projects</a>
+                
+                    <a class="main-nav-link" href="/about">About</a>
+                
+            </nav>
+            
+                
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/assets/css/avatar.png" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/.">Home</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">Archives</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">Categories</a></td>
+                
+                    <td><a class="main-nav-link" href="/project">Projects</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">About</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+                
+
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/assets/css/avatar.png" />
+            <h2 id="name">FTAndy</h2>
+            <h3 id="title">A Web Developer</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>ShangHai, China</span>
+            <a id="follow" target="_blank" href="https://github.com/ftandy/">关注我</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                28
+                <span>文章</span>
+            </div>
+            <div class="article-info-block">
+                0
+                <span>标签</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    
+                    <td>
+                        <a href="http://github.com/ftandy" target="_blank" title="github" class=tooltip>
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://twitter.com/fortheandy" target="_blank" title="twitter" class=tooltip>
+                            <i class="fa fa-twitter"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="http://www.weibo.com/2150908851" target="_blank" title="weibo" class=tooltip>
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
+            <section id="main"><article id="post-2015-04-21-ruby" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            
+	
+		<img src="/assets/images/ruby.png" class="article-banner" />
+	
+
+
+
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            Ruby 对象和类模型
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2015/04/21/2015-04-21-ruby/">
+            <time datetime="2015-04-21T05:43:32.000Z" itemprop="datePublished">2015-04-21</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/ruby/">ruby</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>用 Ruby 也快有一年了，总结一下 Ruby 中对象和类模型，表达不是很熟练，请轻喷。</p>
+<a id="more"></a>
+<h3 id="Ruby的对象和类模型到底是什么鬼？"><a href="#Ruby的对象和类模型到底是什么鬼？" class="headerlink" title="Ruby的对象和类模型到底是什么鬼？"></a>Ruby的对象和类模型到底是什么鬼？</h3><p>在 Ruby 的世界中，有这么三个原则：</p>
+<ul>
+<li><p>所有东西都是对象，除了 method 和 block</p>
+</li>
+<li><p>所有对象都有一个类</p>
+</li>
+<li><p>类最终都继承自源类 Object，而 Object 继承自 BasicObject  </p>
+</li>
+</ul>
+<p>在这个描述中，假设定义了一个类 Dog，实例化一个对象 tidy，对象 tidy 的类是 Dog，Dog 类的类是 Class，<br>Class 继承自 Module，Module 继承自 Object，Object 最终继承自源类 BasicObject，BasicObject 也是对象，那 BasicObject 的继承自谁？  </p>
+<p>在这里我打开 irb，ruby 的版本为2.1.2，进行操作。  </p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dog</span> ;</span> <span class="keyword">end</span></div><div class="line">tidy = Dog.new</div><div class="line">tidy.<span class="keyword">class</span> <span class="comment">#=&gt; Dog</span></div><div class="line">Dog.<span class="keyword">class</span>  <span class="comment">#=&gt; Class</span></div><div class="line">Class.superclass <span class="comment">#=&gt; Module</span></div><div class="line">Module.superclass <span class="comment">#=&gt; Object</span></div><div class="line">Object.superclass <span class="comment">#=&gt; BasicObject</span></div><div class="line">BasicObject.superclass <span class="comment">#=&gt; nil</span></div></pre></td></tr></table></figure>
+<p>很明显，BasicObject 没有超类，这条贪食蛇吃到这里就终止了。<br>而Dog继承关系上的类概念：Dog，Class，Module，Object，BasicObject 的类都是 Class。  </p>
+<p>也就是说我可以创建这些类概念的实例对象，Dog 就是一只狗，Class 就是一个类，Module 就是一个模块，<br>Object 就是一个对象，BasicObject 就是一个基础对象。而 Dog，Module 和 Class 自己本身都是 Class 类的一个<br>实例对象，可以去创建我们想要用的概念对象。  </p>
+<p>而 Object 和 BasicObject 包括一些对象的基本方法，例如 Object 的 nil? 方法，<br>因为所有对象都会继承自 Object，所以所有对象都会有 <code>nil</code> 方法；又例如 BasicObject 的 <code>instance_eval 方法，因为所有对象
+也会继承自 BasicObject，所以所有对象也会有</code>instance_eval 方法。<br>这些方法都可以在 <a href="http://ruby-doc.org/core-2.2.2/BasicObject.html" target="_blank" rel="external">Ruby的手册</a>上看到。 </p>
+<p>这里我画了一个继承的图出来。<br><img src="https://ruby-china-files.b0.upaiyun.com/photo/2015/c11cbf514d990362ca34f9c71e58c2d7.png" alt="">   </p>
+<p>那 BasicObject 和 Object 有没有 <code>nil? 和</code>instance_ev 方法呢？<br>当然会有，因为他是 Class 的实例对象，对象都继承 Object 和 BasicObject，<br>他们都可以享有自己的方法。  </p>
+<p>而我们在讨论对象和类模型的时候一般都会忽略掉 BasicObject，因为他置于最顶层，我们不会轻易改变他们，<br>而只讨论 Object 以下的对象和类。  </p>
+<h3 id="eigenclass"><a href="#eigenclass" class="headerlink" title="eigenclass"></a>eigenclass</h3><p>eigenclass 也叫元类或者单件类。eigen 的意思为本质的，换我们中国人古代的概念应该叫元神。<br>每个对象都有自己的 eigenclass，可以通过连个方法找到他。下面代码找出了一只泰迪狗和 Dog 类的元类。  </p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">Dog</span> ;</span> <span class="keyword">end</span></div><div class="line">tidy = Dog.new</div><div class="line">tidy_eigenclass = <span class="class"><span class="keyword">class</span> &lt;&lt; tidy</span></div><div class="line">   <span class="keyword">self</span></div><div class="line"><span class="keyword">end</span> </div><div class="line">tidy_eigenclass =&gt; #&lt;Class:#&lt;Dog:0x000000023bc5e8&gt;&gt;</div><div class="line">tidy_eigenclass.<span class="keyword">class</span> <span class="comment">#=&gt; Class</span></div><div class="line">tidy_eigenclass.superclass <span class="comment">#=&gt; Dog</span></div><div class="line"></div><div class="line">Dog_eigenclass = <span class="class"><span class="keyword">class</span> &lt;&lt; Dog</span></div><div class="line">    <span class="keyword">self</span></div><div class="line"><span class="keyword">end</span></div><div class="line">Dog_eigenclass=&gt; #&lt;Class:Dog&gt;</div><div class="line">a = Dog_eigenclass.<span class="keyword">class</span>=&gt; Class</div><div class="line">Dog_eigenclass.superclass=&gt; #&lt;Class:Object&gt;</div><div class="line">Dog_eigenclass == a <span class="comment">#=&gt; true</span></div></pre></td></tr></table></figure>
+<p>上面的代码的意思是：在泰迪狗和 Dog 类的之前还有一个 eigenclass，Dog 类与 Class 类之前还有一个 eigenclass。<br>其实可以通过 <code>class &lt;&lt; XXX</code> 和 <code>XXX.singleton_class</code> 两种方法来找到对象的元类：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Dog_eigenclass = <span class="class"><span class="keyword">class</span> &lt;&lt; Dog</span></div><div class="line">    <span class="keyword">self</span></div><div class="line"><span class="keyword">end</span></div><div class="line">Dog_eigenclass=&gt; #&lt;Class:Dog&gt;</div><div class="line">Dog.singleton_class=&gt; #&lt;Class:Dog&gt;</div></pre></td></tr></table></figure>
+<p>那元类有什么作用呢？<br>其实有了元类，当我们想要扩展对象和类自身的方法而非继承方法的时候，就变得非常容易，而且可以使用很多种方法来实现。   </p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dog</span></span></div><div class="line">  <span class="function"><span class="keyword">def</span> <span class="title">self</span>.<span class="title">bar</span></span></div><div class="line">    <span class="string">"wowowo"</span></div><div class="line">  <span class="keyword">end</span></div><div class="line"><span class="keyword">end</span></div></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dog</span></span></div><div class="line">  <span class="class"><span class="keyword">class</span> &lt;&lt; self</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">bar</span></span></div><div class="line">      <span class="string">"wowowo"</span></div><div class="line">    <span class="keyword">end</span></div><div class="line">  <span class="keyword">end</span></div><div class="line"><span class="keyword">end</span></div></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">Dog</span>.<span class="title">bar</span></span></div><div class="line">  <span class="string">"wowowo"</span></div><div class="line"><span class="keyword">end</span></div></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> &lt;&lt; Dog</span></div><div class="line">  <span class="function"><span class="keyword">def</span> <span class="title">bar</span></span></div><div class="line">    <span class="string">"wowowo"</span></div><div class="line">  <span class="keyword">end</span></div><div class="line"><span class="keyword">end</span></div></pre></td></tr></table></figure>
+<p>上面的定义代码使得 Dog 类都可以用 <code>Dog.bar</code> 来输出”wowowo”。<br>对类来说，可以使用 <code>class_eval</code> 来打开自己来操作类自己。<br>对对象和类来说，可以使用 <code>instance_eval</code>来打开自己的 eigenclass 来操作自己。<br>其实自己再画一个继承图就很好理解了。<br><img src="https://ruby-china-files.b0.upaiyun.com/photo/2015/812ac64bfcaa3869dd842d8e929f66f9.png" alt=""></p>
+<p>其实还有一个 nil 我还没有画，而 nil 的 class 是 NilClass。当定义一个 Dog，和实例一个对象 tidy 就成这样的图了。<br>这个只是局部的显示出 eigenclass 视图。有人做出了一个不包含 eigenclass 的 Ruby 常用类的关系图，真心跪了。  </p>
+<p><img src="https://ruby-china-files.b0.upaiyun.com/photo/2015/39957ccd0f08204244a385a4134ff87c.jpg" alt="">  </p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>想要精通 Ruby，完全熟悉 Ruby 的对象和类模型是不可缺失的一步。</p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul>
+<li><p><a href="http://skilldrick.co.uk/2011/08/understanding-the-ruby-object-model/" target="_blank" rel="external">Understanding the Ruby object model</a>    </p>
+</li>
+<li><p><a href="http://skilldrick.co.uk/2010/11/why-classes-are-confusing-in-ruby/" target="_blank" rel="external">Why classes are confusing in Ruby</a>    </p>
+</li>
+<li><p><a href="http://skilldrick.co.uk/2010/11/something-confusing-about-ruby-object-and-class/" target="_blank" rel="external">Something confusing about Ruby: Object and Class</a>  </p>
+</li>
+<li><p><a href="http://madebydna.com/all/code/2011/06/24/eigenclasses-demystified.html" target="_blank" rel="external">Ruby’s Eigenclasses Demystified</a></p>
+</li>
+<li><p><a href="http://book.douban.com/subject/7056800/" target="_blank" rel="external">Ruby元编程</a></p>
+</li>
+<li><p><a href="http://stackoverflow.com/questions/7682092/ruby-object-model-class-modules-diagram-anywhere" target="_blank" rel="external">stackoverflow</a></p>
+</li>
+</ul>
+
+        
+        </div>
+        <!-- <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://ftandy.com/2015/04/21/2015-04-21-ruby/" data-id="cizfbwk60000d1dsnp0hvdpux" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://ftandy.com/2015/04/21/2015-04-21-ruby/#comments" class="article-comment-link ds-thread-count" data-thread-key="https://ftandy.com/2015/04/21/2015-04-21-ruby/">评论</a>
+    
+
+        </footer> -->
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2015/05/11/2015-05-11-vagrant/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    Vagrant 初探
+                
+            </div>
+        </a>
+    
+    
+        <a href="/2015/04/05/2015-04-05-ruby/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">Ruby 元法术</div>
+        </a>
+    
+</nav>
+
+
+    
+</article>
+
+
+    
+    <section id="comments">
+    
+        
+    <div class="ds-thread" data-thread-key="2015/04/21/2015-04-21-ruby/" data-title="Ruby 对象和类模型" data-url="https://ftandy.com/2015/04/21/2015-04-21-ruby/"></div>
+    <style>
+        #ds-thread #ds-reset .ds-textarea-wrapper {
+            background: none;
+        }
+        #ds-reset .ds-avatar img {
+            box-shadow: none;
+        }
+        #ds-reset .ds-gradient-bg {
+            background: #f7f7f7;
+        }
+        #ds-thread #ds-reset li.ds-tab a {
+            border-radius: 3px;
+        }
+        #ds-thread #ds-reset .ds-post-button {
+            color: white;
+            border: none;
+            box-shadow: none;
+            background: #d32;
+            text-shadow: none;
+            font-weight: normal;
+            font-family: 'Microsoft Yahei';
+        }
+        #ds-thread #ds-reset .ds-post-button:hover {
+            color: white;
+            background: #DE594C;
+        }
+        #ds-thread #ds-reset .ds-post-button:active {
+            background: #d32;
+        }
+        #ds-smilies-tooltip ul.ds-smilies-tabs li a.ds-current {
+            color: white;
+            background: #d32;
+            box-shadow: none;
+            text-shadow: none;
+            font-weight: normal;
+        }
+    </style>
+
+    
+    </section>
+
+
+</section>
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2017/01/17/Node-根本就不是什么新东西/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/javascript/">javascript</a></p>
+                            <p class="item-title"><a href="/2017/01/17/Node-根本就不是什么新东西/" class="title">Node 根本就不是什么新东西</a></p>
+                            <p class="item-date"><time datetime="2017-01-17T14:44:15.000Z" itemprop="datePublished">2017-01-17</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/10/30/mimi-promise/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/assets/images/promisesa-was-born.jpg)" alt="写一个符合 Promises/A+ 规范并可配合 ES7 async/await 使用的 Promise" class="thumbnail-image"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/javascript/">javascript</a></p>
+                            <p class="item-title"><a href="/2016/10/30/mimi-promise/" class="title">写一个符合 Promises/A+ 规范并可配合 ES7 async/await 使用的 Promise</a></p>
+                            <p class="item-date"><time datetime="2016-10-30T14:11:46.000Z" itemprop="datePublished">2016-10-30</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/09/11/2016-09-11-理解比特币原理/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/bitcoin/">bitcoin</a></p>
+                            <p class="item-title"><a href="/2016/09/11/2016-09-11-理解比特币原理/" class="title">理解比特币原理</a></p>
+                            <p class="item-date"><time datetime="2016-09-11T10:50:07.000Z" itemprop="datePublished">2016-09-11</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/09/10/2016-09-10-论打电竞职业与互联网职业的相同/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/assets/images/2009.jpg)" alt="论2009电竞职业发展，和成功互联网开发者职业发展的相同" class="thumbnail-image"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/dota/">dota</a></p>
+                            <p class="item-title"><a href="/2016/09/10/2016-09-10-论打电竞职业与互联网职业的相同/" class="title">论2009电竞职业发展，和成功互联网开发者职业发展的相同</a></p>
+                            <p class="item-date"><time datetime="2016-09-10T14:26:03.000Z" itemprop="datePublished">2016-09-10</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/05/15/2016-05-15-Sharedb-源码分析/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/javascript/">javascript</a></p>
+                            <p class="item-title"><a href="/2016/05/15/2016-05-15-Sharedb-源码分析/" class="title">Sharedb 源码分析(待续)</a></p>
+                            <p class="item-date"><time datetime="2016-05-14T16:34:19.000Z" itemprop="datePublished">2016-05-15</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/bitcoin/">bitcoin</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/dota/">dota</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/game/">game</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/https/">https</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/leetcode/">leetcode</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/life/">life</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/poem/">poem</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/programming-language/">programming_language</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/rick-and-morty/">rick and morty</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/ruby/">ruby</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/vagrant-docker/">vagrant_docker</a><span class="category-list-count">2</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">二月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">六月 2015</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2017 FTAndy<br>
+            Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
+        </div>
+    </div>
+</footer>
+
+<script type="text/javascript" src='/assets/js/jquery.backstretch.js'></script>
+
+        
+    
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:'ftandy'};
+    (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+    </script>
+
+
+
+    
+        <script src="/vendor/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-share.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-video.min.js"></script>
+    
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+    <div class="backstretch" style="left: 0px; top: 0px; overflow: hidden; margin: 0px; padding: 0px; z-index: -999999; position: fixed; width: 1440px;">
+    </div>
+    <script type="text/javascript">
+      var ranNum = (Math.random() * 10 + 1).toFixed()
+      $.backstretch("http://7xn1og.com1.z0.glb.clouddn.com/" + ranNum +".jpg");
+
+    </script>
+</body>
+</html>

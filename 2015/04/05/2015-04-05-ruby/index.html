@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    <link rel='stylesheet' href='/assets/css/andy-style.css'>
+    
+    <title>Ruby 元法术 | FTAndy</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="《Ruby元编程》 之后《Ruby元编程》这本书用两个字总结：法术。用一个句话总结：根本没有什么元编程，只有编程而已。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ruby 元法术">
+<meta property="og:url" content="https://ftandy.com/2015/04/05/2015-04-05-ruby/index.html">
+<meta property="og:site_name" content="FTAndy">
+<meta property="og:description" content="《Ruby元编程》 之后《Ruby元编程》这本书用两个字总结：法术。用一个句话总结：根本没有什么元编程，只有编程而已。">
+<meta property="og:image" content="https://ftandy.com/assets/images/ruby.png">
+<meta property="og:updated_time" content="2015-10-04T11:09:59.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Ruby 元法术">
+<meta name="twitter:description" content="《Ruby元编程》 之后《Ruby元编程》这本书用两个字总结：法术。用一个句话总结：根本没有什么元编程，只有编程而已。">
+<meta name="twitter:image" content="https://ftandy.com/assets/images/ruby.png">
+    
+
+    
+
+    
+        <link rel="icon" href="/assets/css/avatar.png" />
+    
+
+    <link rel="stylesheet" href="/vendor/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/vendor/open-sans/styles.css">
+    <link rel="stylesheet" href="/vendor/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/vendor/jquery/2.1.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/vendor/lightgallery/css/lightgallery.min.css">
+    
+    
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <!-- <span class="site-title">FTAndy</span> -->
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/.">Home</a>
+                
+                    <a class="main-nav-link" href="/archives">Archives</a>
+                
+                    <a class="main-nav-link" href="/categories">Categories</a>
+                
+                    <a class="main-nav-link" href="/project">Projects</a>
+                
+                    <a class="main-nav-link" href="/about">About</a>
+                
+            </nav>
+            
+                
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/assets/css/avatar.png" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/.">Home</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">Archives</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">Categories</a></td>
+                
+                    <td><a class="main-nav-link" href="/project">Projects</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">About</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+                
+
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/assets/css/avatar.png" />
+            <h2 id="name">FTAndy</h2>
+            <h3 id="title">A Web Developer</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>ShangHai, China</span>
+            <a id="follow" target="_blank" href="https://github.com/ftandy/">关注我</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                28
+                <span>文章</span>
+            </div>
+            <div class="article-info-block">
+                0
+                <span>标签</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    
+                    <td>
+                        <a href="http://github.com/ftandy" target="_blank" title="github" class=tooltip>
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://twitter.com/fortheandy" target="_blank" title="twitter" class=tooltip>
+                            <i class="fa fa-twitter"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="http://www.weibo.com/2150908851" target="_blank" title="weibo" class=tooltip>
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
+            <section id="main"><article id="post-2015-04-05-ruby" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            
+	
+		<img src="/assets/images/ruby.png" class="article-banner" />
+	
+
+
+
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            Ruby 元法术
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2015/04/05/2015-04-05-ruby/">
+            <time datetime="2015-04-05T05:38:04.000Z" itemprop="datePublished">2015-04-05</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/ruby/">ruby</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h3 id="《Ruby元编程》-之后"><a href="#《Ruby元编程》-之后" class="headerlink" title="《Ruby元编程》 之后"></a>《Ruby元编程》 之后</h3><p><a href="http://book.douban.com/subject/7056800/" target="_blank" rel="external">《Ruby元编程》</a><br>这本书用两个字总结：法术。用一个句话总结：根本没有什么元编程，只有编程而已。  </p>
+<a id="more"></a>
+<h3 id="对于-Ruby-来说"><a href="#对于-Ruby-来说" class="headerlink" title="对于 Ruby 来说"></a>对于 Ruby 来说</h3><p>我接触到 Ruby 这个语言源于 Rails，但我不希望自己学习 Ruby 只是终于 Rails，终于 Web。<br>所以我想要熟悉 Ruby，精通 Ruby，想要知道他是什么，他能干些什么，为什么 Rails 能用 Ruby 写出来。</p>
+<h3 id="Ruby的元"><a href="#Ruby的元" class="headerlink" title="Ruby的元"></a>Ruby的元</h3><p>我对元的理解是，事物对自己的抽象。一个编程语言想要应用到现实世界中，非常需要中间层来一层层地将想要描述的事物抽象出来。<br>Ruby 的语言设计和元能力有两个优点。  </p>
+<ul>
+<li><p>非常符合这种现实世界对于编程语言的需求。 </p>
+</li>
+<li><p>Ruby 语言的写法精简，抽象程度高，语法对程序员友好。  </p>
+</li>
+</ul>
+<p>但是 Ruby 语言的性能问题和对应用高并发情况出现的处理能力一直被人诟病。<br>不过好像2.0++的版本出来后，性能得到了质的飞跃，再也没有什么人说 Ruby 性能的坏话了。</p>
+<h3 id="法术"><a href="#法术" class="headerlink" title="法术"></a>法术</h3><p>《Ruby元编程》附录中的法术手册就是 Ruby 元编程的一个总结。我认为，假如你把附录中的法术都掌握之后都不用看这本书了。这本书就是<br>详解剖析这些东西而已。下面的例子在 Ruby 2.1.2版本下测试。<br>假若你已经对这些字眼非常了解，就不必往下看了。当然我没有非常详细的解析，只是一个括览：</p>
+<ul>
+<li><p>Around Alias 环绕别名</p>
+</li>
+<li><p>Blank Slate 白板</p>
+</li>
+<li><p>Class Extyension 类扩展</p>
+</li>
+<li><p>Class Extension 类扩展混入</p>
+</li>
+<li><p>Context Probe 上下文探针</p>
+</li>
+<li><p>Dynamic Method 动态方法</p>
+</li>
+<li><p>Deferred Evaluation 延迟执行</p>
+</li>
+<li><p>Dynamic Proxy 动态代理</p>
+</li>
+<li><p>Flat Scpoe 扁平作用域</p>
+</li>
+<li><p>Kernel Method 内核方法</p>
+</li>
+<li><p>Monkeypatch 猴子补丁</p>
+</li>
+<li><p>Object Extension 对象扩展</p>
+</li>
+<li><p>Shared Scope 共享作用域</p>
+</li>
+</ul>
+<h4 id="Around-Alias-环绕别名"><a href="#Around-Alias-环绕别名" class="headerlink" title="Around Alias 环绕别名"></a>Around Alias 环绕别名</h4><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">String</span></span></div><div class="line">    <span class="keyword">alias</span> old_reverse reverse</div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">reverse</span></span></div><div class="line">        <span class="string">"x<span class="subst">#&#123;old_reverse&#125;</span>x"</span></div><div class="line">    <span class="keyword">end</span></div><div class="line"><span class="keyword">end</span></div><div class="line"><span class="string">"abc"</span>.reverse <span class="comment"># =&gt; "xcbax"</span></div><div class="line"><span class="string">"abc"</span>.old_reverse <span class="comment"># =&gt; "cba"</span></div></pre></td></tr></table></figure>
+<p>old_reverse 和 reverse互 用，但是重新定义 reverse，old_reverse 指向原来的 reverse。</p>
+<h4 id="Blank-Slate-白板"><a href="#Blank-Slate-白板" class="headerlink" title="Blank Slate 白板"></a>Blank Slate 白板</h4><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">C</span></span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">method_missing</span><span class="params">(name, *args)</span></span></div><div class="line">        <span class="string">"a Ghost Method"</span></div><div class="line">    <span class="keyword">end</span></div><div class="line"><span class="keyword">end</span></div><div class="line">obj = C.new</div><div class="line">obj.to_s <span class="comment"># =&gt; "#&lt;C:XXXX&gt;"</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">C</span></span></div><div class="line">    instance_methods.each <span class="keyword">do</span> <span class="params">|m|</span></div><div class="line">        undef_method(m) <span class="keyword">unless</span> m.to_s =~ <span class="regexp">/method_missing|resopnd_to?/</span></div><div class="line">    <span class="keyword">end</span></div><div class="line"><span class="keyword">end</span></div><div class="line">obj.to_s <span class="comment"># =&gt; "a Ghost Method"</span></div></pre></td></tr></table></figure>
+<p>书里面有个 BUG，用来匹配的正则是“/method_missing|resopnd_to?|^/”，这样把所有方法都匹配到了。<br>而且 Ruby 这里比较有意思的是“=~”匹配的时候，真返回0，假返回 nil。Ruby 里面的判断有值就为真，而 C 和 C++ 都会将0设为 false，1设为 true。<br>定义了一个类的 method_missing 方法时候，对象调用了一个不知名方法，就会直接调用 method_missing。method_missing 也是很多 Ruby 魔法的根源。</p>
+<h4 id="Class-Extyension-类扩展"><a href="#Class-Extyension-类扩展" class="headerlink" title="Class Extyension 类扩展"></a>Class Extyension 类扩展</h4><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">C</span> ;</span> <span class="keyword">end</span></div><div class="line"><span class="class"><span class="keyword">module</span> <span class="title">M</span></span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">my_method</span></span></div><div class="line">        <span class="string">"a class method"</span></div><div class="line">    <span class="keyword">end</span></div><div class="line"><span class="keyword">end</span></div><div class="line"><span class="class"><span class="keyword">class</span> &lt;&lt; C</span></div><div class="line">    <span class="keyword">include</span> M</div><div class="line"><span class="keyword">end</span></div><div class="line">C.my_method <span class="comment"># =&gt; "a class method"</span></div><div class="line">a = C.new</div><div class="line">a.my_method <span class="comment"># =&gt; "NoMethodError: undefined method `my_method' for #&lt;C:0x000000029d5c68&gt;"</span></div></pre></td></tr></table></figure>
+<p>这里对类进行方法扩展，但是对于创建类的对象是没有这个方法的。</p>
+<h4 id="Class-Extension-类扩展混入"><a href="#Class-Extension-类扩展混入" class="headerlink" title="Class Extension 类扩展混入"></a>Class Extension 类扩展混入</h4><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">module</span> <span class="title">M</span></span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">self</span>.<span class="title">included</span><span class="params">(base)</span></span></div><div class="line">        base.extend(ClassMethods)</div><div class="line">    <span class="keyword">end</span></div><div class="line"></div><div class="line">    <span class="class"><span class="keyword">module</span> <span class="title">ClassMethods</span></span></div><div class="line">        <span class="function"><span class="keyword">def</span> <span class="title">my_method</span></span></div><div class="line">            <span class="string">"a class method"</span></div><div class="line">        <span class="keyword">end</span></div><div class="line">    <span class="keyword">end</span></div><div class="line"><span class="keyword">end</span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">C</span></span></div><div class="line">    <span class="keyword">include</span> M</div><div class="line"><span class="keyword">end</span></div><div class="line">C.my_method <span class="comment"># =&gt; "a class method"</span></div></pre></td></tr></table></figure>
+<p>这里的 self.included(base) 使用了类的钩子功能，Ruby 还有其他的钩子方法。<br>当类C include M的时候，触发了模块M的钩子方法 included，所以 base 就是C，然后C再扩展了M模块的 ClassMethods 的所有方法。</p>
+<h4 id="Context-Probe-上下文探针"><a href="#Context-Probe-上下文探针" class="headerlink" title="Context Probe 上下文探针"></a>Context Probe 上下文探针</h4><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">C</span></span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">initialize</span></span></div><div class="line">        @x = <span class="string">"some thing"</span></div><div class="line">    <span class="keyword">end</span></div><div class="line"><span class="keyword">end</span></div><div class="line">obj = C.new</div><div class="line">obj.instance_eval&#123;@x&#125;</div></pre></td></tr></table></figure>
+<p>instance_eval 可以打开对象自己，操作自己内部。</p>
+<h4 id="Dynamic-Method-动态方法"><a href="#Dynamic-Method-动态方法" class="headerlink" title="Dynamic Method 动态方法"></a>Dynamic Method 动态方法</h4><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">C</span> ;</span> <span class="keyword">end</span></div><div class="line">C.class_eval <span class="keyword">do</span></div><div class="line">    define_method <span class="symbol">:my_method</span> <span class="keyword">do</span> </div><div class="line">        <span class="string">"a dynamic method"</span></div><div class="line">    <span class="keyword">end</span></div><div class="line"><span class="keyword">end</span></div><div class="line">obj = C.new</div><div class="line">obj.my_method <span class="comment"># =&gt; "a dynamic method"</span></div></pre></td></tr></table></figure>
+<p>class_eval 可以打开一个类，对类进行操作。</p>
+<h4 id="Deferred-Evaluation-延迟执行"><a href="#Deferred-Evaluation-延迟执行" class="headerlink" title="Deferred Evaluation 延迟执行"></a>Deferred Evaluation 延迟执行</h4><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">C</span></span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">store</span><span class="params">(&amp;block)</span></span></div><div class="line">        @my_code_capsule = block</div><div class="line">    <span class="keyword">end</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">execute</span></span></div><div class="line">        @my_code_capsule.call</div><div class="line">    <span class="keyword">end</span></div><div class="line"><span class="keyword">end</span></div><div class="line">obj = C.new</div><div class="line">obj.store&#123;$X = <span class="number">1</span>&#125;</div><div class="line">$X = <span class="number">0</span></div><div class="line">obj.execute</div><div class="line">$X <span class="comment"># =&gt; 1</span></div></pre></td></tr></table></figure>
+<p>可以动态地将一个块存到对象的一个变量中。</p>
+<h4 id="Dynamic-Proxy-动态代理"><a href="#Dynamic-Proxy-动态代理" class="headerlink" title="Dynamic Proxy 动态代理"></a>Dynamic Proxy 动态代理</h4><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyDynamicProxy</span></span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">initialize</span><span class="params">(target)</span></span></div><div class="line">        @target = target</div><div class="line">    <span class="keyword">end</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">method_missing</span><span class="params">(name, *args, &amp;block)</span></span></div><div class="line">        <span class="string">"result: <span class="subst">#&#123;@target.send(name, *args, &amp;block)&#125;</span>"</span></div><div class="line">    <span class="keyword">end</span></div><div class="line"><span class="keyword">end</span></div><div class="line"></div><div class="line">obj = MyDynamicProxy.new(<span class="string">"a String"</span>)</div><div class="line">obj.reverse <span class="comment"># =&gt; "result: gnirtS a"</span></div></pre></td></tr></table></figure>
+<p>使用到了 method_missing 和 send。Duang。另外一个魔法诞生了。</p>
+<h4 id="Flat-Scpoe-扁平作用域"><a href="#Flat-Scpoe-扁平作用域" class="headerlink" title="Flat Scpoe 扁平作用域"></a>Flat Scpoe 扁平作用域</h4><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">C</span></span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">an_attribute</span></span></div><div class="line">        @attr</div><div class="line">    <span class="keyword">end</span></div><div class="line"><span class="keyword">end</span></div><div class="line">obj = C.new</div><div class="line">a_variable = <span class="number">100</span></div><div class="line"></div><div class="line">obj.instance_eval <span class="keyword">do</span></div><div class="line">    @attr = a_variable</div><div class="line"><span class="keyword">end</span></div><div class="line">obj.an_attribute <span class="comment"># =&gt;100</span></div></pre></td></tr></table></figure>
+<p>就是使用了 instance_eval 和闭包嘛。</p>
+<h4 id="Kernel-Method-内核方法"><a href="#Kernel-Method-内核方法" class="headerlink" title="Kernel Method 内核方法"></a>Kernel Method 内核方法</h4><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">module</span> <span class="title">Kernel</span></span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">a_method</span></span></div><div class="line">        <span class="string">"a kernel method"</span></div><div class="line">    <span class="keyword">end</span></div><div class="line"><span class="keyword">end</span></div><div class="line">a_method <span class="comment"># =&gt; "a kernel method"</span></div></pre></td></tr></table></figure>
+<p>在 kernel 模块中定义方法，所有对象可见。</p>
+<h4 id="Monkeypatch-猴子补丁"><a href="#Monkeypatch-猴子补丁" class="headerlink" title="Monkeypatch 猴子补丁"></a>Monkeypatch 猴子补丁</h4><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">String</span></span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">reverse</span></span></div><div class="line">        <span class="string">"override"</span></div><div class="line">    <span class="keyword">end</span></div><div class="line"><span class="keyword">end</span></div><div class="line"><span class="string">"abc"</span>.reverse <span class="comment"># =&gt; "override"</span></div></pre></td></tr></table></figure>
+<p>著名的猴子补丁，在 runtime 中改变类和对象的属性和方法。guerrilla patch 拟音  gorilla patch ，然后变成了 monkey patch。</p>
+<h4 id="Object-Extension-对象扩展"><a href="#Object-Extension-对象扩展" class="headerlink" title="Object Extension 对象扩展"></a>Object Extension 对象扩展</h4><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">obj = Object.new</div><div class="line"><span class="class"><span class="keyword">module</span> <span class="title">M</span></span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">my_method</span></span></div><div class="line">        <span class="string">"a singleton method"</span></div><div class="line">    <span class="keyword">end</span></div><div class="line"><span class="keyword">end</span></div><div class="line"><span class="class"><span class="keyword">class</span> &lt;&lt; obj</span></div><div class="line">    <span class="keyword">include</span> M</div><div class="line"><span class="keyword">end</span></div><div class="line">obj.my_thod <span class="comment"># =&gt; "a singleton method"</span></div></pre></td></tr></table></figure>
+<p>对 obj 的元类进行扩展，混入模块 M 的方法。</p>
+<h4 id="Shared-Scope-共享作用域"><a href="#Shared-Scope-共享作用域" class="headerlink" title="Shared Scope 共享作用域"></a>Shared Scope 共享作用域</h4><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">lambda &#123;</div><div class="line">    shared = <span class="number">10</span></div><div class="line">    <span class="keyword">self</span>.<span class="keyword">class</span> <span class="comment"># =&gt; Object</span></div><div class="line">    <span class="keyword">self</span>.<span class="keyword">class</span>.class_eval <span class="keyword">do</span></div><div class="line">        define_method <span class="symbol">:counter</span> <span class="keyword">do</span></div><div class="line">            shared</div><div class="line">        <span class="keyword">end</span></div><div class="line">        define_method <span class="symbol">:down</span> <span class="keyword">do</span></div><div class="line">            shared -= <span class="number">1</span></div><div class="line">        <span class="keyword">end</span></div><div class="line">    <span class="keyword">end</span></div><div class="line">&#125;.call</div><div class="line"></div><div class="line">counter <span class="comment"># =&gt; 10</span></div><div class="line"><span class="number">3</span>.times &#123;down&#125;</div><div class="line">counter <span class="comment"># =&gt; 7</span></div></pre></td></tr></table></figure>
+<p>lambda 对 Object 对象进行操作，并且共享变量。  </p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>其实这些东西熟悉了这些东西之后，还是那句话：根本没有什么元编程，只有编程而已。</p>
+
+        
+        </div>
+        <!-- <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://ftandy.com/2015/04/05/2015-04-05-ruby/" data-id="cizfbwk5y000a1dsn37xarhmw" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://ftandy.com/2015/04/05/2015-04-05-ruby/#comments" class="article-comment-link ds-thread-count" data-thread-key="https://ftandy.com/2015/04/05/2015-04-05-ruby/">评论</a>
+    
+
+        </footer> -->
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2015/04/21/2015-04-21-ruby/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    Ruby 对象和类模型
+                
+            </div>
+        </a>
+    
+    
+        <a href="/2015/03/21/2015-03-20-life/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">第一篇</div>
+        </a>
+    
+</nav>
+
+
+    
+</article>
+
+
+    
+    <section id="comments">
+    
+        
+    <div class="ds-thread" data-thread-key="2015/04/05/2015-04-05-ruby/" data-title="Ruby 元法术" data-url="https://ftandy.com/2015/04/05/2015-04-05-ruby/"></div>
+    <style>
+        #ds-thread #ds-reset .ds-textarea-wrapper {
+            background: none;
+        }
+        #ds-reset .ds-avatar img {
+            box-shadow: none;
+        }
+        #ds-reset .ds-gradient-bg {
+            background: #f7f7f7;
+        }
+        #ds-thread #ds-reset li.ds-tab a {
+            border-radius: 3px;
+        }
+        #ds-thread #ds-reset .ds-post-button {
+            color: white;
+            border: none;
+            box-shadow: none;
+            background: #d32;
+            text-shadow: none;
+            font-weight: normal;
+            font-family: 'Microsoft Yahei';
+        }
+        #ds-thread #ds-reset .ds-post-button:hover {
+            color: white;
+            background: #DE594C;
+        }
+        #ds-thread #ds-reset .ds-post-button:active {
+            background: #d32;
+        }
+        #ds-smilies-tooltip ul.ds-smilies-tabs li a.ds-current {
+            color: white;
+            background: #d32;
+            box-shadow: none;
+            text-shadow: none;
+            font-weight: normal;
+        }
+    </style>
+
+    
+    </section>
+
+
+</section>
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2017/01/17/Node-根本就不是什么新东西/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/javascript/">javascript</a></p>
+                            <p class="item-title"><a href="/2017/01/17/Node-根本就不是什么新东西/" class="title">Node 根本就不是什么新东西</a></p>
+                            <p class="item-date"><time datetime="2017-01-17T14:44:15.000Z" itemprop="datePublished">2017-01-17</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/10/30/mimi-promise/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/assets/images/promisesa-was-born.jpg)" alt="写一个符合 Promises/A+ 规范并可配合 ES7 async/await 使用的 Promise" class="thumbnail-image"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/javascript/">javascript</a></p>
+                            <p class="item-title"><a href="/2016/10/30/mimi-promise/" class="title">写一个符合 Promises/A+ 规范并可配合 ES7 async/await 使用的 Promise</a></p>
+                            <p class="item-date"><time datetime="2016-10-30T14:11:46.000Z" itemprop="datePublished">2016-10-30</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/09/11/2016-09-11-理解比特币原理/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/bitcoin/">bitcoin</a></p>
+                            <p class="item-title"><a href="/2016/09/11/2016-09-11-理解比特币原理/" class="title">理解比特币原理</a></p>
+                            <p class="item-date"><time datetime="2016-09-11T10:50:07.000Z" itemprop="datePublished">2016-09-11</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/09/10/2016-09-10-论打电竞职业与互联网职业的相同/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/assets/images/2009.jpg)" alt="论2009电竞职业发展，和成功互联网开发者职业发展的相同" class="thumbnail-image"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/dota/">dota</a></p>
+                            <p class="item-title"><a href="/2016/09/10/2016-09-10-论打电竞职业与互联网职业的相同/" class="title">论2009电竞职业发展，和成功互联网开发者职业发展的相同</a></p>
+                            <p class="item-date"><time datetime="2016-09-10T14:26:03.000Z" itemprop="datePublished">2016-09-10</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/05/15/2016-05-15-Sharedb-源码分析/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/javascript/">javascript</a></p>
+                            <p class="item-title"><a href="/2016/05/15/2016-05-15-Sharedb-源码分析/" class="title">Sharedb 源码分析(待续)</a></p>
+                            <p class="item-date"><time datetime="2016-05-14T16:34:19.000Z" itemprop="datePublished">2016-05-15</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/bitcoin/">bitcoin</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/dota/">dota</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/game/">game</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/https/">https</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/leetcode/">leetcode</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/life/">life</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/poem/">poem</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/programming-language/">programming_language</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/rick-and-morty/">rick and morty</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/ruby/">ruby</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/vagrant-docker/">vagrant_docker</a><span class="category-list-count">2</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">二月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">六月 2015</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2017 FTAndy<br>
+            Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
+        </div>
+    </div>
+</footer>
+
+<script type="text/javascript" src='/assets/js/jquery.backstretch.js'></script>
+
+        
+    
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:'ftandy'};
+    (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+    </script>
+
+
+
+    
+        <script src="/vendor/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-share.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-video.min.js"></script>
+    
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+    <div class="backstretch" style="left: 0px; top: 0px; overflow: hidden; margin: 0px; padding: 0px; z-index: -999999; position: fixed; width: 1440px;">
+    </div>
+    <script type="text/javascript">
+      var ranNum = (Math.random() * 10 + 1).toFixed()
+      $.backstretch("http://7xn1og.com1.z0.glb.clouddn.com/" + ranNum +".jpg");
+
+    </script>
+</body>
+</html>

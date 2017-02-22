@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    <link rel='stylesheet' href='/assets/css/andy-style.css'>
+    
+    <title>Tasks, microtasks, queues and schedules(译) | FTAndy</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="原文，由 FTAndy 翻译，Ivan Yan 校正，“署名-非商用-相同方式共享”。译文反馈。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Tasks, microtasks, queues and schedules(译)">
+<meta property="og:url" content="https://ftandy.com/2015/08/23/2015-08-23-tasks-microtasks-queues-and-schedules/index.html">
+<meta property="og:site_name" content="FTAndy">
+<meta property="og:description" content="原文，由 FTAndy 翻译，Ivan Yan 校正，“署名-非商用-相同方式共享”。译文反馈。">
+<meta property="og:image" content="https://ftandy.com/assets/images/chrome.jpg">
+<meta property="og:updated_time" content="2016-09-02T05:42:21.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Tasks, microtasks, queues and schedules(译)">
+<meta name="twitter:description" content="原文，由 FTAndy 翻译，Ivan Yan 校正，“署名-非商用-相同方式共享”。译文反馈。">
+<meta name="twitter:image" content="https://ftandy.com/assets/images/chrome.jpg">
+    
+
+    
+
+    
+        <link rel="icon" href="/assets/css/avatar.png" />
+    
+
+    <link rel="stylesheet" href="/vendor/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/vendor/open-sans/styles.css">
+    <link rel="stylesheet" href="/vendor/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/vendor/jquery/2.1.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/vendor/lightgallery/css/lightgallery.min.css">
+    
+    
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <!-- <span class="site-title">FTAndy</span> -->
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/.">Home</a>
+                
+                    <a class="main-nav-link" href="/archives">Archives</a>
+                
+                    <a class="main-nav-link" href="/categories">Categories</a>
+                
+                    <a class="main-nav-link" href="/project">Projects</a>
+                
+                    <a class="main-nav-link" href="/about">About</a>
+                
+            </nav>
+            
+                
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/assets/css/avatar.png" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/.">Home</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">Archives</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">Categories</a></td>
+                
+                    <td><a class="main-nav-link" href="/project">Projects</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">About</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+                
+
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/assets/css/avatar.png" />
+            <h2 id="name">FTAndy</h2>
+            <h3 id="title">A Web Developer</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>ShangHai, China</span>
+            <a id="follow" target="_blank" href="https://github.com/ftandy/">关注我</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                28
+                <span>文章</span>
+            </div>
+            <div class="article-info-block">
+                0
+                <span>标签</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    
+                    <td>
+                        <a href="http://github.com/ftandy" target="_blank" title="github" class=tooltip>
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://twitter.com/fortheandy" target="_blank" title="twitter" class=tooltip>
+                            <i class="fa fa-twitter"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="http://www.weibo.com/2150908851" target="_blank" title="weibo" class=tooltip>
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
+            <section id="main"><article id="post-2015-08-23-tasks-microtasks-queues-and-schedules" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            
+	
+		<img src="/assets/images/chrome.jpg" class="article-banner" />
+	
+
+
+
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            Tasks, microtasks, queues and schedules(译)
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2015/08/23/2015-08-23-tasks-microtasks-queues-and-schedules/">
+            <time datetime="2015-08-23T02:51:23.000Z" itemprop="datePublished">2015-08-23</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/javascript/">javascript</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <link rel="stylesheet" type="text/css" href="/assets/css/page.css">
+
+<p><a href="https://jakearchibald.com/2015/tasks-microtasks-queues-and-schedules/" target="_blank" rel="external">原文</a>，由 <a href="http://ftandy.github.io/" target="_blank" rel="external">FTAndy</a> 翻译，<a href="http://yanxyz.net" target="_blank" rel="external">Ivan Yan</a> 校正，<a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="external">“署名-非商用-相同方式共享”</a>。译文<a href="https://github.com/hongfanqie/tasks-microtasks-queues-and-schedules" target="_blank" rel="external">反馈</a>。</p>
+<hr>
+<a id="more"></a>
+<h2 id="Tasks-microtasks-queues-and-schedules"><a href="#Tasks-microtasks-queues-and-schedules" class="headerlink" title="Tasks, microtasks, queues and schedules"></a>Tasks, microtasks, queues and schedules</h2><p><time>Posted 17 August 2015 - hold onto your butts for this one, it’s spec-heavy</time></p>
+<p>当我告诉我的同事 <a href="https://twitter.com/gauntface" target="_blank" rel="external">Matt Gaunt</a> 我想写一篇文章，介绍 mircrotask 队列和浏览器事件循环。他说：“我老实跟你说，我不会看的。” 嗯，我无论如何都要写，那么我们坐下来开始享受它，ok？</p>
+<p>如果你更喜欢视频，<a href="https://twitter.com/philip_roberts" target="_blank" rel="external">Philip Roberts</a> 在 JSConf 上就事件循环有一个<a href="https://www.youtube.com/watch?v=8aGhZQkoFbQ" target="_blank" rel="external">很棒的演讲</a>——没有讲 microtasks，不过很好的介绍了其它概念。好，继续！</p>
+<p>有下面的Javascript代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">console</span>.log(<span class="string">'script start'</span>);</div><div class="line"></div><div class="line">setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'setTimeout'</span>);</div><div class="line">&#125;, <span class="number">0</span>);</div><div class="line"></div><div class="line"><span class="built_in">Promise</span>.resolve().then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'promise1'</span>);</div><div class="line">&#125;).then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'promise2'</span>);</div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(<span class="string">'script end'</span>);</div></pre></td></tr></table></figure>
+<p>log会怎么输出呢？</p>
+<h3 id="试一下"><a href="#试一下" class="headerlink" title="试一下"></a>试一下</h3><p><button class="btn clear-log-1">Clear log</button> <button class="btn test-1">Run test</button></p>
+
+<p><textarea class="log-output log-output-1" readonly></textarea></p>
+
+
+<p>正确的答案是：<code>script start</code>, <code>script end</code>, <code>promise1</code>, <code>promise2</code>, <code>setTimeout</code>，但是各浏览器不一致。</p>
+<p>Microsoft Edge, Firefox 40, iOS Safari 及桌面 Safari 8.0.8 在 <code>promise1</code> 和 <code>promise2</code> 之前打印 <code>setTimeout</code> ——尽管这似乎是竞争条件导致的。很奇怪的是，Firefox 39 和 Safari 8.0.7 是对的。</p>
+<h3 id="为什么会这样"><a href="#为什么会这样" class="headerlink" title="为什么会这样"></a>为什么会这样</h3><p>要想弄明白为什么，你需要知道事件循环如何处理 tasks 和 microtasks。第一次接触需要花些功夫才能弄明白。深呼吸……</p>
+<p>每个线程都有自己的事件循环，所以每个 web worker 有自己的<strong>事件循环</strong>（event loop），所以它能独立地运行。而所有同源的 window 共享一个事件循环，因为它们能同步的通讯。事件循环持续运行，执行 tasks 列队。一个事件循环有多个 task 来源，并且保证在 task 来源内的执行顺序（<a href="http://w3c.github.io/IndexedDB/#database-access-task-source" target="_blank" rel="external">IndexedDB</a> 等规范定义了自己的 task 来源），在每次循环中浏览器要选择从哪个来源中选取 task，这使得浏览器能优先执行敏感 task，例如用户输入。Ok ok, 留下来陪我坐会儿……</p>
+<p><strong>Tasks</strong> 被列入队列，于是浏览器能从它的内部转移到 Javascript/DOM 领地，并且确使这些 tasks 按序执行。在 tasks 之间，浏览器可以更新渲染。来自鼠标点击的事件回调需要安排一个 task，解析 HTML 和 <code>setTimeout</code> 同样需要。</p>
+<p><code>setTimeout</code> 延迟给定的时间，然后为它的回调安排一个新的 task。这就是为什么 <code>setTimeout</code> 在 <code>script end</code> 之后打印，<code>script end</code> 在第一个 task 内，<code>setTimeout</code> 在另一个 task 内。好了，我们快讲完了，剩下一点我需要你们坚持下……</p>
+<p><strong>Mircotasks</strong> 通常用于安排一些事，它们应该在正在执行的代码之后立即发生，例如响应操作，或者让操作异步执行，以免付出一个全新 task 的代价。mircotask 队列在回调之后处理，只要没有其它执行当中的（mid-execution）代码；或者在每个 task 的末尾处理。在处理 microtasks 队列期间，新添加的 microtasks 添加到队列的末尾并且也被执行。 microtasks 包括 mutation observer 回调。上面的例子中的 promise 的回调也是。</p>
+<p>promise 一旦解决（settled），或者已解决，它便为它的回调安排一个 microtask。这确使 promise 回调是异步的，即便 promise 已经解决。因此一个已解决的 promise 调用 <code>.then(yey, nay)</code> 将立即把一个 microtask 加入队列。这就是为什么 <code>promise1</code> 和 <code>promise2</code> 在 <code>script end</code> 之后打印，因为正在运行的代码必须在处理 microtasks 之前完成。<code>promise1</code> 和 <code>promise2</code> 在 <code>setTimeout</code> 之前打印，因为 microtasks 总是在下一个 task 之前执行。</p>
+<p>好，一步一步的运行：</p>
+<div class="event-loop-walkthrough event-loop-walkthrough-1"><div class="js-source"><div class="line-highlight"></div><div class="codehilite"><pre class="process"><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">‘script start’</span><span class="p">);</span><br><br><span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span><br><span class="nx">  console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">‘setTimeout’</span><span class="p">);</span><br><span class="p">},</span> <span class="mi">0</span><span class="p">);</span><br><br><span class="nx">Promise</span><span class="p">.</span><span class="nx">resolve</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span><br><span class="nx">  console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">‘promise1’</span><span class="p">);</span><br><span class="p">}).</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span><br><span class="nx">  console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">‘promise2’</span><span class="p">);</span><br><span class="p">});</span><br><br><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">‘script end’</span><span class="p">);</span><br><br><br></pre></div></div><table><tr class="task-queue"><th>Tasks</th><td><div class="event-loop-items"><div class="event-loop-rail"><div class="event-loop-item">Run script</div><div class="event-loop-item">setTimeout callback</div></div></div></td></tr><tr class="microtask-queue"><th>Microtasks</th><td><div class="event-loop-items"><div class="event-loop-rail"><div class="event-loop-item">Promise then</div><div class="event-loop-item">Promise then</div></div></div></td></tr><tr class="js-stack"><th>JS stack</th><td><div class="event-loop-items"></div></td></tr><tr class="event-loop-log"><th>Log</th><td><div class="event-loop-items"><div class="event-loop-item">script start</div><div class="event-loop-item">script end</div><div class="event-loop-item">promise1</div><div class="event-loop-item">promise2</div><div class="event-loop-item">setTimeout</div></div></td></tr></table><div class="event-loop-controls"><svg viewbox="0 0 5 2"><path d="M2,0 L2,2 L0,1 z"/><path d="M3,0 L5,1 L3,2 z"/><path class="prev-btn" d="M0,0 H2.5V2H0z"/><path class="next-btn" d="M2.5,0 H5V2H2.5z"/></svg></div><div class="event-loop-commentary"><div class="event-loop-commentary-item"></div></div></div>
+
+<p>是的，我做了一个 step-by-step 动画图解。你周六是怎么过的？和朋友们出去晒太阳？我没有。嗯，如果不明白我的 UI 设计，点击上面的箭头。</p>
+<h3 id="其它浏览器有什么不同？"><a href="#其它浏览器有什么不同？" class="headerlink" title="其它浏览器有什么不同？"></a>其它浏览器有什么不同？</h3><p>一些浏览器的打印结果：<code>script start</code>, <code>script end</code>, <code>setTimeout</code>, <code>promise1</code>, <code>promise2</code>。在 <code>setTimeout</code> 之后运行 promise 的回调，就好像将 promise 的回调当作一个新的 task 而不是 microtask。</p>
+<p>这多少情有可原，因为 promise 来自 ECMAScript 规范而不是 HTML 规范。ECAMScript 有一个概念 job，和 microtask 相似，但是两者的关系在<a href="https://esdiscuss.org/topic/the-initialization-steps-for-web-browsers#content-16" target="_blank" rel="external">邮件列表讨论</a>中没有明确。不过，一般共识是 promise 应该是 microtask 队列的一部分，并且有充足的理由。</p>
+<p>将 promise 当作 task 会导致性能问题，因为回调可能不必要地被与 task 相关的事（比如渲染）延迟。与其它 task 来源交互时它也导致不确定性，也会打断与其它 API 的交互，不过后面再细说。</p>
+<p>我提交了一条 <a href="https://connect.microsoft.com/IE/feedback/details/1658365" target="_blank" rel="external">Edge 反馈</a>，它错误地将 promises 当作 task。WebKit nightly 做对了，所以我认为 Safari 最终会修复，而 Firefox 43 似乎已经修复。</p>
+<p>有趣的是 Safari 和 Firefox 发生了退化，而之前的版本是对的。我在想这是否只是巧合。</p>
+<h3 id="怎么知道是-task-还是-microtask？"><a href="#怎么知道是-task-还是-microtask？" class="headerlink" title="怎么知道是 task 还是 microtask？"></a>怎么知道是 task 还是 microtask？</h3><p>测试是一种办法，查看相对于 promise 和 <code>setTimeout</code> 如何打印，尽管这取决于实现是否正确。</p>
+<p>一种方法是查看规范。例如，<a href="https://html.spec.whatwg.org/multipage/webappapis.html#timer-initialisation-steps" target="_blank" rel="external">setTimeout 的第十四步</a>将一个 task 加入队列，<a href="https://dom.spec.whatwg.org/#queue-a-mutation-record" target="_blank" rel="external">mutation record 的第五步</a>将 microtask 加入队列。</p>
+<p>如上所述，ECMAScript 将 microtask 称为 job。<a href="http://www.ecma-international.org/ecma-262/6.0/#sec-performpromisethen" target="_blank" rel="external">PerformPromiseThen 的第八步</a> 调用 EnqueueJob 将一个 microtask 加入队列。</p>
+<p>现在，让我们看一个更复杂的例子。（一个有心的学徒 ：“但是他们还没有准备好”。别管他，你已经准备好了，让我们开始……）</p>
+<h3 id="等级-1-BOSS战"><a href="#等级-1-BOSS战" class="headerlink" title="等级 1 BOSS战"></a>等级 1 BOSS战</h3><p>在我写这篇博文之前，我就已经把这个搞错了。这是一段 html 代码： </p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;<span class="keyword">div</span> <span class="built_in">class</span>=<span class="string">"outer"</span>&gt;</div><div class="line">  &lt;<span class="keyword">div</span> <span class="built_in">class</span>=<span class="string">"inner"</span>&gt;&lt;/<span class="keyword">div</span>&gt;</div><div class="line">&lt;/<span class="keyword">div</span>&gt;</div></pre></td></tr></table></figure>
+<p>有如下的 Javascript 代码，假如我点击 div.inner 会发生什么 log 呢？</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Let's get hold of those elements</span></div><div class="line"><span class="keyword">var</span> outer = <span class="built_in">document</span>.querySelector(<span class="string">'.outer'</span>);</div><div class="line"><span class="keyword">var</span> inner = <span class="built_in">document</span>.querySelector(<span class="string">'.inner'</span>);</div><div class="line"></div><div class="line"><span class="comment">// Let's listen for attribute changes on the</span></div><div class="line"><span class="comment">// outer element</span></div><div class="line"><span class="keyword">new</span> MutationObserver(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'mutate'</span>);</div><div class="line">&#125;).observe(outer, &#123;</div><div class="line">  <span class="attr">attributes</span>: <span class="literal">true</span></div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="comment">// Here's a click listener…</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">onClick</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'click'</span>);</div><div class="line"></div><div class="line">  setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'timeout'</span>);</div><div class="line">  &#125;, <span class="number">0</span>);</div><div class="line"></div><div class="line">  <span class="built_in">Promise</span>.resolve().then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'promise'</span>);</div><div class="line">  &#125;);</div><div class="line"></div><div class="line">  outer.setAttribute(<span class="string">'data-random'</span>, <span class="built_in">Math</span>.random());</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// …which we'll attach to both elements</span></div><div class="line">inner.addEventListener(<span class="string">'click'</span>, onClick);</div><div class="line">outer.addEventListener(<span class="string">'click'</span>, onClick);</div></pre></td></tr></table></figure>
+<p>继续，在看答案之前想清楚。</p>
+<h3 id="试一下吧"><a href="#试一下吧" class="headerlink" title="试一下吧"></a>试一下吧</h3><p>点击下面内部的矩形出发一个 click 事件：</p>
+<div class="outer-test"><div class="inner-test"></div></div>
+
+<p><button class="btn clear-log-2">Clear log</button></p><br><p><textarea class="log-output log-output-2" readonly></textarea></p>
+
+<p>你的估计和结果是否一样？假如是，你可能是正确的。但不幸的是浏览器不会同意这一点：</p>
+<section><br>  <ul class="browser-results"><br>    <li><br>      <img src="https://jakearchibald.com/static/imgs/browser-icons/chrome.041e39c7c6f7.png" alt="Chrome"><br>      <ul><br>        <li>click</li><br>        <li>promise</li><br>        <li>mutate</li><br>        <li>click</li><br>        <li>promise</li><br>        <li>mutate</li><br>        <li>timeout</li><br>        <li>timeout</li><br>      </ul><br>    </li><br>    <li><br>      <img src="https://jakearchibald.com/static/imgs/browser-icons/firefox.6d8bb8468f8d.png" alt="Firefox"><br>      <ul><br>        <li>click</li><br>        <li>mutate</li><br>        <li>click</li><br>        <li>mutate</li><br>        <li>timeout</li><br>        <li>promise</li><br>        <li>promise</li><br>        <li>timeout</li><br>      </ul><br>    </li><br>    <li><br>      <img src="https://jakearchibald.com/static/imgs/browser-icons/safari.db3455e864d0.png" alt="Safari"><br>      <ul><br>        <li>click</li><br>        <li>mutate</li><br>        <li>click</li><br>        <li>mutate</li><br>        <li>promise</li><br>        <li>promise</li><br>        <li>timeout</li><br>        <li>timeout</li><br>      </ul><br>    </li><br>    <li><br>      <img src="https://jakearchibald.com/static/imgs/browser-icons/edge.1b9de1f3baec.png" alt="Edge"><br>      <ul><br>        <li>click</li><br>        <li>click</li><br>        <li>mutate</li><br>        <li>timeout</li><br>        <li>promise</li><br>        <li>timeout</li><br>        <li>promise</li><br>      </ul><br>    </li><br>  </ul><br></section>
+
+<h3 id="谁是对的？"><a href="#谁是对的？" class="headerlink" title="谁是对的？"></a>谁是对的？</h3><p>触发 click 事件是一个 task，Mutation observer 和 promise 回调作为 microtask 加入列队，<code>setTimeout</code> 回调作为 task 加入列队。因此运行过程如下：</p>
+<div class="event-loop-walkthrough event-loop-walkthrough-2"><div class="js-source"><div class="line-highlight"></div><div class="codehilite"><pre class="process" style="font-size: 18px; background-color:inherit; border:none"><span class="c1">// Let’s get hold of those elements</span><br><span class="kd">var</span> <span class="nx">outer</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s1">‘.outer’</span><span class="p">);</span><br><span class="kd">var</span> <span class="nx">inner</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s1">‘.inner’</span><span class="p">);</span><br><br><span class="c1">// Let’s listen for attribute changes on the</span><br><span class="c1">// outer element</span><br><span class="k">new</span> <span class="nx">MutationObserver</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span><br><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">‘mutate’</span><span class="p">);</span><br><span class="p">}).</span><span class="nx">observe</span><span class="p">(</span><span class="nx">outer</span><span class="p">,</span> <span class="p">{</span><br><span class="nx">attributes</span><span class="o">:</span> <span class="kc">true</span><br><span class="p">});</span><br><br><span class="c1">// Here’s a click listener…</span><br><span class="kd">function</span> <span class="nx">onClick</span><span class="p">()</span> <span class="p">{</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">‘click’</span><span class="p">);</span><br><br><span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span><br><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">‘timeout’</span><span class="p">);</span><br><span class="p">},</span> <span class="mi">0</span><span class="p">);</span><br><br><span class="nx">Promise</span><span class="p">.</span><span class="nx">resolve</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span><br><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">‘promise’</span><span class="p">);</span><br><span class="p">});</span><br><br><span class="nx">outer</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="s1">‘data-random’</span><span class="p">,</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">());</span><br><span class="p">}</span><br><br><span class="c1">// …which we’ll attach to both elements</span><br><span class="nx">inner</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">‘click’</span><span class="p">,</span> <span class="nx">onClick</span><span class="p">);</span><br><span class="nx">outer</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">‘click’</span><span class="p">,</span> <span class="nx">onClick</span><span class="p">);</span><br></pre></div><p></p></div><table><tr class="task-queue"><th>Tasks</th><td><div class="event-loop-items"><div class="event-loop-rail"><div class="event-loop-item">Dispatch click</div><div class="event-loop-item">setTimeout callback</div><div class="event-loop-item">setTimeout callback</div></div></div></td></tr><tr class="microtask-queue"><th>Microtasks</th><td><div class="event-loop-items"><div class="event-loop-rail"><div class="event-loop-item">Promise then</div><div class="event-loop-item">Mutation observers</div><div class="event-loop-item">Promise then</div><div class="event-loop-item">Mutation observers</div></div></div></td></tr><tr class="js-stack"><th>JS stack</th><td><div class="event-loop-items"></div></td></tr><tr class="event-loop-log"><th>Log</th><td><div class="event-loop-items"><div class="event-loop-item">click</div><div class="event-loop-item">promise</div><div class="event-loop-item">mutate</div><div class="event-loop-item">click</div><div class="event-loop-item">promise</div><div class="event-loop-item">mutate</div><div class="event-loop-item">timeout</div><div class="event-loop-item">timeout</div></div></td></tr></table><div class="event-loop-controls"><svg viewbox="0 0 5 2"><path d="M2,0 L2,2 L0,1 z"/><path d="M3,0 L5,1 L3,2 z"/><path class="prev-btn" d="M0,0 H2.5V2H0z"/><path class="next-btn" d="M2.5,0 H5V2H2.5z"/></svg></div><div class="event-loop-commentary"><div class="event-loop-commentary-item"></div></div></div><p></p><br><br>所以 Chrome 是对的。对我来说新发现是，microtasks 在回调之后运行（只要没有其它的 Javascript 在运行，我原以为它只能在 task 的末尾运行。这个规则来自 HTML 规范，调用一个回调：<br><br><blockquote><p>If <a href="https://html.spec.whatwg.org/multipage/webappapis.html#stack-of-script-settings-objects" target="_blank" rel="external">the stack of script settings objects</a> is now empty，<a href="https://html.spec.whatwg.org/multipage/webappapis.html#perform-a-microtask-checkpoint" target="_blank" rel="external">perform a microtask checkpoint</a>。</p>
+<p>—— <a href="https://html.spec.whatwg.org/multipage/webappapis.html#clean-up-after-running-a-callback" target="_blank" rel="external">HTML: 回调之后的清理</a>第三步</p>
+</blockquote><br><br>一个 microtask checkpoint 逐个检查 microtask 队列，除非我们已经在处理一个 microtask 队列。类似地，ECMAScript 规范这么说 jobs：<br><br><blockquote><p>Execution of a Job can be initiated only when there is no running execution context and the execution context stack is empty…</p>
+<p>—— <a href="http://www.ecma-international.org/ecma-262/6.0/#sec-jobs-and-job-queues" target="_blank" rel="external">ECMAScript: Jobs and Job Queues</a></p>
+</blockquote><br><br><br>尽管在 HTML 中”can be”变成了”must be”。<h3>其它浏览器哪里错了？</h3>对于 mutation 回调，Firefox 和 Safari 正确地在单击回调之间清空 microtask 队列，但是 promises 列队似乎不一样。这多少情有可原，因为 jobs 和 microtasks 的关系不清楚，但是我仍然期望在事件回调之间处理。<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1193394" target="_blank" rel="external">Firefox bug</a>。<a href="https://bugs.webkit.org/show_bug.cgi?id=147933" target="_blank" rel="external">Safari bug</a>。<br><br>对于 Edge，我们已经看到它错误的将 promises 当作 task，它也没有在单击回调之间清空 microtask 队列，而是在所有单击回调执行完之后清空，于是总共只有一个 <code>mutate</code> 在两个 <code>click</code> 之后打印。<a href="https://connect.microsoft.com/IE/feedbackdetail/view/1658386/microtasks-queues-should-be-processed-following-event-listeners" target="_blank" rel="external">Edge bug</a>。<h3>等级 1 BOSS愤怒的老大哥</h3>使用上面相同的的例子，假如我们执行这个会发生什么呢：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">inner.click();</div></pre></td></tr></table></figure><br><br>这会在事件触发之前执行，在顶级作用域的代码，而不是交互事件中。<h3>试一下</h3><p><button class="btn clear-log-3">Clear log</button> <button class="btn test-2">Run test</button></p><br><p><textarea class="log-output log-output-3" readonly></textarea></p><br><br>下面是各浏览器的结果：<br><section><br>  <ul class="browser-results"><br>    <li><br>      <img src="https://jakearchibald.com/static/imgs/browser-icons/chrome.041e39c7c6f7.png" alt="Chrome"><br>      <ul><br>        <li>click</li><br>        <li>click</li><br>        <li>promise</li><br>        <li>mutate</li><br>        <li>promise</li><br>        <li>timeout</li><br>        <li>timeout</li><br>      </ul><br>    </li><br>    <li><br>      <img src="https://jakearchibald.com/static/imgs/browser-icons/firefox.6d8bb8468f8d.png" alt="Firefox"><br>      <ul><br>        <li>click</li><br>        <li>click</li><br>        <li>mutate</li><br>        <li>timeout</li><br>        <li>promise</li><br>        <li>promise</li><br>        <li>timeout</li><br>      </ul><br>    </li><br>    <li><br>      <img src="https://jakearchibald.com/static/imgs/browser-icons/safari.db3455e864d0.png" alt="Safari"><br>      <ul><br>        <li>click</li><br>        <li>click</li><br>        <li>mutate</li><br>        <li>promise</li><br>        <li>promise</li><br>        <li>timeout</li><br>        <li>timeout</li><br>      </ul><br>    </li><br>    <li><br>      <img src="https://jakearchibald.com/static/imgs/browser-icons/edge.1b9de1f3baec.png" alt="Edge"><br>      <ul><br>        <li>click</li><br>        <li>click</li><br>        <li>mutate</li><br>        <li>timeout</li><br>        <li>promise</li><br>        <li>timeout</li><br>        <li>promise</li><br>      </ul><br>    </li><br>  </ul><br></section><br><br>我发誓我在 Chrome 中始终得到不同的结果，我更新了这个表许多次才意识到我测试的是 Canary。假如你在 Chrome 中得到了不同的结果，请在评论中告诉我是哪个版本。<h3>为什么不一样？</h3>下面是所发生的：<br><div class="event-loop-walkthrough event-loop-walkthrough-3"><div class="js-source"><div class="line-highlight"></div><div class="codehilite"><pre class="process" style="font-size: 18px; background-color:inherit; border:none"><span class="c1">// Let’s get hold of those elements</span><br><span class="kd">var</span> <span class="nx">outer</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s1">‘.outer’</span><span class="p">);</span><br><span class="kd">var</span> <span class="nx">inner</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s1">‘.inner’</span><span class="p">);</span><br><br><span class="c1">// Let’s listen for attribute changes on the</span><br><span class="c1">// outer element</span><br><span class="k">new</span> <span class="nx">MutationObserver</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span><br>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">‘mutate’</span><span class="p">);</span><br><span class="p">}).</span><span class="nx">observe</span><span class="p">(</span><span class="nx">outer</span><span class="p">,</span> <span class="p">{</span><br>  <span class="nx">attributes</span><span class="o">:</span> <span class="kc">true</span><br><span class="p">});</span><br><br><span class="c1">// Here’s a click listener…</span><br><span class="kd">function</span> <span class="nx">onClick</span><span class="p">()</span> <span class="p">{</span><br>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">‘click’</span><span class="p">);</span><br><br>  <span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span><br>    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">‘timeout’</span><span class="p">);</span><br>  <span class="p">},</span> <span class="mi">0</span><span class="p">);</span><br><br>  <span class="nx">Promise</span><span class="p">.</span><span class="nx">resolve</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span><br>    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">‘promise’</span><span class="p">);</span><br>  <span class="p">});</span><br><br>  <span class="nx">outer</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="s1">‘data-random’</span><span class="p">,</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">());</span><br><span class="p">}</span><br><br><span class="c1">// …which we’ll attach to both elements</span><br><span class="nx">inner</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">‘click’</span><span class="p">,</span> <span class="nx">onClick</span><span class="p">);</span><br><span class="nx">outer</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">‘click’</span><span class="p">,</span> <span class="nx">onClick</span><span class="p">);</span><br><br><span class="nx">inner</span><span class="p">.</span><span class="nx">click</span><span class="p">();</span><br></pre></div>
+
+<p></p></div><table><tr class="task-queue"><th>Tasks</th><td><div class="event-loop-items"><div class="event-loop-rail"><div class="event-loop-item">Run script</div><div class="event-loop-item">setTimeout callback</div><div class="event-loop-item">setTimeout callback</div></div></div></td></tr><tr class="microtask-queue"><th>Microtasks</th><td><div class="event-loop-items"><div class="event-loop-rail"><div class="event-loop-item">Promise then</div><div class="event-loop-item">Mutation observers</div><div class="event-loop-item">Promise then</div></div></div></td></tr><tr class="js-stack"><th>JS stack</th><td><div class="event-loop-items"></div></td></tr><tr class="event-loop-log"><th>Log</th><td><div class="event-loop-items"><div class="event-loop-item">click</div><div class="event-loop-item">click</div><div class="event-loop-item">promise</div><div class="event-loop-item">mutate</div><div class="event-loop-item">promise</div><div class="event-loop-item">timeout</div><div class="event-loop-item">timeout</div></div></td></tr></table><div class="event-loop-controls"><svg viewbox="0 0 5 2"><path d="M2,0 L2,2 L0,1 z"/><path d="M3,0 L5,1 L3,2 z"/><path class="prev-btn" d="M0,0 H2.5V2H0z"/><path class="next-btn" d="M2.5,0 H5V2H2.5z"/></svg></div><div class="event-loop-commentary"><div class="event-loop-commentary-item"></div></div><br></div><p></p>
+
+<p>正确的顺序是：<code>click</code>, <code>click</code>, <code>promise</code>, <code>mutate</code>, <code>promise</code>, <code>timeout</code>, <code>timeout</code>，似乎 Chrome 是对的。</p>
+<p>在每个事件回调调用之后：</p>
+<blockquote>
+<p>If <a href="https://html.spec.whatwg.org/multipage/webappapis.html#stack-of-script-settings-objects" target="_blank" rel="external">the stack of script settings objects</a> is now empty，<a href="https://html.spec.whatwg.org/multipage/webappapis.html#perform-a-microtask-checkpoint" target="_blank" rel="external">perform a microtask checkpoint</a>.</p>
+<p>— <a href="https://html.spec.whatwg.org/multipage/webappapis.html#clean-up-after-running-a-callback" target="_blank" rel="external">HTML: 回调之后的清理</a>第三步</p>
+</blockquote>
+<p>之前，这意味着 microtasks 在事件回调之间运行，但是 <code>.click()</code> 让事件同步触发，所以调用 <code>.click()</code> 的代码仍然在事件回调之间的栈内。上面的规则确保了 microtasks 不会中断执行当中的代码。这意味着 microtasks 队列在事件回调之间不处理，而是在它们之后处理。</p>
+<h3 id="这重要吗？"><a href="#这重要吗？" class="headerlink" title="这重要吗？"></a>这重要吗？</h3><p>重要，它会在偏角处咬你（疼）。我就遇到了这个问题，在我尝试用 promises 而不是用怪异的 <code>IDBRequest</code> 对象为 IndexedDB 创建<a href="https://github.com/jakearchibald/indexeddb-promised/blob/master/lib/idb.js" target="_blank" rel="external">一个简单的包装库</a> 时。它让 <a href="https://github.com/jakearchibald/indexeddb-promised/blob/master/test/idb.js#L36" target="_blank" rel="external">IDB 用起来很有趣</a>。</p>
+<p>当 IDB 触发成功事件时，<a href="http://w3c.github.io/IndexedDB/#fire-a-success-event" target="_blank" rel="external">相关的 transaction 对象在事件之后转为非激活状态</a>（第四步）。如果我创建的 promise 在这个事件发生时被履行（resolved)，回调应当在第四步之前执行，这时这个对象仍然是激活状态。但是在 Chrome 之外的浏览器中不是这样，导致这个库有些无用。</p>
+<p>实际上你可以在 Firefox 中解决这个问题，因为 promise polyfills 如 <a href="https://github.com/jakearchibald/es6-promise" target="_blank" rel="external">es6-promise</a> 使用 mutation observers 执行回调，它正确地使用了 microtasks。而它在 Safari 下似乎存在竞态条件，不过这可能是因为他们<a href="http://www.raymondcamden.com/2014/09/25/IndexedDB-on-iOS-8-Broken-Bad" target="_blank" rel="external">糟糕的 IDB 实现</a>。不幸的是 IE/Edge 不一致，因为 mutation 事件不在回调之后处理。</p>
+<p>希望不久我们能看到一些互通性。</p>
+<h3 id="你做到了！"><a href="#你做到了！" class="headerlink" title="你做到了！"></a>你做到了！</h3><p>总结：</p>
+<ul>
+<li>tasks 按序执行，浏览器会在 tasks 之间执行渲染。</li>
+<li>microtasks 按序执行，在下面情况时执行：<ul>
+<li>在每个回调之后，只要没有其它代码正在运行。</li>
+<li>在每个 task 的末尾。</li>
+</ul>
+</li>
+</ul>
+<p>希望你现在明白了事件循环，或者至少得到一个借口出去走一走躺一躺。</p>
+<p>呃，还有人在吗？Hello？Hello？</p>
+<p><small>感谢 Anne van Kesteren, Domenic Denicola, Brian Kardell 和 Matt Gaunt 校对和修正。是的，Matt 最后还是看了此文，我不必把他整成发条橙了。</small></p>
+<p>译注：<a href="https://github.com/YuzuJS/setImmediate" target="_blank" rel="external">setImmediate.js</a> 也提到了 tasks 与 microtasks 的区别，供参考。</p>
+<script type="text/javascript" src="/assets/js/task.js"></script>
+
+        
+        </div>
+        <!-- <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://ftandy.com/2015/08/23/2015-08-23-tasks-microtasks-queues-and-schedules/" data-id="cizfbwk6o001h1dsn9xf4gdev" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://ftandy.com/2015/08/23/2015-08-23-tasks-microtasks-queues-and-schedules/#comments" class="article-comment-link ds-thread-count" data-thread-key="https://ftandy.com/2015/08/23/2015-08-23-tasks-microtasks-queues-and-schedules/">评论</a>
+    
+
+        </footer> -->
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2015/09/05/2015-09-05-vue/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    Vue 组件化开发实践
+                
+            </div>
+        </a>
+    
+    
+        <a href="/2015/07/05/2015-07-05-docker/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">Docker 初探</div>
+        </a>
+    
+</nav>
+
+
+    
+</article>
+
+
+    
+    <section id="comments">
+    
+        
+    <div class="ds-thread" data-thread-key="2015/08/23/2015-08-23-tasks-microtasks-queues-and-schedules/" data-title="Tasks, microtasks, queues and schedules(译)" data-url="https://ftandy.com/2015/08/23/2015-08-23-tasks-microtasks-queues-and-schedules/"></div>
+    <style>
+        #ds-thread #ds-reset .ds-textarea-wrapper {
+            background: none;
+        }
+        #ds-reset .ds-avatar img {
+            box-shadow: none;
+        }
+        #ds-reset .ds-gradient-bg {
+            background: #f7f7f7;
+        }
+        #ds-thread #ds-reset li.ds-tab a {
+            border-radius: 3px;
+        }
+        #ds-thread #ds-reset .ds-post-button {
+            color: white;
+            border: none;
+            box-shadow: none;
+            background: #d32;
+            text-shadow: none;
+            font-weight: normal;
+            font-family: 'Microsoft Yahei';
+        }
+        #ds-thread #ds-reset .ds-post-button:hover {
+            color: white;
+            background: #DE594C;
+        }
+        #ds-thread #ds-reset .ds-post-button:active {
+            background: #d32;
+        }
+        #ds-smilies-tooltip ul.ds-smilies-tabs li a.ds-current {
+            color: white;
+            background: #d32;
+            box-shadow: none;
+            text-shadow: none;
+            font-weight: normal;
+        }
+    </style>
+
+    
+    </section>
+
+
+</section>
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2017/01/17/Node-根本就不是什么新东西/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/javascript/">javascript</a></p>
+                            <p class="item-title"><a href="/2017/01/17/Node-根本就不是什么新东西/" class="title">Node 根本就不是什么新东西</a></p>
+                            <p class="item-date"><time datetime="2017-01-17T14:44:15.000Z" itemprop="datePublished">2017-01-17</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/10/30/mimi-promise/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/assets/images/promisesa-was-born.jpg)" alt="写一个符合 Promises/A+ 规范并可配合 ES7 async/await 使用的 Promise" class="thumbnail-image"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/javascript/">javascript</a></p>
+                            <p class="item-title"><a href="/2016/10/30/mimi-promise/" class="title">写一个符合 Promises/A+ 规范并可配合 ES7 async/await 使用的 Promise</a></p>
+                            <p class="item-date"><time datetime="2016-10-30T14:11:46.000Z" itemprop="datePublished">2016-10-30</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/09/11/2016-09-11-理解比特币原理/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/bitcoin/">bitcoin</a></p>
+                            <p class="item-title"><a href="/2016/09/11/2016-09-11-理解比特币原理/" class="title">理解比特币原理</a></p>
+                            <p class="item-date"><time datetime="2016-09-11T10:50:07.000Z" itemprop="datePublished">2016-09-11</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/09/10/2016-09-10-论打电竞职业与互联网职业的相同/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/assets/images/2009.jpg)" alt="论2009电竞职业发展，和成功互联网开发者职业发展的相同" class="thumbnail-image"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/dota/">dota</a></p>
+                            <p class="item-title"><a href="/2016/09/10/2016-09-10-论打电竞职业与互联网职业的相同/" class="title">论2009电竞职业发展，和成功互联网开发者职业发展的相同</a></p>
+                            <p class="item-date"><time datetime="2016-09-10T14:26:03.000Z" itemprop="datePublished">2016-09-10</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/05/15/2016-05-15-Sharedb-源码分析/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/javascript/">javascript</a></p>
+                            <p class="item-title"><a href="/2016/05/15/2016-05-15-Sharedb-源码分析/" class="title">Sharedb 源码分析(待续)</a></p>
+                            <p class="item-date"><time datetime="2016-05-14T16:34:19.000Z" itemprop="datePublished">2016-05-15</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/bitcoin/">bitcoin</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/dota/">dota</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/game/">game</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/https/">https</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/leetcode/">leetcode</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/life/">life</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/poem/">poem</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/programming-language/">programming_language</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/rick-and-morty/">rick and morty</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/ruby/">ruby</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/vagrant-docker/">vagrant_docker</a><span class="category-list-count">2</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">二月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">六月 2015</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2017 FTAndy<br>
+            Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
+        </div>
+    </div>
+</footer>
+
+<script type="text/javascript" src='/assets/js/jquery.backstretch.js'></script>
+
+        
+    
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:'ftandy'};
+    (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+    </script>
+
+
+
+    
+        <script src="/vendor/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-share.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-video.min.js"></script>
+    
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+    <div class="backstretch" style="left: 0px; top: 0px; overflow: hidden; margin: 0px; padding: 0px; z-index: -999999; position: fixed; width: 1440px;">
+    </div>
+    <script type="text/javascript">
+      var ranNum = (Math.random() * 10 + 1).toFixed()
+      $.backstretch("http://7xn1og.com1.z0.glb.clouddn.com/" + ranNum +".jpg");
+
+    </script>
+</body>
+</html>

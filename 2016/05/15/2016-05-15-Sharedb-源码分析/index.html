@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    <link rel='stylesheet' href='/assets/css/andy-style.css'>
+    
+    <title>Sharedb 源码分析(待续) | FTAndy</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="入坑原因和暂时弃坑原因之前帮一个公司做一个关于文档实时共享和编辑的项目，项目性质类似于 quip 和 google doc，核心功能使用到一个叫 sharejs 的库。
+由于这个项目实时功能很强大，但是文档少而且很旧，所以想要深入了解一下内部原理，需要分析一下源码。此为背景，也为入坑原因。
+但是！在读源码的时候，了解了一下这个项目的背景，发现坑有点深。
+这个项目原本是被集成到一个叫 DerbyJS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Sharedb 源码分析(待续)">
+<meta property="og:url" content="https://ftandy.com/2016/05/15/2016-05-15-Sharedb-源码分析/index.html">
+<meta property="og:site_name" content="FTAndy">
+<meta property="og:description" content="入坑原因和暂时弃坑原因之前帮一个公司做一个关于文档实时共享和编辑的项目，项目性质类似于 quip 和 google doc，核心功能使用到一个叫 sharejs 的库。
+由于这个项目实时功能很强大，但是文档少而且很旧，所以想要深入了解一下内部原理，需要分析一下源码。此为背景，也为入坑原因。
+但是！在读源码的时候，了解了一下这个项目的背景，发现坑有点深。
+这个项目原本是被集成到一个叫 DerbyJS">
+<meta property="og:updated_time" content="2016-08-23T10:26:15.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Sharedb 源码分析(待续)">
+<meta name="twitter:description" content="入坑原因和暂时弃坑原因之前帮一个公司做一个关于文档实时共享和编辑的项目，项目性质类似于 quip 和 google doc，核心功能使用到一个叫 sharejs 的库。
+由于这个项目实时功能很强大，但是文档少而且很旧，所以想要深入了解一下内部原理，需要分析一下源码。此为背景，也为入坑原因。
+但是！在读源码的时候，了解了一下这个项目的背景，发现坑有点深。
+这个项目原本是被集成到一个叫 DerbyJS">
+    
+
+    
+
+    
+        <link rel="icon" href="/assets/css/avatar.png" />
+    
+
+    <link rel="stylesheet" href="/vendor/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/vendor/open-sans/styles.css">
+    <link rel="stylesheet" href="/vendor/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/vendor/jquery/2.1.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/vendor/lightgallery/css/lightgallery.min.css">
+    
+    
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <!-- <span class="site-title">FTAndy</span> -->
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/.">Home</a>
+                
+                    <a class="main-nav-link" href="/archives">Archives</a>
+                
+                    <a class="main-nav-link" href="/categories">Categories</a>
+                
+                    <a class="main-nav-link" href="/project">Projects</a>
+                
+                    <a class="main-nav-link" href="/about">About</a>
+                
+            </nav>
+            
+                
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/assets/css/avatar.png" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/.">Home</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">Archives</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">Categories</a></td>
+                
+                    <td><a class="main-nav-link" href="/project">Projects</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">About</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+                
+
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/assets/css/avatar.png" />
+            <h2 id="name">FTAndy</h2>
+            <h3 id="title">A Web Developer</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>ShangHai, China</span>
+            <a id="follow" target="_blank" href="https://github.com/ftandy/">关注我</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                28
+                <span>文章</span>
+            </div>
+            <div class="article-info-block">
+                0
+                <span>标签</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    
+                    <td>
+                        <a href="http://github.com/ftandy" target="_blank" title="github" class=tooltip>
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://twitter.com/fortheandy" target="_blank" title="twitter" class=tooltip>
+                            <i class="fa fa-twitter"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="http://www.weibo.com/2150908851" target="_blank" title="weibo" class=tooltip>
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
+            <section id="main"><article id="post-2016-05-15-Sharedb-源码分析" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            Sharedb 源码分析(待续)
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2016/05/15/2016-05-15-Sharedb-源码分析/">
+            <time datetime="2016-05-14T16:34:19.000Z" itemprop="datePublished">2016-05-15</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/javascript/">javascript</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h2 id="入坑原因和暂时弃坑原因"><a href="#入坑原因和暂时弃坑原因" class="headerlink" title="入坑原因和暂时弃坑原因"></a>入坑原因和暂时弃坑原因</h2><p>之前帮一个公司做一个关于文档实时共享和编辑的项目，项目性质类似于 quip 和 google doc，核心功能使用到一个叫 sharejs 的库。</p>
+<p>由于这个项目实时功能很强大，但是文档少而且很旧，所以想要深入了解一下内部原理，需要分析一下源码。此为背景，也为入坑原因。</p>
+<p>但是！在读源码的时候，了解了一下这个项目的背景，发现坑有点深。</p>
+<p>这个项目原本是被集成到一个叫 DerbyJS 的框架中（类似于 meteorjs 的实时通讯框架）和作为一个叫 Lever 硅谷公司的核心库，但是作者之前一段时间离开了这家公司，和由于一些私人原因放弃管理了这个项目很久，issue 一大堆，邮件列表不回复，所以项目一团糟。现在 sharejs 已经不维护，但是分出一个 sharedb 的项目，让 Lever 的 CTO 来管理，作者也在干自己的事没有管，那个 CTO 也是忙着管理公司，所以结果就是开发进度极慢，文档几乎没有，极少人关注这个库。</p>
+<p>因为自己要忙找工作和毕业的事，所以把写到一半的笔记放下来，等以后有这个时间再继续研读源码，把这个坑填起来。</p>
+<a id="more"></a>
+<p>以下为源码阅读笔记</p>
+<h3 id="Client-部分"><a href="#Client-部分" class="headerlink" title="Client 部分"></a>Client 部分</h3><p>使用 websocket 或者 browserchannel(long polling) 实时通讯的方法，在 client 初始化，与服务器形成通信渠道，并让 sharedb 对象注册该通讯方法。</p>
+<p>websocket 和 browserchannel 用了 w3c 规定的 websocket 回调函数接口：onopen, onerror, onclose, onmessage。当建立起通讯的时候回调 onopen，有信息来的时候回调 onmessage，错误信息回调 onclose，关闭通讯回调 onclose。</p>
+<p>connection 对象 mixing 了 event emitter，可以自定义 emit 和相对应的 once。</p>
+<p>初始化一个 connection 对象会绑定对应的 socket 对象（websocket 或者 browserchannel），并且定义好 client 端对 socket 的四个回调函数：onopen, onerror, onclose, onmessage。</p>
+<p>在通讯的过程中，有四个状态：</p>
+<ul>
+<li>‘connecting’: The connection is still being established, or we are still waiting on the server to send us the initialization message</li>
+<li>‘connected’: The connection is open and we have connected to a server and recieved the initialization message</li>
+<li>‘disconnected’: Connection is closed, but it will reconnect automatically</li>
+<li>‘closed’: The connection was closed by the client, and will not reconnect</li>
+<li>‘stopped’: The connection was closed by the server, and will not reconnect</li>
+</ul>
+<p>doc 部分，分为 collection 和 docs，一个 collection 由多个 doc 组成，一个 doc 有自己的初创 id。</p>
+<p>当 doc 需要 subscribe 到 server 的时候，会发送 subscribe 的动作和注册的 doc 名称。假如该文档没有</p>
+<h3 id="Server-部分"><a href="#Server-部分" class="headerlink" title="Server 部分"></a>Server 部分</h3><p>server 可以绑定 mongo 或者 redis，或者不绑定，直接使用 memory，作为 doc 的数据暂存方法。</p>
+<p>每当一个 client 初始化一个 socket，server 也会初始化一个对应的 client/session，这个 client/session 会对应上sharedb 的 agent。</p>
+<p>server 会在每次会话定义一个 stream。sharedb 会将这个 stream 注册到 backend 对象中，并对应初始化一个 agent。初始化时，会向 client 发送确认初始化的信息，触发 client 的 onopen 事件。当有一端的 client 有动作并发送信息时，server 会以 stream 的形式读入该 client 的动作，并保存动作和版本号在 doc 对象当中，并向其他 subscribe 过的 agent 通过 socket 发送改动作信息。</p>
+<h3 id="库"><a href="#库" class="headerlink" title="库"></a>库</h3><p>hat: 随机数生成，随机一个 client/session id <a href="https://github.com/substack/node-hat" target="_blank" rel="external">https://github.com/substack/node-hat</a></p>
+<p>asyn: 异步函数集合 <a href="https://github.com/caolan/async" target="_blank" rel="external">https://github.com/caolan/async</a></p>
+<p>stream: 处理数据输入输出流 <a href="https://nodejs.org/api/stream.html" target="_blank" rel="external">https://nodejs.org/api/stream.html</a> <a href="https://github.com/jabez128/stream-handbook" target="_blank" rel="external">https://github.com/jabez128/stream-handbook</a></p>
+<p>ps: readable 读出时，用 on(‘data’)事件监听数据，用 _read 函数对读出的数据进行数据格式化。writeable 被写入时，可以定义 _write 函数定义当有数据读入时，该如何处理数据。所以 sharedb 监听一个 stream ，当 backend 有操作的时候，会向该 stream 写入信息，然后该 stream 再触发 ws/browserchannel 的接口向客户端发送信息。</p>
+<p>browserchannel: 基于长轮询的持久通讯 <a href="https://github.com/josephg/node-browserchannel" target="_blank" rel="external">https://github.com/josephg/node-browserchannel</a></p>
+<p>ws: 与 browserchannel 基本上有相同的开发 api，可以被 sharedb 使用 <a href="https://github.com/websockets/ws" target="_blank" rel="external">https://github.com/websockets/ws</a></p>
+<p>arraydiff: 显示数组之间的差异 <a href="https://github.com/derbyjs/arraydiff" target="_blank" rel="external">https://github.com/derbyjs/arraydiff</a></p>
+<p>deep-is: 比较数据是否全等 <a href="https://github.com/thlorenz/deep-is" target="_blank" rel="external">https://github.com/thlorenz/deep-is</a></p>
+<h3 id="源文件"><a href="#源文件" class="headerlink" title="源文件"></a>源文件</h3><p>backend.js: 整个初始化的 backend，自服务器监听以后一直存在于 server，每当有一个新的 client 建立，都会对应建立一个新的 stream 监听到 backend，并创建一个新的 agent，并发送确认信息到 client，</p>
+<p>agent.js: 解析 stream 中的写入信息，在 agent 触发相应的函数，使用 value 来返回。agent 变量在 server 端对应于 client 的一个 subscirbe。agent 会使用 _handleMessage 函数接收回来的动作并执行对应的私有函数</p>
+<p>types.js: 注册默认ot类型，记录在 map 里。</p>
+
+        
+        </div>
+        <!-- <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://ftandy.com/2016/05/15/2016-05-15-Sharedb-源码分析/" data-id="cizfbwk6u001n1dsn87fpztcd" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://ftandy.com/2016/05/15/2016-05-15-Sharedb-源码分析/#comments" class="article-comment-link ds-thread-count" data-thread-key="https://ftandy.com/2016/05/15/2016-05-15-Sharedb-源码分析/">评论</a>
+    
+
+        </footer> -->
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2016/09/10/2016-09-10-论打电竞职业与互联网职业的相同/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    论2009电竞职业发展，和成功互联网开发者职业发展的相同
+                
+            </div>
+        </a>
+    
+    
+        <a href="/2016/05/14/2016-05-14-Ode-on-Solitude/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">Ode on Solitude</div>
+        </a>
+    
+</nav>
+
+
+    
+</article>
+
+
+    
+    <section id="comments">
+    
+        
+    <div class="ds-thread" data-thread-key="2016/05/15/2016-05-15-Sharedb-源码分析/" data-title="Sharedb 源码分析(待续)" data-url="https://ftandy.com/2016/05/15/2016-05-15-Sharedb-源码分析/"></div>
+    <style>
+        #ds-thread #ds-reset .ds-textarea-wrapper {
+            background: none;
+        }
+        #ds-reset .ds-avatar img {
+            box-shadow: none;
+        }
+        #ds-reset .ds-gradient-bg {
+            background: #f7f7f7;
+        }
+        #ds-thread #ds-reset li.ds-tab a {
+            border-radius: 3px;
+        }
+        #ds-thread #ds-reset .ds-post-button {
+            color: white;
+            border: none;
+            box-shadow: none;
+            background: #d32;
+            text-shadow: none;
+            font-weight: normal;
+            font-family: 'Microsoft Yahei';
+        }
+        #ds-thread #ds-reset .ds-post-button:hover {
+            color: white;
+            background: #DE594C;
+        }
+        #ds-thread #ds-reset .ds-post-button:active {
+            background: #d32;
+        }
+        #ds-smilies-tooltip ul.ds-smilies-tabs li a.ds-current {
+            color: white;
+            background: #d32;
+            box-shadow: none;
+            text-shadow: none;
+            font-weight: normal;
+        }
+    </style>
+
+    
+    </section>
+
+
+</section>
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2017/01/17/Node-根本就不是什么新东西/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/javascript/">javascript</a></p>
+                            <p class="item-title"><a href="/2017/01/17/Node-根本就不是什么新东西/" class="title">Node 根本就不是什么新东西</a></p>
+                            <p class="item-date"><time datetime="2017-01-17T14:44:15.000Z" itemprop="datePublished">2017-01-17</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/10/30/mimi-promise/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/assets/images/promisesa-was-born.jpg)" alt="写一个符合 Promises/A+ 规范并可配合 ES7 async/await 使用的 Promise" class="thumbnail-image"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/javascript/">javascript</a></p>
+                            <p class="item-title"><a href="/2016/10/30/mimi-promise/" class="title">写一个符合 Promises/A+ 规范并可配合 ES7 async/await 使用的 Promise</a></p>
+                            <p class="item-date"><time datetime="2016-10-30T14:11:46.000Z" itemprop="datePublished">2016-10-30</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/09/11/2016-09-11-理解比特币原理/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/bitcoin/">bitcoin</a></p>
+                            <p class="item-title"><a href="/2016/09/11/2016-09-11-理解比特币原理/" class="title">理解比特币原理</a></p>
+                            <p class="item-date"><time datetime="2016-09-11T10:50:07.000Z" itemprop="datePublished">2016-09-11</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/09/10/2016-09-10-论打电竞职业与互联网职业的相同/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/assets/images/2009.jpg)" alt="论2009电竞职业发展，和成功互联网开发者职业发展的相同" class="thumbnail-image"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/dota/">dota</a></p>
+                            <p class="item-title"><a href="/2016/09/10/2016-09-10-论打电竞职业与互联网职业的相同/" class="title">论2009电竞职业发展，和成功互联网开发者职业发展的相同</a></p>
+                            <p class="item-date"><time datetime="2016-09-10T14:26:03.000Z" itemprop="datePublished">2016-09-10</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/05/15/2016-05-15-Sharedb-源码分析/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/javascript/">javascript</a></p>
+                            <p class="item-title"><a href="/2016/05/15/2016-05-15-Sharedb-源码分析/" class="title">Sharedb 源码分析(待续)</a></p>
+                            <p class="item-date"><time datetime="2016-05-14T16:34:19.000Z" itemprop="datePublished">2016-05-15</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/bitcoin/">bitcoin</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/dota/">dota</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/game/">game</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/https/">https</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/leetcode/">leetcode</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/life/">life</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/poem/">poem</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/programming-language/">programming_language</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/rick-and-morty/">rick and morty</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/ruby/">ruby</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/vagrant-docker/">vagrant_docker</a><span class="category-list-count">2</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">二月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">六月 2015</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2017 FTAndy<br>
+            Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
+        </div>
+    </div>
+</footer>
+
+<script type="text/javascript" src='/assets/js/jquery.backstretch.js'></script>
+
+        
+    
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:'ftandy'};
+    (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+    </script>
+
+
+
+    
+        <script src="/vendor/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-share.min.js"></script>
+        <script src="/vendor/lightgallery/js/lg-video.min.js"></script>
+    
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+    <div class="backstretch" style="left: 0px; top: 0px; overflow: hidden; margin: 0px; padding: 0px; z-index: -999999; position: fixed; width: 1440px;">
+    </div>
+    <script type="text/javascript">
+      var ranNum = (Math.random() * 10 + 1).toFixed()
+      $.backstretch("http://7xn1og.com1.z0.glb.clouddn.com/" + ranNum +".jpg");
+
+    </script>
+</body>
+</html>

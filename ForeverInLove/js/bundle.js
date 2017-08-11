@@ -20,7 +20,8 @@ var musicList =[
     "Taylor Swift - Love Story.mp3",
 ]
 $(document).ready(function() {
-    var randomIndex = Math.floor(Math.random() * musicList.length);
+    //var randomIndex = Math.floor(Math.random() * musicList.length);
+    var randomIndex = 17;
     // alert(musicList[randomIndex]);
 
     /*在jQuery中，你可以很容易的使用css 类名和id来获得元素。
